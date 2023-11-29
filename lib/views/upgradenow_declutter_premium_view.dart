@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import '../constants/fields_content.dart';
+import '../widgets/fields_content.dart';
+import 'package:naijabatternew/widgets/previous_page_icon.dart';
 import '../views/declutter_upgrade_page.dart';
 
 class DeclutterPremiumUpgradeNowView extends StatelessWidget {

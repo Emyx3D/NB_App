@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../constants/fields_content.dart';
-import '../constants/fixed_previouspage_icon.dart';
-import '../constants/messaging_products_grid.dart';
+import '../widgets/fields_content.dart';
+import '../widgets/fixed_previouspage_icon.dart';
+import '../widgets/messaging_products_grid.dart';
 
 class ListedItemsforMessaging extends StatelessWidget {
   const ListedItemsforMessaging({super.key});

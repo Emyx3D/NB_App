@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../constants/fields_content.dart';
-import '../constants/message_box.dart';
+import 'package:naijabatternew/widgets/previous_page_icon.dart';
+import '../widgets/message_box.dart';
 import '../views/accesibility_page.dart';
 import '../utilities/colors.dart';
 import '../views/chat_screen.dart';
@@ -35,66 +35,62 @@ class MessagesView extends ConsumerWidget {
         child: Scaffold(
           backgroundColor:
               themeIsLight ? Colors.white : ProjectColors.darkThemeBgColor,
+          appBar: AppBar(
+            toolbarHeight: 70,
+            backgroundColor:
+                themeIsLight ? Colors.white : ProjectColors.darkThemeBgColor,
+            leading: PreviousPageIcon(
+              onPressed: () {
+                // Navigator.pop(context);
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  PageRouteBuilder(
+                    pageBuilder: (context, animation, secondaryAnimation) =>
+                        const HomePage(),
+                    transitionsBuilder:
+                        (context, animation, secondaryAnimation, child) {
+                      return child;
+                    },
+                  ),
+                  (route) => false,
+                );
+              },
+            ),
+            actions: [
+              Padding(
+                padding: const EdgeInsets.only(right: 10),
+                child: IconButton(
+                  padding: const EdgeInsets.all(0),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      PageRouteBuilder(
+                        pageBuilder: (context, animation, secondaryAnimation) =>
+                            const NotificationsPageView(),
+                        transitionsBuilder:
+                            (context, animation, secondaryAnimation, child) {
+                          return child;
+                        },
+                      ),
+                    );
+                  },
+                  icon: Icon(
+                    Icons.notifications,
+                    size: 25,
+                    color:
+                        themeIsLight ? Colors.black : ProjectColors.bigTxtWhite,
+                  ),
+                ),
+              ),
+            ],
+          ),
           body: SingleChildScrollView(
             scrollDirection: Axis.vertical,
             child: Column(
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    PreviousPageIcon(
-                      onPressed: () {
-                        // Navigator.pop(context);
-                        Navigator.pushAndRemoveUntil(
-                          context,
-                          PageRouteBuilder(
-                            pageBuilder:
-                                (context, animation, secondaryAnimation) =>
-                                    const HomePage(),
-                            transitionsBuilder: (context, animation,
-                                secondaryAnimation, child) {
-                              return child;
-                            },
-                          ),
-                          (route) => false,
-                        );
-                      },
-                    ),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 20, right: 10),
-                        child: IconButton(
-                          padding: const EdgeInsets.all(0),
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              PageRouteBuilder(
-                                pageBuilder:
-                                    (context, animation, secondaryAnimation) =>
-                                        const NotificationsPageView(),
-                                transitionsBuilder: (context, animation,
-                                    secondaryAnimation, child) {
-                                  return child;
-                                },
-                              ),
-                            );
-                          },
-                          icon: Icon(
-                            Icons.notifications,
-                            size: 25,
-                            color: themeIsLight
-                                ? Colors.black
-                                : ProjectColors.bigTxtWhite,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(
-                  height: 29.0,
-                ),
+                // const SizedBox(
+                //   height: 29.0,
+                // ),
                 Center(
                   child: Text(
                     'Messages',

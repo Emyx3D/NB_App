@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:naijabatternew/brain/provider.dart';
 import 'package:naijabatternew/utilities/themes/themes.dart';
 import 'package:naijabatternew/views/accesibility_page.dart';
+import 'package:naijabatternew/views/landing_page.dart';
 import 'package:naijabatternew/views/login_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -33,8 +35,15 @@ class MyApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final isLightTheme = ref.watch(themeProvider);
 
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     return MaterialApp(
       title: 'Naija Barter',
+      builder: (context, child) {
+        return ScrollConfiguration(
+          behavior: MyBehavior(),
+          child: child!,
+        );
+      },
       // theme: ThemeData(
       //   primaryColor: const Color(0xFF0F28A9),
       // ),
@@ -44,8 +53,17 @@ class MyApp extends ConsumerWidget {
       // themeMode: ThemeMode.system,
       debugShowCheckedModeBanner: false,
       // home: const HomePage(),
-      home: const LoginView(),
+      // home: const LoginView(),
+      home: const LandingPage(),
     );
+  }
+}
+
+class MyBehavior extends ScrollBehavior {
+  @override
+  Widget buildOverscrollIndicator(
+      BuildContext context, Widget child, ScrollableDetails details) {
+    return child;
   }
 }
 

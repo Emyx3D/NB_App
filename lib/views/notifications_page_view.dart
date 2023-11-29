@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import '../constants/fields_content.dart';
-import '../constants/notifications_collection.dart';
+import 'package:naijabatternew/widgets/previous_page_icon.dart';
+import '../widgets/notifications_collection.dart';
 import '../views/accesibility_page.dart';
 import '../utilities/colors.dart';
 import '../views/homepage_view.dart';
@@ -33,63 +33,59 @@ class NotificationsPageView extends ConsumerWidget {
       },
       child: SafeArea(
         child: Scaffold(
-          body: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  PreviousPageIcon(
-                    onPressed: () {
-                      // Navigator.pop(context);
-                      Navigator.pushAndRemoveUntil(
-                        context,
-                        PageRouteBuilder(
-                          pageBuilder:
-                              (context, animation, secondaryAnimation) =>
-                                  const HomePage(),
-                          transitionsBuilder:
-                              (context, animation, secondaryAnimation, child) {
-                            return child;
-                          },
-                        ),
-                        (route) => false,
-                      );
+          appBar: AppBar(
+            toolbarHeight: 70,
+            backgroundColor:
+                themeIsLight ? Colors.white : ProjectColors.darkThemeBgColor,
+            leading: PreviousPageIcon(
+              onPressed: () {
+                // Navigator.pop(context);
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  PageRouteBuilder(
+                    pageBuilder: (context, animation, secondaryAnimation) =>
+                        const HomePage(),
+                    transitionsBuilder:
+                        (context, animation, secondaryAnimation, child) {
+                      return child;
                     },
                   ),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 20, right: 10),
-                      child: IconButton(
-                        padding: const EdgeInsets.all(0),
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            PageRouteBuilder(
-                              pageBuilder:
-                                  (context, animation, secondaryAnimation) =>
-                                      const MessagesView(),
-                              transitionsBuilder: (context, animation,
-                                  secondaryAnimation, child) {
-                                return child;
-                              },
-                            ),
-                          );
+                  (route) => false,
+                );
+              },
+            ),
+            actions: [
+              Padding(
+                padding: const EdgeInsets.only(right: 10),
+                child: IconButton(
+                  padding: const EdgeInsets.all(0),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      PageRouteBuilder(
+                        pageBuilder: (context, animation, secondaryAnimation) =>
+                            const MessagesView(),
+                        transitionsBuilder:
+                            (context, animation, secondaryAnimation, child) {
+                          return child;
                         },
-                        icon: FaIcon(
-                          FontAwesomeIcons.solidPaperPlane,
-                          size: 20,
-                          color: themeIsLight
-                              ? Colors.black
-                              : ProjectColors.bigTxtWhite,
-                        ),
                       ),
-                    ),
+                    );
+                  },
+                  icon: FaIcon(
+                    FontAwesomeIcons.solidPaperPlane,
+                    size: 20,
+                    color:
+                        themeIsLight ? Colors.black : ProjectColors.bigTxtWhite,
                   ),
-                ],
+                ),
               ),
+            ],
+          ),
+          body: Column(
+            children: [
               const SizedBox(
-                height: 29.0,
+                height: 9.0,
               ),
               Center(
                 child: Text(

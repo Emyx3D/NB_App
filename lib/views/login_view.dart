@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../brain/app_brain.dart';
-import '../constants/fields_content.dart';
+import '../widgets/fields_content.dart';
 import '../utilities/colors.dart';
 import '../views/accesibility_page.dart';
 import '../views/forgot_password_view.dart';
@@ -27,6 +27,13 @@ class _LoginViewState extends ConsumerState<LoginView> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Image.asset(
+              "images/nblogo.png",
+              width: 100,
+            ),
+            const SizedBox(
+              height: 20,
+            ),
             FormHeaderText(
               textInput: 'Sign In',
               color: themeIsLight ? Colors.black : ProjectColors.bigTxtWhite,

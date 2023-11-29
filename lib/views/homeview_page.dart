@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../constants/advert_content.dart';
-import '../constants/barter_scroll_card.dart';
-import '../constants/declutter_scroll_card.dart';
-import '../constants/fields_content.dart';
-import '../constants/flash_sales_card.dart';
-import '../constants/gift_scroll_card.dart';
-import '../constants/pages_header.dart';
+import '../widgets/advert_content.dart';
+import '../widgets/barter_scroll_card.dart';
+import '../widgets/declutter_scroll_card.dart';
+import '../widgets/fields_content.dart';
+import '../widgets/flash_sales_card.dart';
+import '../widgets/gift_scroll_card.dart';
+import '../widgets/pages_header.dart';
 import '../views/accesibility_page.dart';
 import '../views/more_product_description.dart';
 

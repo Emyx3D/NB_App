@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../constants/fields_content.dart';
+import '../widgets/fields_content.dart';
 import '../views/accesibility_page.dart';
 import '../utilities/colors.dart';
 import '../views/homeview_page.dart';

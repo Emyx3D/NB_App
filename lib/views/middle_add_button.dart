@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../constants/add_product_field.dart';
-import '../constants/drop_down_button.dart';
-import '../constants/fields_content.dart';
-import '../constants/lists.dart';
-import '../constants/pages_header.dart';
+import '../widgets/add_product_field.dart';
+import '../widgets/drop_down_button.dart';
+import '../widgets/fields_content.dart';
+import '../widgets/lists.dart';
+import '../widgets/pages_header.dart';
 import '../views/accesibility_page.dart';
 import '../views/edit_and_upload_products_page.dart';
 import 'dart:io';
@@ -143,14 +143,33 @@ class _AddProductPageState extends ConsumerState<AddProductPage> {
                         const SizedBox(
                           height: 8.0,
                         ),
+                        AddProductInputField(
+                          pt: 20,
+                          pb: 20,
+                          pl: 25,
+                          pr: 25,
+                          enableSuggestions: true,
+                          autocorrect: false,
+                          keyboardType: TextInputType.text,
+                          hintText: 'Location',
+                          obscureText: false,
+                          ifvalueisNull: 'Please fill all fields',
+                          onChanged: (value) {},
+                          onSaved: (value) {
+                            productnameValue = value.toString();
+                          },
+                        ),
+                        const SizedBox(
+                          height: 8.0,
+                        ),
                         DropdownFormButton(
                           pt: 16,
                           pb: 16,
                           pl: 8,
                           pr: 10,
-                          disabledText: 'Select Your Location',
+                          disabledText: 'Select Your State',
                           list: locationList,
-                          ifvalueisNull: 'Please select a location',
+                          ifvalueisNull: 'Please select a state',
                           onChanged: (value) {},
                           onSaved: (value) {
                             selectedLocationValue = value.toString();

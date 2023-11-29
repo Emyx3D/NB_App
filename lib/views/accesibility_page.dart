@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../brain/provider.dart';
-import '../constants/dialog_box_stuff.dart';
-import '../constants/fields_content.dart';
-import '../constants/lists.dart';
+import '../widgets/dialog_box_stuff.dart';
+import '../widgets/fields_content.dart';
+import 'package:naijabatternew/widgets/previous_page_icon.dart';
+import '../widgets/lists.dart';
 import '../utilities/colors.dart';
 import '../views/homepage_view.dart';
 
@@ -158,65 +159,58 @@ class _AccessibilityViewState extends ConsumerState<AccessibilityView> {
         );
         return false;
       },
-      child: SafeArea(
-        child: Scaffold(
-          body: SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            child: Column(
-              children: [
-                // const SettingsSubPageWidget(),
-                Row(
-                  children: [
-                    PreviousPageIcon(
-                      onPressed: () {
-                        // Navigator.pop(context);
-                        Navigator.pushAndRemoveUntil(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) {
-                              return const HomePage();
-                            },
-                          ),
-                          (route) => false,
-                        );
-                      },
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 20.0),
-                      child: Text(
-                        'Accessbility',
-                        style: TextStyle(
-                          fontFamily: "Roboto",
-                          fontWeight: FontWeight.bold,
-                          color: themeIsLight
-                              ? Colors.black
-                              : ProjectColors.bigTxtWhite,
-                          fontSize: 20,
-                        ),
-                      ),
-                    ),
-                  ],
+      child: Scaffold(
+        appBar: AppBar(
+          leading: PreviousPageIcon(
+            onPressed: () {
+              // Navigator.pop(context);
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return const HomePage();
+                  },
                 ),
-                const SizedBox19(),
-
-                // ListTile(
-                //   title: const Text('Interruptions'),
-                //   enabled: false,
-                //   onTap: null,
-                //   tileColor: Colors.grey[300],
-                // ),
-                ListTile(
-                  title: const Text('Theme'),
-                  subtitle: Text(ref.watch(themeName.notifier).state),
-                  onTap: handleClickListItemTHEME,
-                ),
-                ListTile(
-                  title: const Text('Font Size'),
-                  subtitle: Text(valueFONTSIZE),
-                  onTap: handleClickListItemFONTSIZE,
-                ),
-              ],
+                (route) => false,
+              );
+            },
+          ),
+          title: Text(
+            'Accessbility',
+            style: TextStyle(
+              fontFamily: "Roboto",
+              fontWeight: FontWeight.bold,
+              color: themeIsLight ? Colors.black : ProjectColors.bigTxtWhite,
+              fontSize: 18,
             ),
+          ),
+          titleSpacing: 5,
+        ),
+        body: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: Column(
+            children: [
+              // const SettingsSubPageWidget(),
+
+              const SizedBox19(),
+
+              // ListTile(
+              //   title: const Text('Interruptions'),
+              //   enabled: false,
+              //   onTap: null,
+              //   tileColor: Colors.grey[300],
+              // ),
+              ListTile(
+                title: const Text('Theme'),
+                subtitle: Text(ref.watch(themeName.notifier).state),
+                onTap: handleClickListItemTHEME,
+              ),
+              ListTile(
+                title: const Text('Font Size'),
+                subtitle: Text(valueFONTSIZE),
+                onTap: handleClickListItemFONTSIZE,
+              ),
+            ],
           ),
         ),
       ),
@@ -226,7 +220,7 @@ class _AccessibilityViewState extends ConsumerState<AccessibilityView> {
 
 // import 'package:adaptive_dialog/adaptive_dialog.dart';
 // import 'package:flutter/material.dart';
-// import '../constants/fields_content.dart';
+// import '../constants/fields_content.dart'; import 'package:naijabatternew/constants/previous_page_icon.dart';
 // import '../constants/lists.dart';
 // import '../constants/settings_subpage_widget.dart';
 

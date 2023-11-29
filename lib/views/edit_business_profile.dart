@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../constants/fields_content.dart';
-import '../constants/profile_info.dart';
+import '../widgets/fields_content.dart';
+import 'package:naijabatternew/widgets/previous_page_icon.dart';
+import '../widgets/profile_info.dart';
 import '../views/accesibility_page.dart';
 import '../utilities/colors.dart';
 import '../views/profilepage_view.dart';

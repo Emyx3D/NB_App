@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import '../constants/fields_content.dart';
+import '../widgets/fields_content.dart';
+import 'package:naijabatternew/widgets/previous_page_icon.dart';
 
 class DeclutterUpgradePage extends StatelessWidget {
   const DeclutterUpgradePage({super.key});

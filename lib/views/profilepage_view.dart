@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../constants/business_profile_view.dart';
+import '../widgets/business_profile_view.dart';
 
 int totalNumberOfGifts = 20;
 int totalNumberOfDeclutter = 14;

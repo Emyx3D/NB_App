@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../constants/advert_content.dart';
-import '../constants/pages_header.dart';
-import '../constants/product_cards_grid.dart';
+import '../widgets/advert_content.dart';
+import '../widgets/pages_header.dart';
+import '../widgets/product_cards_grid.dart';
 import '../views/accesibility_page.dart';
 import '../utilities/colors.dart';
 // import 'package:responsive_grid_list/responsive_grid_list.dart';

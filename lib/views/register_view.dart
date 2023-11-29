@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../constants/fields_content.dart';
+import '../widgets/fields_content.dart';
 import '../utilities/colors.dart';
 import '../utilities/forms/forms_collection.dart';
 import '../views/accesibility_page.dart';
@@ -45,30 +45,31 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
 
   @override
   Widget build(BuildContext context) {
-    final double screenHeight = MediaQuery.of(context).size.height;
-    final double keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
+    // final double screenHeight = MediaQuery.of(context).size.height;
+    // final double keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
     final themeIsLight = ref.watch(themeProvider.notifier).state;
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: SafeArea(
-        child: SizedBox(
-          height: screenHeight - keyboardHeight,
+        child: Center(
           child: SingleChildScrollView(
-            physics: const ClampingScrollPhysics(),
-            child: ConstrainedBox(
-              constraints: BoxConstraints(
-                minWidth: MediaQuery.of(context).size.width,
-                minHeight: MediaQuery.of(context).size.height,
-              ),
-              child: IntrinsicHeight(
-                child: Padding(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 36.0),
                   child: Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.max,
                       children: [
+                        // Image.asset(
+                        //   "images/nblogo.png",
+                        //   width: 100,
+                        // ),
+                        // const SizedBox(
+                        //   height: 20,
+                        // ),
                         FormHeaderText(
                           textInput: 'Create Account',
                           color: themeIsLight
@@ -166,7 +167,7 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
                     ),
                   ),
                 ),
-              ),
+              ],
             ),
           ),
         ),

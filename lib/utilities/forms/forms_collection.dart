@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:naijabatternew/brain/app_brain.dart';
-import 'package:naijabatternew/constants/fields_content.dart';
+import 'package:naijabatternew/views/declutter_business_payment_screen.dart';
+import 'package:naijabatternew/widgets/fields_content.dart';
+import 'package:naijabatternew/widgets/previous_page_icon.dart';
 import 'package:naijabatternew/utilities/colors.dart';
 import 'package:naijabatternew/views/accesibility_page.dart';
 import 'package:naijabatternew/views/login_view.dart';
@@ -14,6 +16,8 @@ class PersonalForm extends ConsumerStatefulWidget {
 }
 
 class _PersonalFormState extends ConsumerState<PersonalForm> {
+  bool _checkboxValue = false;
+
   @override
   Widget build(BuildContext context) {
     final themeIsLight = ref.watch(themeProvider.notifier).state;
@@ -118,7 +122,96 @@ class _PersonalFormState extends ConsumerState<PersonalForm> {
             ),
           ),
         ),
-        const SizedBox15(),
+        const SizedBox12(),
+        Row(
+          children: [
+            SizedBox(
+              width: 20,
+              height: 20,
+              child: Checkbox(
+                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                value: _checkboxValue,
+                fillColor: MaterialStateProperty.all(
+                  ProjectColors.mainBlue,
+                ),
+                checkColor: ProjectColors.bigTxtWhite,
+                splashRadius: 0,
+                side: BorderSide.none,
+                onChanged: (bool? value) {
+                  setState(() {
+                    _checkboxValue = value!;
+                  });
+                },
+              ),
+            ),
+            const SizedBox(
+              width: 12,
+            ),
+
+            // const SizedBox(
+            //   // width: MediaQuery.sizeOf(context).width,
+            //   width: 280,
+            //   child: Text(
+            //     "I agree to the Citadel Terms and conditions and Privacy Policy",
+            //     softWrap: true,
+            //     style: TextStyle(
+            //       color: Colors.white,
+            //       fontFamily: readexproFontName,
+            //       fontSize: 12,
+            //     ),
+            //   ),
+            // ),
+
+            SizedBox(
+              width: 280,
+              child: RichText(
+                text: TextSpan(
+                  text: "I agree to the NaijaBarter ",
+                  style: TextStyle(
+                    color: themeIsLight
+                        ? ProjectColors.darkThemeBgColor
+                        : ProjectColors.bigTxtWhite,
+                    fontFamily: "Roboto",
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                  ),
+                  children: [
+                    TextSpan(
+                      text: "Terms and conditions ",
+                      style: TextStyle(
+                        color: ProjectColors.mainBlue,
+                        fontFamily: "Roboto",
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    TextSpan(
+                      text: "and ",
+                      style: TextStyle(
+                        color: themeIsLight
+                            ? ProjectColors.darkThemeBgColor
+                            : ProjectColors.bigTxtWhite,
+                        fontFamily: "Roboto",
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    TextSpan(
+                      text: "Privacy Policy",
+                      style: TextStyle(
+                        color: ProjectColors.mainBlue,
+                        fontFamily: "Roboto",
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+        const SizedBox12(),
         const InputFieldButton(buttonText: 'Sign Up'),
         const SizedBox15(),
         BottomInputRow(
@@ -157,6 +250,8 @@ class _BusinessFormState extends ConsumerState<BusinessForm> {
       ),
     );
   }
+
+  bool _checkboxValue = false;
 
   @override
   Widget build(BuildContext context) {
@@ -259,7 +354,96 @@ class _BusinessFormState extends ConsumerState<BusinessForm> {
             ),
           ),
         ),
-        const SizedBox15(),
+        const SizedBox12(),
+        Row(
+          children: [
+            SizedBox(
+              width: 20,
+              height: 20,
+              child: Checkbox(
+                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                value: _checkboxValue,
+                fillColor: MaterialStateProperty.all(
+                  ProjectColors.mainBlue,
+                ),
+                checkColor: ProjectColors.bigTxtWhite,
+                splashRadius: 0,
+                side: BorderSide.none,
+                onChanged: (bool? value) {
+                  setState(() {
+                    _checkboxValue = value!;
+                  });
+                },
+              ),
+            ),
+            const SizedBox(
+              width: 12,
+            ),
+
+            // const SizedBox(
+            //   // width: MediaQuery.sizeOf(context).width,
+            //   width: 280,
+            //   child: Text(
+            //     "I agree to the Citadel Terms and conditions and Privacy Policy",
+            //     softWrap: true,
+            //     style: TextStyle(
+            //       color: Colors.white,
+            //       fontFamily: readexproFontName,
+            //       fontSize: 12,
+            //     ),
+            //   ),
+            // ),
+
+            SizedBox(
+              width: 280,
+              child: RichText(
+                text: TextSpan(
+                  text: "I agree to the NaijaBarter ",
+                  style: TextStyle(
+                    color: themeIsLight
+                        ? ProjectColors.darkThemeBgColor
+                        : ProjectColors.bigTxtWhite,
+                    fontFamily: "Roboto",
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                  ),
+                  children: [
+                    TextSpan(
+                      text: "Terms and conditions ",
+                      style: TextStyle(
+                        color: ProjectColors.mainBlue,
+                        fontFamily: "Roboto",
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    TextSpan(
+                      text: "and ",
+                      style: TextStyle(
+                        color: themeIsLight
+                            ? ProjectColors.darkThemeBgColor
+                            : ProjectColors.bigTxtWhite,
+                        fontFamily: "Roboto",
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    TextSpan(
+                      text: "Privacy Policy",
+                      style: TextStyle(
+                        color: ProjectColors.mainBlue,
+                        fontFamily: "Roboto",
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+        const SizedBox12(),
         SizedBox(
           width: double.infinity,
           height: 59.0,
@@ -323,76 +507,62 @@ class BusinessForm2 extends ConsumerStatefulWidget {
 class _BusinessForm2State extends ConsumerState<BusinessForm2> {
   @override
   Widget build(BuildContext context) {
-    final double screenHeight = MediaQuery.of(context).size.height;
-    final double keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
+    // final double screenHeight = MediaQuery.of(context).size.height;
+    // final double keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
     final themeIsLight = ref.watch(themeProvider.notifier).state;
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: SafeArea(
-        child: SizedBox(
-          height: screenHeight - keyboardHeight,
-          child: SingleChildScrollView(
-            physics: const ClampingScrollPhysics(),
-            child: ConstrainedBox(
-              constraints: BoxConstraints(
-                minWidth: MediaQuery.of(context).size.width,
-                minHeight: MediaQuery.of(context).size.height,
-              ),
-              child: IntrinsicHeight(
-                child: Column(
-                  children: [
-                    PreviousPageIcon(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                    ),
-                    const SizedBox165(),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 36.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          FormHeaderText(
-                            textInput: 'Declutter Business Only',
-                            color: themeIsLight
-                                ? Colors.black
-                                : ProjectColors.bigTxtWhite,
-                          ),
-                          const SizedBox26(),
-                          const InputField(
-                            enableSuggestions: false,
-                            autocorrect: false,
-                            keyboardType: TextInputType.text,
-                            hintText: 'Business Name',
-                            obscureText: false,
-                          ),
-                          const SizedBox15(),
-                          const InputField(
-                            enableSuggestions: false,
-                            autocorrect: false,
-                            keyboardType: TextInputType.text,
-                            hintText: 'Registration No.',
-                            obscureText: false,
-                          ),
-                          const SizedBox15(),
-                          const InputField(
-                            enableSuggestions: false,
-                            autocorrect: false,
-                            keyboardType: TextInputType.text,
-                            hintText: 'Location',
-                            obscureText: false,
-                          ),
-                          const SizedBox15(),
-                          const InputFieldButton(buttonText: 'Sign Up'),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+      appBar: AppBar(
+        leading: PreviousPageIcon(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 36.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            FormHeaderText(
+              textInput: 'Declutter Business Only',
+              color: themeIsLight ? Colors.black : ProjectColors.bigTxtWhite,
             ),
-          ),
+            const SizedBox26(),
+            const InputField(
+              enableSuggestions: false,
+              autocorrect: false,
+              keyboardType: TextInputType.text,
+              hintText: 'Business Name',
+              obscureText: false,
+            ),
+            const SizedBox15(),
+            const InputField(
+              enableSuggestions: false,
+              autocorrect: false,
+              keyboardType: TextInputType.text,
+              hintText: 'Registration No.',
+              obscureText: false,
+            ),
+            const SizedBox15(),
+            const InputField(
+              enableSuggestions: false,
+              autocorrect: false,
+              keyboardType: TextInputType.text,
+              hintText: 'Location',
+              obscureText: false,
+            ),
+            const SizedBox15(),
+            InputFieldButton(
+              buttonText: 'Proceed to Payment',
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return const DeclutterBusinessPaymentScreen();
+                }));
+              },
+            ),
+          ],
         ),
       ),
     );

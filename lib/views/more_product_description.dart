@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../constants/fields_content.dart';
+import '../widgets/fields_content.dart';
+import 'package:naijabatternew/widgets/previous_page_icon.dart';
 import '../views/accesibility_page.dart';
 import '../utilities/colors.dart';
 import '../views/listeditems_messaging_page.dart';
@@ -129,17 +130,20 @@ class ProductDescriptionView extends ConsumerWidget {
 
     return SafeArea(
       child: Scaffold(
+        appBar: AppBar(
+          toolbarHeight: 70,
+          leading: PreviousPageIcon(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+        ),
         body: SingleChildScrollView(
           scrollDirection: Axis.vertical,
           child: Column(
             children: [
-              PreviousPageIcon(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-              ),
               const SizedBox(
-                height: 40.0,
+                height: 10.0,
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 40.0),

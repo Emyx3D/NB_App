@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import '../constants/fields_content.dart';
-import '../constants/pages_header.dart';
-import '../constants/product_cards_grid.dart';
-import '../constants/searchpage_constants.dart';
+import '../widgets/fields_content.dart';
+import '../widgets/pages_header.dart';
+import '../widgets/product_cards_grid.dart';
+import '../widgets/searchpage_constants.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../views/accesibility_page.dart';
 import '../utilities/colors.dart';
