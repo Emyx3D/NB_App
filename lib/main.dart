@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:naijabatternew/brain/provider.dart';
+import 'package:naijabatternew/utilities/colors.dart';
 import 'package:naijabatternew/utilities/themes/themes.dart';
 import 'package:naijabatternew/views/accesibility_page.dart';
 import 'package:naijabatternew/views/landing_page.dart';
-import 'package:naijabatternew/views/login_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 // final themeProvider = StateProvider<bool>((ref) => true);
@@ -47,7 +47,13 @@ class MyApp extends ConsumerWidget {
       // theme: ThemeData(
       //   primaryColor: const Color(0xFF0F28A9),
       // ),
-      theme: isLightTheme ? ThemeData.light() : TAppTheme.darkTheme,
+      theme: isLightTheme
+          ? ThemeData.light().copyWith(
+              colorScheme: ColorScheme.fromSeed(
+                seedColor: ProjectColors.mainBlue,
+              ),
+            )
+          : TAppTheme.darkTheme,
       // theme: TAppTheme.darkTheme,
       // darkTheme: TAppTheme.darkTheme,
       // themeMode: ThemeMode.system,

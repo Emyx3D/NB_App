@@ -1,50 +1,30 @@
 [
     {
-        "merged": "com.example.naijabatternew.app-merged_res-22:/mipmap-xxxhdpi_ic_launcher.png.flat",
-        "source": "com.example.naijabatternew.app-main-16:/mipmap-xxxhdpi/ic_launcher.png"
+        "merged": "com.example.naijabatternew.app-merged_res-36:/mipmap-hdpi_ic_launcher.png.flat",
+        "source": "com.example.naijabatternew.app-main-30:/mipmap-hdpi/ic_launcher.png"
     },
     {
-        "merged": "com.example.naijabatternew.app-merged_res-22:/mipmap-xxhdpi_ic_launcher.png.flat",
-        "source": "com.example.naijabatternew.app-main-16:/mipmap-xxhdpi/ic_launcher.png"
+        "merged": "com.example.naijabatternew.app-merged_res-36:/mipmap-xxxhdpi_ic_launcher.png.flat",
+        "source": "com.example.naijabatternew.app-main-30:/mipmap-xxxhdpi/ic_launcher.png"
     },
     {
-        "merged": "com.example.naijabatternew.app-merged_res-22:/mipmap-xhdpi_ic_launcher.png.flat",
-        "source": "com.example.naijabatternew.app-main-16:/mipmap-xhdpi/ic_launcher.png"
+        "merged": "com.example.naijabatternew.app-merged_res-36:/drawable_launch_background.xml.flat",
+        "source": "com.example.naijabatternew.app-main-30:/drawable/launch_background.xml"
     },
     {
-        "merged": "com.example.naijabatternew.app-merged_res-22:/mipmap-mdpi_ic_launcher.png.flat",
-        "source": "com.example.naijabatternew.app-main-16:/mipmap-mdpi/ic_launcher.png"
+        "merged": "com.example.naijabatternew.app-merged_res-36:/mipmap-mdpi_ic_launcher.png.flat",
+        "source": "com.example.naijabatternew.app-main-30:/mipmap-mdpi/ic_launcher.png"
     },
     {
-        "merged": "C:\\Users\\HP\\.gradle\\daemon\\7.5\\com.example.naijabatternew.app-merged_res-22:\\mipmap-xxhdpi_ic_launcher.png.flat",
-        "source": "C:\\Users\\HP\\.gradle\\daemon\\7.5\\com.example.naijabatternew.app-main-16:\\mipmap-xxhdpi\\ic_launcher.png"
+        "merged": "com.example.naijabatternew.app-merged_res-36:/mipmap-xxhdpi_ic_launcher.png.flat",
+        "source": "com.example.naijabatternew.app-main-30:/mipmap-xxhdpi/ic_launcher.png"
     },
     {
-        "merged": "C:\\Users\\HP\\.gradle\\daemon\\7.5\\com.example.naijabatternew.app-merged_res-22:\\mipmap-xhdpi_ic_launcher.png.flat",
-        "source": "C:\\Users\\HP\\.gradle\\daemon\\7.5\\com.example.naijabatternew.app-main-16:\\mipmap-xhdpi\\ic_launcher.png"
+        "merged": "com.example.naijabatternew.app-merged_res-36:/drawable-v21_launch_background.xml.flat",
+        "source": "com.example.naijabatternew.app-main-30:/drawable-v21/launch_background.xml"
     },
     {
-        "merged": "C:\\Users\\HP\\.gradle\\daemon\\7.5\\com.example.naijabatternew.app-merged_res-22:\\mipmap-hdpi_ic_launcher.png.flat",
-        "source": "C:\\Users\\HP\\.gradle\\daemon\\7.5\\com.example.naijabatternew.app-main-16:\\mipmap-hdpi\\ic_launcher.png"
-    },
-    {
-        "merged": "C:\\Users\\HP\\.gradle\\daemon\\7.5\\com.example.naijabatternew.app-merged_res-22:\\drawable_launch_background.xml.flat",
-        "source": "C:\\Users\\HP\\.gradle\\daemon\\7.5\\com.example.naijabatternew.app-main-16:\\drawable\\launch_background.xml"
-    },
-    {
-        "merged": "C:\\Users\\HP\\.gradle\\daemon\\7.5\\com.example.naijabatternew.app-merged_res-22:\\mipmap-xxxhdpi_ic_launcher.png.flat",
-        "source": "C:\\Users\\HP\\.gradle\\daemon\\7.5\\com.example.naijabatternew.app-main-16:\\mipmap-xxxhdpi\\ic_launcher.png"
-    },
-    {
-        "merged": "C:\\Users\\HP\\.gradle\\daemon\\7.5\\com.example.naijabatternew.app-merged_res-22:\\mipmap-mdpi_ic_launcher.png.flat",
-        "source": "C:\\Users\\HP\\.gradle\\daemon\\7.5\\com.example.naijabatternew.app-main-16:\\mipmap-mdpi\\ic_launcher.png"
-    },
-    {
-        "merged": "com.example.naijabatternew.app-merged_res-22:/mipmap-hdpi_ic_launcher.png.flat",
-        "source": "com.example.naijabatternew.app-main-16:/mipmap-hdpi/ic_launcher.png"
-    },
-    {
-        "merged": "C:\\Users\\HP\\.gradle\\daemon\\7.5\\com.example.naijabatternew.app-merged_res-22:\\drawable-v21_launch_background.xml.flat",
-        "source": "C:\\Users\\HP\\.gradle\\daemon\\7.5\\com.example.naijabatternew.app-main-16:\\drawable-v21\\launch_background.xml"
+        "merged": "com.example.naijabatternew.app-merged_res-36:/mipmap-xhdpi_ic_launcher.png.flat",
+        "source": "com.example.naijabatternew.app-main-30:/mipmap-xhdpi/ic_launcher.png"
     }
 ]

@@ -59,6 +59,10 @@
             android:name="flutterEmbedding"
             android:value="2" />
 
+        <activity
+            android:name="co.paystack.flutterpaystack.AuthActivity"
+            android:theme="@style/Paystack.Dialog" />
+
         <provider
             android:name="io.flutter.plugins.imagepicker.ImagePickerFileProvider"
             android:authorities="com.example.naijabatternew.flutter.image_provider"
@@ -80,6 +84,12 @@
             android:name="androidx.startup.InitializationProvider"
             android:authorities="com.example.naijabatternew.androidx-startup"
             android:exported="false" >
+            <meta-data
+                android:name="androidx.emoji2.text.EmojiCompatInitializer"
+                android:value="androidx.startup" />
+            <meta-data
+                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+                android:value="androidx.startup" />
             <meta-data
                 android:name="androidx.profileinstaller.ProfileInstallerInitializer"
                 android:value="androidx.startup" />

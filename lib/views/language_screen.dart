@@ -5,8 +5,6 @@ import 'package:naijabatternew/utilities/fonts.dart';
 import 'package:naijabatternew/views/accesibility_page.dart';
 import 'package:naijabatternew/widgets/previous_page_icon.dart';
 
-enum Pet { dog, cat }
-
 enum Languages { english }
 
 class LanguageScreen extends ConsumerStatefulWidget {
@@ -17,7 +15,6 @@ class LanguageScreen extends ConsumerStatefulWidget {
 }
 
 class _LanguageScreenState extends ConsumerState<LanguageScreen> {
-  final Pet _pet = Pet.dog;
   Languages _language = Languages.english;
 
   @override
