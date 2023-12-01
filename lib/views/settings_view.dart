@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:naijabatternew/utilities/fonts.dart';
 import 'package:naijabatternew/views/change_password_screen.dart';
+import 'package:naijabatternew/views/help_screen.dart';
 import 'package:naijabatternew/views/language_screen.dart';
 import 'package:naijabatternew/views/privacy_settings_screen.dart';
 import '../widgets/fields_content.dart';
@@ -163,52 +165,120 @@ class SettingsPage extends ConsumerWidget {
                 icon: FontAwesomeIcons.universalAccess,
                 text: 'Accessibility',
               ),
-              const SizedBox19(),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  "About",
-                  style: TextStyle(
-                    fontSize: 14.0,
-                    fontFamily: 'Roboto',
-                    fontWeight: FontWeight.w400,
-                    color: themeIsLight
-                        ? const Color(0xFF000000)
-                        : ProjectColors.bigTxtWhite,
+              const SizedBox15(),
+              InkWell(
+                onTap: () {},
+                child: Container(
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    "About",
+                    style: TextStyle(
+                      fontSize: 14.0,
+                      fontFamily: 'Roboto',
+                      fontWeight: FontWeight.w400,
+                      color: themeIsLight
+                          ? const Color(0xFF000000)
+                          : ProjectColors.bigTxtWhite,
+                    ),
                   ),
                 ),
               ),
-              const SizedBox26(),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  "Help",
-                  style: TextStyle(
-                    fontSize: 14.0,
-                    fontFamily: 'Roboto',
-                    fontWeight: FontWeight.w400,
-                    color: themeIsLight
-                        ? const Color(0xFF000000)
-                        : ProjectColors.bigTxtWhite,
+              InkWell(
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return const HelpScreen();
+                  }));
+                },
+                child: Container(
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    "Help",
+                    style: TextStyle(
+                      fontSize: 14.0,
+                      fontFamily: 'Roboto',
+                      fontWeight: FontWeight.w400,
+                      color: themeIsLight
+                          ? const Color(0xFF000000)
+                          : ProjectColors.bigTxtWhite,
+                    ),
                   ),
                 ),
               ),
               const SizedBox(
-                height: 44.0,
+                height: 30.0,
               ),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) {
-                          return const LoginView();
-                        },
-                      ),
-                    );
-                  },
+              InkWell(
+                onTap: () {
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          // contentPadding: const EdgeInsets.all(5),
+                          title: const Text(
+                            'Are you sure you want to logout?',
+                            textAlign: TextAlign.left,
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 15.0,
+                              fontFamily: "Roboto",
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          // content: Text(
+                          //   "Are you sure you want to promote this item?",
+                          //   style: TextStyle(
+                          //     fontSize: 16.0,
+                          //     fontFamily: 'Nunito',
+                          //     fontWeight: FontWeight.w600,
+                          //     color: themeIsLight
+                          //         ? const Color(0xFF000000)
+                          //         : ProjectColors.bigTxtWhite,
+                          //   ),
+                          // ),
+                          // actionsAlignment: MainAxisAlignment.center,
+                          actionsPadding: const EdgeInsets.symmetric(
+                            vertical: 10,
+                            horizontal: 15,
+                          ),
+                          actions: <Widget>[
+                            TextButton(
+                              onPressed: () => Navigator.pop(context, 'Cancel'),
+                              child: const Text(
+                                'Cancel',
+                                style: TextStyle(
+                                  color: Color(0xFF0F28A9),
+                                  fontFamily: robotoFontName,
+                                ),
+                              ),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                                Navigator.pushAndRemoveUntil(
+                                  context,
+                                  MaterialPageRoute(builder: (context) {
+                                    return const LoginView();
+                                  }),
+                                  (route) => false,
+                                );
+                              },
+                              child: const Text(
+                                'Logout',
+                                style: TextStyle(
+                                  color: Color(0xFFE81515),
+                                  fontFamily: robotoFontName,
+                                ),
+                              ),
+                            ),
+                          ],
+                        );
+                      });
+                },
+                child: Container(
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  alignment: Alignment.centerLeft,
                   child: Text(
                     "Logout",
                     style: TextStyle(
@@ -222,8 +292,8 @@ class SettingsPage extends ConsumerWidget {
                   ),
                 ),
               ),
-              const SizedBox26(),
-              Align(
+              Container(
+                padding: const EdgeInsets.symmetric(vertical: 10),
                 alignment: Alignment.centerLeft,
                 child: Text(
                   "Add acount",
@@ -237,8 +307,8 @@ class SettingsPage extends ConsumerWidget {
                   ),
                 ),
               ),
-              const SizedBox26(),
-              Align(
+              Container(
+                padding: const EdgeInsets.symmetric(vertical: 10),
                 alignment: Alignment.centerLeft,
                 child: Text(
                   "Delete account",

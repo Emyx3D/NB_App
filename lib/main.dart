@@ -51,6 +51,7 @@ class MyApp extends ConsumerWidget {
           ? ThemeData.light().copyWith(
               colorScheme: ColorScheme.fromSeed(
                 seedColor: ProjectColors.mainBlue,
+                
               ),
             )
           : TAppTheme.darkTheme,
