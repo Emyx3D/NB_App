@@ -15,10 +15,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 // void main() {
 //   runApp(const ProviderScope(child: MyApp()));
 // }
+late SharedPreferences prefs;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final prefs = await SharedPreferences.getInstance();
+  prefs = await SharedPreferences.getInstance();
 
   runApp(ProviderScope(
     overrides: [
@@ -51,7 +52,6 @@ class MyApp extends ConsumerWidget {
           ? ThemeData.light().copyWith(
               colorScheme: ColorScheme.fromSeed(
                 seedColor: ProjectColors.mainBlue,
-                
               ),
             )
           : TAppTheme.darkTheme,

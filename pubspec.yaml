@@ -43,15 +43,23 @@ dependencies:
   custom_pop_up_menu: ^1.2.4
   adaptive_dialog: ^1.8.3+1
   page_view_indicators: ^2.0.0
-  flutter_riverpod: ^2.4.0
+  # flutter_riverpod: ^2.4.0
   shared_preferences: ^2.2.1
   image_picker: ^1.0.4
   flutter_paystack: ^1.0.7
   flutter_svg: ^2.0.9
+  
+  flutter_riverpod: ^2.4.9
+  riverpod_annotation: ^2.3.3
+  dio: ^5.4.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  build_runner:
+  custom_lint:
+  riverpod_generator: ^2.3.9
+  riverpod_lint: ^2.3.7
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
