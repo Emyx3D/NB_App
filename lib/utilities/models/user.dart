@@ -6,6 +6,7 @@ class User {
   final String name;
   final String username;
   final String image;
+  final String token;
   final bool isBusiness;
   final bool isBusinessApproved;
   final DateTime dob;
@@ -16,6 +17,7 @@ class User {
     required this.name,
     required this.username,
     required this.image,
+    required this.token,
     required this.isBusiness,
     required this.isBusinessApproved,
     required this.dob,
@@ -31,6 +33,7 @@ class User {
       isBusiness: json['is_business'] ?? false,
       isBusinessApproved: json['is_business_approved'] ?? false,
       image: json['image'] ?? '',
+      token: json['token'] ?? '',
       dob: DateTime.parse(json['dob']),
     );
   }
