@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:naijabatternew/widgets/indicator_dot.dart';
-import '../widgets/advert_content.dart';
 import '../widgets/pages_header.dart';
 import '../widgets/product_cards_grid.dart';
 import '../views/accesibility_page.dart';
@@ -35,7 +34,7 @@ final List<String> _images = [
   void initState() {
     super.initState();
     _pageController = PageController(initialPage: _currentIndex);
-    _timer = Timer.periodic(const Duration(seconds: 3), (timer) {
+    _timer = Timer.periodic(const Duration(seconds: 10), (timer) {
       if (_currentIndex < _images.length - 1) {
         _currentIndex++;
       } else {

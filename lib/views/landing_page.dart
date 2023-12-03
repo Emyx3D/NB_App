@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:naijabatternew/utilities/fonts.dart';
 import 'package:naijabatternew/views/login_view.dart';
-import 'package:naijabatternew/widgets/fields_content.dart';
 import 'package:naijabatternew/widgets/landing_page_carousel_items_slides.dart';
 
 import '../utilities/colors.dart';

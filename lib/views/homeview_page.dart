@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:naijabatternew/utilities/colors.dart';
 import 'package:naijabatternew/widgets/indicator_dot.dart';
 import '../widgets/advert_content.dart';
 import '../widgets/barter_scroll_card.dart';
@@ -41,7 +40,7 @@ class _HomePageViewState extends ConsumerState<HomePageView> {
   void initState() {
     super.initState();
     _pageController = PageController(initialPage: _currentIndex);
-    _timer = Timer.periodic(const Duration(seconds: 3), (timer) {
+    _timer = Timer.periodic(const Duration(seconds: 10), (timer) {
       if (_currentIndex < _images.length - 1) {
         _currentIndex++;
       } else {
