@@ -22,6 +22,7 @@ class _ResetPasswordViewState extends ConsumerState<ResetPasswordView> {
   @override
   Widget build(BuildContext context) {
     final forgotPasswordProvider = ref.watch(forgotPassword);
+    final loadingForgotPasswordProvider = ref.watch(loadingForgotPassword);
     final themeIsLight = ref.watch(themeProvider.notifier).state;
 
     return Scaffold(
@@ -149,7 +150,7 @@ class _ResetPasswordViewState extends ConsumerState<ResetPasswordView> {
             const SizedBox26(),
             InputFieldButton(
               buttonText: 'Change Password',
-              isLoading: forgotPasswordProvider.isLoading,
+              isLoading: loadingForgotPasswordProvider,
               onPressed: () async {
                 await forgotPasswordProvider.sendForgotPassword(
                     context, passwordController.text);

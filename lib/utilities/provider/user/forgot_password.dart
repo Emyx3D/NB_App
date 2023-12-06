@@ -6,11 +6,11 @@ import 'package:naijabatternew/views/login_view.dart';
 import 'package:naijabatternew/views/otp_entry_view.dart';
 import 'package:naijabatternew/views/reset_password_view.dart';
 
-final loading = StateProvider((ref) => false);
+final loadingForgotPassword = StateProvider((ref) => false);
 final emailProvider = StateProvider((ref) => '');
 final otpProvider = StateProvider((ref) => '');
 
-final forgotPassword = Provider<ForgotPassword>((ref) {
+final forgotPassword = StateProvider<ForgotPassword>((ref) {
   return ForgotPassword(ref);
 });
 
@@ -19,9 +19,9 @@ class ForgotPassword {
 
   final Ref _ref;
 
-  bool get isLoading {
-    return _ref.watch(loading);
-  }
+  // bool get isLoading {
+  //   return _ref.watch(loadingForgotPassword);
+  // }
 
   String get getEmail {
     return _ref.watch(emailProvider);
@@ -32,9 +32,7 @@ class ForgotPassword {
   }
 
   Future sendForgotPassword(context, String email) async {
-    print('i am in the btn sendForgotPassword oo');
-
-    _ref.read(loading.notifier).state = true;
+    _ref.read(loadingForgotPassword.notifier).state = true;
     _ref.read(emailProvider.notifier).state = email;
 
     final response = await dio.post(
@@ -43,10 +41,8 @@ class ForgotPassword {
         "email": email,
       },
     );
-    _ref.read(loading.notifier).state = false;
+    _ref.read(loadingForgotPassword.notifier).state = false;
 
-    print('response.statusCode ${response.statusCode}');
-    print('response.data ${response.data}');
     if (response.statusCode != 200) {
       failedSnackbar(context, response.data?['error'] ?? 'An error occured');
       return;
@@ -62,7 +58,7 @@ class ForgotPassword {
   }
 
   Future verifyOtp(context, String otp) async {
-    _ref.read(loading.notifier).state = true;
+    _ref.read(loadingForgotPassword.notifier).state = true;
     _ref.read(otpProvider.notifier).state = otp;
 
     final response = await dio.post(
@@ -72,7 +68,7 @@ class ForgotPassword {
         "otp": otp,
       },
     );
-    _ref.read(loading.notifier).state = false;
+    _ref.read(loadingForgotPassword.notifier).state = false;
 
     if (response.statusCode != 200) {
       failedSnackbar(context, response.data?['error'] ?? 'An error occured');
@@ -89,7 +85,7 @@ class ForgotPassword {
   }
 
   Future resetPassword(context, String password) async {
-    _ref.read(loading.notifier).state = true;
+    _ref.read(loadingForgotPassword.notifier).state = true;
 
     final response = await dio.post(
       '/reset-password',
@@ -99,7 +95,7 @@ class ForgotPassword {
         "otp": getOtp,
       },
     );
-    _ref.read(loading.notifier).state = false;
+    _ref.read(loadingForgotPassword.notifier).state = false;
 
     if (response.statusCode != 200) {
       failedSnackbar(context, response.data?['error'] ?? 'An error occured');

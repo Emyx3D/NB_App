@@ -15,6 +15,7 @@ class ForgotPasswordView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final forgotPasswordProvider = ref.watch(forgotPassword);
+    final loadingForgotPasswordProvider = ref.watch(loadingForgotPassword);
 
     final themeIsLight = ref.watch(themeProvider.notifier).state;
     return Scaffold(
@@ -46,9 +47,8 @@ class ForgotPasswordView extends ConsumerWidget {
             ),
             const SizedBox19(),
             InputFieldButton(
-              isLoading: forgotPasswordProvider.isLoading,
+              isLoading: loadingForgotPasswordProvider,
               onPressed: () async {
-                print('i am in the btn oo');
                 await forgotPasswordProvider.sendForgotPassword(
                     context, emailController.text);
               },
