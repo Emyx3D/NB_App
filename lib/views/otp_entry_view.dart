@@ -51,7 +51,7 @@ class OTPEntryPage extends ConsumerWidget {
             InputFieldButton(
               isLoading: loadingForgotPasswordProvider,
               onPressed: () async {
-                await forgotPasswordProvider.sendForgotPassword(
+                await forgotPasswordProvider.verifyOtp(
                     context, otpController.text);
               },
               buttonText: 'Confirm',

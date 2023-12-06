@@ -152,7 +152,7 @@ class _ResetPasswordViewState extends ConsumerState<ResetPasswordView> {
               buttonText: 'Change Password',
               isLoading: loadingForgotPasswordProvider,
               onPressed: () async {
-                await forgotPasswordProvider.sendForgotPassword(
+                await forgotPasswordProvider.resetPassword(
                     context, passwordController.text);
               },
             ),

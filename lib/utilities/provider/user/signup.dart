@@ -183,18 +183,6 @@ class Signup {
     );
     _ref.read(loadingSignup.notifier).state = false;
 
-    print({
-      "email": getEmail,
-      "username": getUsername,
-      "password": getPassword,
-      "name": getName,
-      "phone": getPhone,
-      "business_name": businessName,
-      "registration_no": regNo,
-      "location": location,
-    });
-    print(response.statusCode);
-    print(response.data);
     if (response.statusCode != 201) {
       failedSnackbar(context, response.data?['error'] ?? 'An error occured');
       return;

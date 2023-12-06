@@ -19,10 +19,6 @@ class ForgotPassword {
 
   final Ref _ref;
 
-  // bool get isLoading {
-  //   return _ref.watch(loadingForgotPassword);
-  // }
-
   String get getEmail {
     return _ref.watch(emailProvider);
   }
@@ -68,6 +64,10 @@ class ForgotPassword {
         "otp": otp,
       },
     );
+    print({
+      "email": getEmail,
+      "otp": otp,
+    });
     _ref.read(loadingForgotPassword.notifier).state = false;
 
     if (response.statusCode != 200) {
@@ -95,6 +95,11 @@ class ForgotPassword {
         "otp": getOtp,
       },
     );
+    print({
+      "email": getEmail,
+      "newPassword": password,
+      "otp": getOtp,
+    });
     _ref.read(loadingForgotPassword.notifier).state = false;
 
     if (response.statusCode != 200) {
