@@ -1,45 +1,43 @@
 import 'dart:convert';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:naijabatternew/utilities/helper/dio.dart';
+import 'package:naijabatternew/utilities/helper/snackbar.dart';
 import 'package:naijabatternew/utilities/models/user.dart';
 
 import '../../../main.dart';
 
-final userProvider = Provider<Future<User?>>((ref) async {
-  String? user = prefs.getString('user');
-  if (user == null) {
-    return null;
-  }
+final loadingUser = StateProvider((ref) => false);
 
-  final jsonData = jsonDecode(user);
-  return User.fromJson(jsonData);
+final userProvider = StateProvider<UserObj>((ref) {
+  return UserObj(ref);
 });
 
+class UserObj {
+  UserObj(this._ref);
 
-// Provider<Future<User>> userProvider(String username, String email) {
-//   return Provider<Future<User>>((ref) async {
-//     final response = await dio.get('/address/addAddress');
+  final Ref _ref;
 
-//     final json = jsonDecode(response.data.toString()) as Map<String, dynamic>;
-//     return User.fromJson(json);
-//   });
-// }
+  User? userObj() {
+    String? user = prefs.getString('user');
+    if (user == null) {
+      return null;
+    }
 
-// @riverpod
-// String helloWorld(HelloWorldRef ref) {
-//   return 'Hello world';
-// }
+    final jsonData = jsonDecode(user);
+    return User.fromJson(jsonData);
+  }
 
-// @riverpod
-// User? user(UserRef ref) {
-//   try {
-//     String? user = prefs.getString('user');
-//     if (user == null) {
-//       return null;
-//     }
-//     final json = jsonDecode(user) as Map<String, dynamic>;
-//     return User.fromJson(json);
-//   } catch (e) {
-//     return null;
-//   }
-// }
+  Future getUser(context, String otp) async {
+    _ref.read(loadingUser.notifier).state = true;
+    final response = await dio.get('/auth-user');
+    _ref.read(loadingUser.notifier).state = false;
+
+    if (response.statusCode != 200) {
+      failedSnackbar(context, response.data?['error'] ?? 'An error occured');
+      return;
+    }
+
+    await prefs.setString('user', jsonEncode(response.data));
+  }
+}
