@@ -86,6 +86,32 @@ class Signup {
     );
   }
 
+  Future changePassword(context, String oldPassword, String newPassword) async {
+    _ref.read(loadingSignup.notifier).state = true;
+
+    final response = await dio.post(
+      '/change-password',
+      data: {
+        "oldPassword": oldPassword,
+        "newPassword": newPassword,
+      },
+    );
+    _ref.read(loadingSignup.notifier).state = false;
+
+    if (response.statusCode != 200) {
+      failedSnackbar(response.data?['error'] ?? 'An error occured');
+      return;
+    }
+
+    successSnackbar('Password changed successfully');
+
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => const LoginView(),
+      ),
+    );
+  }
+
   Future sendConfirmEmail(context, String email) async {
     _ref.read(emailProvider.notifier).state = email;
 

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:naijabatternew/brain/app_brain.dart';
 import 'package:naijabatternew/utilities/colors.dart';
 import 'package:naijabatternew/utilities/fonts.dart';
+import 'package:naijabatternew/utilities/provider/user/signup.dart';
 import 'package:naijabatternew/views/accesibility_page.dart';
 import 'package:naijabatternew/widgets/fields_content.dart';
 import 'package:naijabatternew/widgets/previous_page_icon.dart';
@@ -16,9 +17,15 @@ class ChangePasswordScreen extends ConsumerStatefulWidget {
 }
 
 class _ChangePasswordScreenState extends ConsumerState<ChangePasswordScreen> {
+  final TextEditingController newPasswordController = TextEditingController();
+  final TextEditingController oldPasswordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
+    final forgotPasswordProvider = ref.watch(signup);
+    final loadingForgotPasswordProvider = ref.watch(loadingSignup);
     final themeIsLight = ref.watch(themeProvider.notifier).state;
+
     return Scaffold(
       appBar: AppBar(
         leading: PreviousPageIcon(
@@ -61,6 +68,7 @@ class _ChangePasswordScreenState extends ConsumerState<ChangePasswordScreen> {
                 Expanded(
                   flex: 2,
                   child: TextFormField(
+                    controller: oldPasswordController,
                     onTapOutside: (event) {
                       FocusManager.instance.primaryFocus?.unfocus();
                     },
@@ -149,6 +157,7 @@ class _ChangePasswordScreenState extends ConsumerState<ChangePasswordScreen> {
                 Expanded(
                   flex: 2,
                   child: TextFormField(
+                    controller: newPasswordController,
                     onTapOutside: (event) {
                       FocusManager.instance.primaryFocus?.unfocus();
                     },
@@ -315,7 +324,11 @@ class _ChangePasswordScreenState extends ConsumerState<ChangePasswordScreen> {
             ),
             InputFieldButton(
               buttonText: "Set Password",
-              onPressed: () {},
+              onPressed: () async {
+                await forgotPasswordProvider.changePassword(context,
+                    oldPasswordController.text, newPasswordController.text);
+              },
+              isLoading: loadingForgotPasswordProvider,
             ),
           ],
         ),
