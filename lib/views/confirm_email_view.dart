@@ -33,7 +33,7 @@ class ConfirmEmailPage extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             FormHeaderText(
-              textInput: 'Enter OTP',
+              textInput: 'Confirm Email',
               color: themeIsLight ? Colors.black : ProjectColors.bigTxtWhite,
             ),
             const SizedBox28(),

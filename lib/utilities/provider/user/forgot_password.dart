@@ -64,10 +64,7 @@ class ForgotPassword {
         "otp": otp,
       },
     );
-    print({
-      "email": getEmail,
-      "otp": otp,
-    });
+
     _ref.read(loadingForgotPassword.notifier).state = false;
 
     if (response.statusCode != 200) {
@@ -95,11 +92,7 @@ class ForgotPassword {
         "otp": getOtp,
       },
     );
-    print({
-      "email": getEmail,
-      "newPassword": password,
-      "otp": getOtp,
-    });
+
     _ref.read(loadingForgotPassword.notifier).state = false;
 
     if (response.statusCode != 200) {

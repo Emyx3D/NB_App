@@ -60,6 +60,7 @@ class Signup {
     _ref.read(loadingSignup.notifier).state = false;
 
     if (response.statusCode == 450) {
+      await sendConfirmEmail(context, email);
       failedSnackbar(context, response.data?['error'] ?? 'An error occured');
       Navigator.of(context).push(
         MaterialPageRoute(
@@ -85,6 +86,17 @@ class Signup {
     );
   }
 
+  Future sendConfirmEmail(context, String email) async {
+    _ref.read(emailProvider.notifier).state = email;
+
+    await dio.post(
+      '/send-confirm-email',
+      data: {
+        "email": email,
+      },
+    );
+  }
+
   Future confirmEmail(context, String otp) async {
     _ref.read(loadingSignup.notifier).state = true;
 
@@ -95,13 +107,14 @@ class Signup {
         "otp": otp,
       },
     );
+    _ref.read(loadingSignup.notifier).state = false;
+
     if (response.statusCode != 200) {
       failedSnackbar(context, response.data?['error'] ?? 'An error occured');
       return;
     }
 
     successSnackbar(context, 'Email confirmed you can login');
-    _ref.read(loadingSignup.notifier).state = false;
 
     Navigator.of(context).push(
       MaterialPageRoute(
@@ -131,6 +144,7 @@ class Signup {
       return;
     }
 
+    await sendConfirmEmail(context, email);
     successSnackbar(context, 'Signup successful');
 
     Navigator.of(context).push(
@@ -187,6 +201,8 @@ class Signup {
       failedSnackbar(context, response.data?['error'] ?? 'An error occured');
       return;
     }
+
+    await sendConfirmEmail(context, getEmail);
 
     successSnackbar(context, 'Signup successful');
 
