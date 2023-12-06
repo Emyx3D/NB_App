@@ -28,6 +28,7 @@ class _PersonalFormState extends ConsumerState<PersonalForm> {
   Widget build(BuildContext context) {
     final themeIsLight = ref.watch(themeProvider.notifier).state;
     final signupProvider = ref.watch(signup);
+    final loadingSignupProvider = ref.watch(loadingSignup);
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -225,7 +226,7 @@ class _PersonalFormState extends ConsumerState<PersonalForm> {
         ),
         const SizedBox12(),
         InputFieldButton(
-            isLoading: signupProvider.isLoading,
+            isLoading: loadingSignupProvider,
             onPressed: () async {
               await signupProvider.signupUser(
                 context,
@@ -560,6 +561,7 @@ class _BusinessForm2State extends ConsumerState<BusinessForm2> {
     // final double keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
     final themeIsLight = ref.watch(themeProvider.notifier).state;
     final signupProvider = ref.watch(signup);
+    final loadingSignupProvider = ref.watch(loadingSignup);
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -616,7 +618,7 @@ class _BusinessForm2State extends ConsumerState<BusinessForm2> {
                     regNoController.text,
                     locationController.text);
               },
-              isLoading: signupProvider.isLoading,
+              isLoading: loadingSignupProvider,
             ),
           ],
         ),

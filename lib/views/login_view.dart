@@ -24,6 +24,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
   Widget build(BuildContext context) {
     final themeIsLight = ref.watch(themeProvider.notifier).state;
     final signupProvider = ref.watch(signup);
+    final loadingSignupProvider = ref.watch(loadingSignup);
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -190,7 +191,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
                         context, emailController.text, passwordController.text);
                   },
                   buttonText: 'Sign In',
-                  isLoading: signupProvider.isLoading,
+                  isLoading: loadingSignupProvider,
                 ),
                 const SizedBox15(),
                 BottomInputRow(

@@ -16,6 +16,7 @@ class ConfirmEmailPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final signupProvider = ref.watch(signup);
     final themeIsLight = ref.watch(themeProvider.notifier).state;
+    final loadingSignupProvider = ref.watch(loadingSignup);
 
     return Scaffold(
       appBar: AppBar(
@@ -47,7 +48,7 @@ class ConfirmEmailPage extends ConsumerWidget {
             ),
             const SizedBox19(),
             InputFieldButton(
-              isLoading: signupProvider.isLoading,
+              isLoading: loadingSignupProvider,
               onPressed: () async {
                 await signupProvider.confirmEmail(context, otpController.text);
               },

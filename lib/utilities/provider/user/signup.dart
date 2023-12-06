@@ -11,7 +11,7 @@ import 'package:naijabatternew/views/declutter_business_payment_screen.dart';
 import 'package:naijabatternew/views/homepage_view.dart';
 import 'package:naijabatternew/views/login_view.dart';
 
-final loading = StateProvider((ref) => false);
+final loadingSignup = StateProvider((ref) => false);
 final emailProvider = StateProvider((ref) => '');
 final passwordProvider = StateProvider((ref) => '');
 final usernameProvider = StateProvider((ref) => '');
@@ -26,10 +26,6 @@ class Signup {
   Signup(this._ref);
 
   final Ref _ref;
-
-  bool get isLoading {
-    return _ref.watch(loading);
-  }
 
   String get getEmail {
     return _ref.watch(emailProvider);
@@ -52,7 +48,7 @@ class Signup {
   }
 
   Future loginUser(context, String email, String password) async {
-    _ref.read(loading.notifier).state = true;
+    _ref.read(loadingSignup.notifier).state = true;
 
     final response = await dio.post(
       '/login',
@@ -61,7 +57,7 @@ class Signup {
         "password": password,
       },
     );
-    _ref.read(loading.notifier).state = false;
+    _ref.read(loadingSignup.notifier).state = false;
 
     if (response.statusCode == 450) {
       failedSnackbar(context, response.data?['error'] ?? 'An error occured');
@@ -90,7 +86,7 @@ class Signup {
   }
 
   Future confirmEmail(context, String otp) async {
-    _ref.read(loading.notifier).state = true;
+    _ref.read(loadingSignup.notifier).state = true;
 
     final response = await dio.post(
       '/confirm-email',
@@ -105,7 +101,7 @@ class Signup {
     }
 
     successSnackbar(context, 'Email confirmed you can login');
-    _ref.read(loading.notifier).state = false;
+    _ref.read(loadingSignup.notifier).state = false;
 
     Navigator.of(context).push(
       MaterialPageRoute(
@@ -116,7 +112,7 @@ class Signup {
 
   Future signupUser(context, String email, String username, String password,
       String name, String phone) async {
-    _ref.read(loading.notifier).state = true;
+    _ref.read(loadingSignup.notifier).state = true;
 
     final response = await dio.post(
       '/signup',
@@ -128,7 +124,7 @@ class Signup {
         "phone": phone,
       },
     );
-    _ref.read(loading.notifier).state = false;
+    _ref.read(loadingSignup.notifier).state = false;
 
     if (response.statusCode != 201) {
       failedSnackbar(context, response.data?['error'] ?? 'An error occured');
@@ -146,7 +142,7 @@ class Signup {
 
   Future signupBusiness1(context, String email, String username,
       String password, String name, String phone) async {
-    _ref.read(loading.notifier).state = true;
+    _ref.read(loadingSignup.notifier).state = true;
 
     _ref.read(emailProvider.notifier).state = email;
     _ref.read(usernameProvider.notifier).state = username;
@@ -154,7 +150,7 @@ class Signup {
     _ref.read(passwordProvider.notifier).state = password;
     _ref.read(phoneProvider.notifier).state = phone;
 
-    _ref.read(loading.notifier).state = false;
+    _ref.read(loadingSignup.notifier).state = false;
 
     Navigator.push(
       context,
@@ -170,7 +166,7 @@ class Signup {
 
   Future signupBusiness2(
       context, String businessName, String regNo, String location) async {
-    _ref.read(loading.notifier).state = true;
+    _ref.read(loadingSignup.notifier).state = true;
 
     final response = await dio.post(
       '/signup-business',
@@ -185,8 +181,18 @@ class Signup {
         "location": location,
       },
     );
-    _ref.read(loading.notifier).state = false;
+    _ref.read(loadingSignup.notifier).state = false;
 
+    print({
+      "email": getEmail,
+      "username": getUsername,
+      "password": getPassword,
+      "name": getName,
+      "phone": getPhone,
+      "business_name": businessName,
+      "registration_no": regNo,
+      "location": location,
+    });
     print(response.statusCode);
     print(response.data);
     if (response.statusCode != 201) {
