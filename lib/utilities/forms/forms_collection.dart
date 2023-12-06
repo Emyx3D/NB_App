@@ -4,7 +4,6 @@ import 'package:naijabatternew/brain/app_brain.dart';
 import 'package:naijabatternew/utilities/colors.dart';
 import 'package:naijabatternew/utilities/provider/user/signup.dart';
 import 'package:naijabatternew/views/accesibility_page.dart';
-import 'package:naijabatternew/views/declutter_business_payment_screen.dart';
 import 'package:naijabatternew/views/login_view.dart';
 import 'package:naijabatternew/widgets/fields_content.dart';
 import 'package:naijabatternew/widgets/previous_page_icon.dart';
@@ -263,6 +262,12 @@ class BusinessForm extends ConsumerStatefulWidget {
 }
 
 class _BusinessFormState extends ConsumerState<BusinessForm> {
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController usernameController = TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
+  final TextEditingController nameController = TextEditingController();
+
   void navigateToForm2() {
     Navigator.push(
       context,
@@ -281,11 +286,13 @@ class _BusinessFormState extends ConsumerState<BusinessForm> {
   @override
   Widget build(BuildContext context) {
     final themeIsLight = ref.watch(themeProvider.notifier).state;
+    final signupProvider = ref.watch(signup);
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const InputField(
+        InputField(
+          controller: nameController,
           enableSuggestions: false,
           autocorrect: false,
           keyboardType: TextInputType.text,
@@ -293,7 +300,8 @@ class _BusinessFormState extends ConsumerState<BusinessForm> {
           obscureText: false,
         ),
         const SizedBox15(),
-        const InputField(
+        InputField(
+          controller: phoneController,
           enableSuggestions: false,
           autocorrect: false,
           keyboardType: TextInputType.phone,
@@ -301,7 +309,8 @@ class _BusinessFormState extends ConsumerState<BusinessForm> {
           obscureText: false,
         ),
         const SizedBox15(),
-        const InputField(
+        InputField(
+          controller: usernameController,
           enableSuggestions: false,
           autocorrect: false,
           keyboardType: TextInputType.text,
@@ -309,7 +318,8 @@ class _BusinessFormState extends ConsumerState<BusinessForm> {
           obscureText: false,
         ),
         const SizedBox15(),
-        const InputField(
+        InputField(
+          controller: emailController,
           enableSuggestions: false,
           autocorrect: false,
           keyboardType: TextInputType.emailAddress,
@@ -318,6 +328,7 @@ class _BusinessFormState extends ConsumerState<BusinessForm> {
         ),
         const SizedBox15(),
         TextFormField(
+          controller: passwordController,
           cursorColor: themeIsLight
               ? const Color(0xFF4054BA)
               : ProjectColors.darkThemeBorderColor,
@@ -483,7 +494,16 @@ class _BusinessFormState extends ConsumerState<BusinessForm> {
                 ),
               ),
             ),
-            onPressed: navigateToForm2,
+            onPressed: () async {
+              await signupProvider.signupBusiness1(
+                context,
+                emailController.text,
+                usernameController.text,
+                passwordController.text,
+                nameController.text,
+                phoneController.text,
+              );
+            },
             child: const Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -530,11 +550,16 @@ class BusinessForm2 extends ConsumerStatefulWidget {
 }
 
 class _BusinessForm2State extends ConsumerState<BusinessForm2> {
+  final TextEditingController businessNameController = TextEditingController();
+  final TextEditingController regNoController = TextEditingController();
+  final TextEditingController locationController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     // final double screenHeight = MediaQuery.of(context).size.height;
     // final double keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
     final themeIsLight = ref.watch(themeProvider.notifier).state;
+    final signupProvider = ref.watch(signup);
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -555,7 +580,8 @@ class _BusinessForm2State extends ConsumerState<BusinessForm2> {
               color: themeIsLight ? Colors.black : ProjectColors.bigTxtWhite,
             ),
             const SizedBox26(),
-            const InputField(
+            InputField(
+              controller: businessNameController,
               enableSuggestions: false,
               autocorrect: false,
               keyboardType: TextInputType.text,
@@ -563,7 +589,8 @@ class _BusinessForm2State extends ConsumerState<BusinessForm2> {
               obscureText: false,
             ),
             const SizedBox15(),
-            const InputField(
+            InputField(
+              controller: regNoController,
               enableSuggestions: false,
               autocorrect: false,
               keyboardType: TextInputType.text,
@@ -571,7 +598,8 @@ class _BusinessForm2State extends ConsumerState<BusinessForm2> {
               obscureText: false,
             ),
             const SizedBox15(),
-            const InputField(
+            InputField(
+              controller: locationController,
               enableSuggestions: false,
               autocorrect: false,
               keyboardType: TextInputType.text,
@@ -581,11 +609,14 @@ class _BusinessForm2State extends ConsumerState<BusinessForm2> {
             const SizedBox15(),
             InputFieldButton(
               buttonText: 'Proceed to Payment',
-              onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return const DeclutterBusinessPaymentScreen();
-                }));
+              onPressed: () async {
+                await signupProvider.signupBusiness2(
+                    context,
+                    businessNameController.text,
+                    regNoController.text,
+                    locationController.text);
               },
+              isLoading: signupProvider.isLoading,
             ),
           ],
         ),

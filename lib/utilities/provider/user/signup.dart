@@ -3,14 +3,20 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:naijabatternew/main.dart';
+import 'package:naijabatternew/utilities/forms/forms_collection.dart';
 import 'package:naijabatternew/utilities/helper/dio.dart';
 import 'package:naijabatternew/utilities/helper/snackbar.dart';
 import 'package:naijabatternew/views/confirm_email_view.dart';
+import 'package:naijabatternew/views/declutter_business_payment_screen.dart';
 import 'package:naijabatternew/views/homepage_view.dart';
 import 'package:naijabatternew/views/login_view.dart';
 
 final loading = StateProvider((ref) => false);
 final emailProvider = StateProvider((ref) => '');
+final passwordProvider = StateProvider((ref) => '');
+final usernameProvider = StateProvider((ref) => '');
+final nameProvider = StateProvider((ref) => '');
+final phoneProvider = StateProvider((ref) => '');
 
 final signup = Provider<Signup>((ref) {
   return Signup(ref);
@@ -27,6 +33,60 @@ class Signup {
 
   String get getEmail {
     return _ref.watch(emailProvider);
+  }
+
+  String get getPassword {
+    return _ref.watch(passwordProvider);
+  }
+
+  String get getUsername {
+    return _ref.watch(usernameProvider);
+  }
+
+  String get getName {
+    return _ref.watch(nameProvider);
+  }
+
+  String get getPhone {
+    return _ref.watch(phoneProvider);
+  }
+
+  Future loginUser(context, String email, String password) async {
+    _ref.read(loading.notifier).state = true;
+
+    final response = await dio.post(
+      '/login',
+      data: {
+        "email": email,
+        "password": password,
+      },
+    );
+    _ref.read(loading.notifier).state = false;
+
+    if (response.statusCode == 450) {
+      failedSnackbar(context, response.data?['error'] ?? 'An error occured');
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => ConfirmEmailPage(),
+        ),
+      );
+      return;
+    }
+
+    if (response.statusCode != 200) {
+      failedSnackbar(context, response.data?['error'] ?? 'An error occured');
+      return;
+    }
+
+    await prefs.setString('user', jsonEncode(response.data));
+
+    successSnackbar(context, 'login successful');
+
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => const HomePage(),
+      ),
+    );
   }
 
   Future confirmEmail(context, String otp) async {
@@ -70,8 +130,6 @@ class Signup {
     );
     _ref.read(loading.notifier).state = false;
 
-    print(response.statusCode);
-    print(response.data);
     if (response.statusCode != 201) {
       failedSnackbar(context, response.data?['error'] ?? 'An error occured');
       return;
@@ -86,41 +144,60 @@ class Signup {
     );
   }
 
-  Future loginUser(context, String email, String password) async {
+  Future signupBusiness1(context, String email, String username,
+      String password, String name, String phone) async {
+    _ref.read(loading.notifier).state = true;
+
+    _ref.read(emailProvider.notifier).state = email;
+    _ref.read(usernameProvider.notifier).state = username;
+    _ref.read(nameProvider.notifier).state = name;
+    _ref.read(passwordProvider.notifier).state = password;
+    _ref.read(phoneProvider.notifier).state = phone;
+
+    _ref.read(loading.notifier).state = false;
+
+    Navigator.push(
+      context,
+      PageRouteBuilder(
+        pageBuilder: (context, animation, secondaryAnimation) =>
+            const BusinessForm2(),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          return child;
+        },
+      ),
+    );
+  }
+
+  Future signupBusiness2(
+      context, String businessName, String regNo, String location) async {
     _ref.read(loading.notifier).state = true;
 
     final response = await dio.post(
-      '/login',
+      '/signup-business',
       data: {
-        "email": email,
-        "password": password,
+        "email": getEmail,
+        "username": getUsername,
+        "password": getPassword,
+        "name": getName,
+        "phone": getPhone,
+        "business_name": businessName,
+        "registration_no": regNo,
+        "location": location,
       },
     );
     _ref.read(loading.notifier).state = false;
 
-    if (response.statusCode == 450) {
-      failedSnackbar(context, response.data?['error'] ?? 'An error occured');
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => ConfirmEmailPage(),
-        ),
-      );
-      return;
-    }
-
-    if (response.statusCode != 200) {
+    print(response.statusCode);
+    print(response.data);
+    if (response.statusCode != 201) {
       failedSnackbar(context, response.data?['error'] ?? 'An error occured');
       return;
     }
 
-    await prefs.setString('user', jsonEncode(response.data));
+    successSnackbar(context, 'Signup successful');
 
-    successSnackbar(context, 'login successful');
-
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => const HomePage(),
-      ),
-    );
+    Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return const DeclutterBusinessPaymentScreen();
+    }));
   }
 }
