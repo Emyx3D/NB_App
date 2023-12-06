@@ -1,16 +1,11 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:naijabatternew/main.dart';
-import 'package:naijabatternew/utilities/helper/snackbar.dart';
+import 'package:naijabatternew/utilities/provider/user/signup.dart';
 
 import '../brain/app_brain.dart';
 import '../utilities/colors.dart';
-import '../utilities/helper/dio.dart';
 import '../views/accesibility_page.dart';
 import '../views/forgot_password_view.dart';
-import '../views/homepage_view.dart';
 import '../views/register_view.dart';
 import '../widgets/fields_content.dart';
 
@@ -25,38 +20,10 @@ class _LoginViewState extends ConsumerState<LoginView> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
-  // logic
-  bool isLoading = false;
-
-  Future loginFunc(context) async {
-    setState(() {
-      isLoading = true;
-    });
-    final response = await dio.post(
-      '/login',
-      data: {
-        "email": emailController.text,
-        "password": passwordController.text
-      },
-    );
-    setState(() {
-      isLoading = false;
-    });
-    if (response.statusCode != 200) {
-      failedSnackbar(context, response.data?['error'] ?? 'An error occured');
-      return;
-    }
-
-    await prefs.setString('user', jsonEncode(response.data));
-
-    Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return const HomePage();
-    }));
-  }
-
   @override
   Widget build(BuildContext context) {
     final themeIsLight = ref.watch(themeProvider.notifier).state;
+    final signupProvider = ref.watch(signup);
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -218,9 +185,12 @@ class _LoginViewState extends ConsumerState<LoginView> {
                   ),
                 ),
                 InputFieldButton(
-                  onPressed: () => loginFunc(context),
+                  onPressed: () async {
+                    await signupProvider.loginUser(
+                        context, emailController.text, passwordController.text);
+                  },
                   buttonText: 'Sign In',
-                  isLoading: isLoading,
+                  isLoading: signupProvider.isLoading,
                 ),
                 const SizedBox15(),
                 BottomInputRow(

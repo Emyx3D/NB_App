@@ -43,6 +43,8 @@ class ForgotPassword {
         "email": email,
       },
     );
+    _ref.read(loading.notifier).state = false;
+
     print('response.statusCode ${response.statusCode}');
     print('response.data ${response.data}');
     if (response.statusCode != 200) {
@@ -51,7 +53,6 @@ class ForgotPassword {
     }
 
     successSnackbar(context, 'Email confirmation sent');
-    _ref.read(loading.notifier).state = false;
 
     Navigator.of(context).push(
       MaterialPageRoute(
@@ -60,7 +61,7 @@ class ForgotPassword {
     );
   }
 
-  Future verifyOtp(dynamic context, String otp) async {
+  Future verifyOtp(context, String otp) async {
     _ref.read(loading.notifier).state = true;
     _ref.read(otpProvider.notifier).state = otp;
 
@@ -71,13 +72,14 @@ class ForgotPassword {
         "otp": otp,
       },
     );
+    _ref.read(loading.notifier).state = false;
+
     if (response.statusCode != 200) {
       failedSnackbar(context, response.data?['error'] ?? 'An error occured');
       return;
     }
 
     successSnackbar(context, 'OTP Verified');
-    _ref.read(loading.notifier).state = false;
 
     Navigator.of(context).push(
       MaterialPageRoute(
@@ -86,7 +88,7 @@ class ForgotPassword {
     );
   }
 
-  Future resetPassword(dynamic context, String password) async {
+  Future resetPassword(context, String password) async {
     _ref.read(loading.notifier).state = true;
 
     final response = await dio.post(
@@ -97,13 +99,14 @@ class ForgotPassword {
         "otp": getOtp,
       },
     );
+    _ref.read(loading.notifier).state = false;
+
     if (response.statusCode != 200) {
       failedSnackbar(context, response.data?['error'] ?? 'An error occured');
       return;
     }
 
     successSnackbar(context, 'Password Reset you can now login');
-    _ref.read(loading.notifier).state = false;
 
     Navigator.of(context).push(
       MaterialPageRoute(

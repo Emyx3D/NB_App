@@ -14,9 +14,10 @@ Map<String, dynamic> headerFunc() {
 }
 
 final dio = Dio(BaseOptions(
-    validateStatus: (status) {
-      return true;
-    },
-    baseUrl: baseURL,
-    headers: headerFunc(),
-    connectTimeout: const Duration(seconds: 20)));
+  validateStatus: (status) {
+    return true;
+  },
+  baseUrl: baseURL,
+  headers: headerFunc(),
+  // connectTimeout: const Duration(seconds: 20),
+));

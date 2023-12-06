@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:naijabatternew/brain/app_brain.dart';
+import 'package:naijabatternew/utilities/colors.dart';
+import 'package:naijabatternew/utilities/provider/user/signup.dart';
+import 'package:naijabatternew/views/accesibility_page.dart';
 import 'package:naijabatternew/views/declutter_business_payment_screen.dart';
+import 'package:naijabatternew/views/login_view.dart';
 import 'package:naijabatternew/widgets/fields_content.dart';
 import 'package:naijabatternew/widgets/previous_page_icon.dart';
-import 'package:naijabatternew/utilities/colors.dart';
-import 'package:naijabatternew/views/accesibility_page.dart';
-import 'package:naijabatternew/views/login_view.dart';
 
 class PersonalForm extends ConsumerStatefulWidget {
   const PersonalForm({super.key});
@@ -16,16 +17,24 @@ class PersonalForm extends ConsumerStatefulWidget {
 }
 
 class _PersonalFormState extends ConsumerState<PersonalForm> {
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController usernameController = TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
+  final TextEditingController nameController = TextEditingController();
+
   bool _checkboxValue = false;
 
   @override
   Widget build(BuildContext context) {
     final themeIsLight = ref.watch(themeProvider.notifier).state;
+    final signupProvider = ref.watch(signup);
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const InputField(
+        InputField(
+          controller: nameController,
           enableSuggestions: false,
           autocorrect: false,
           keyboardType: TextInputType.text,
@@ -33,7 +42,8 @@ class _PersonalFormState extends ConsumerState<PersonalForm> {
           obscureText: false,
         ),
         const SizedBox15(),
-        const InputField(
+        InputField(
+          controller: phoneController,
           enableSuggestions: false,
           autocorrect: false,
           keyboardType: TextInputType.phone,
@@ -41,7 +51,8 @@ class _PersonalFormState extends ConsumerState<PersonalForm> {
           obscureText: false,
         ),
         const SizedBox15(),
-        const InputField(
+        InputField(
+          controller: usernameController,
           enableSuggestions: false,
           autocorrect: false,
           keyboardType: TextInputType.text,
@@ -49,7 +60,8 @@ class _PersonalFormState extends ConsumerState<PersonalForm> {
           obscureText: false,
         ),
         const SizedBox15(),
-        const InputField(
+        InputField(
+          controller: emailController,
           enableSuggestions: false,
           autocorrect: false,
           keyboardType: TextInputType.emailAddress,
@@ -58,6 +70,7 @@ class _PersonalFormState extends ConsumerState<PersonalForm> {
         ),
         const SizedBox15(),
         TextFormField(
+          controller: passwordController,
           onTapOutside: (event) {
             FocusManager.instance.primaryFocus?.unfocus();
           },
@@ -212,7 +225,19 @@ class _PersonalFormState extends ConsumerState<PersonalForm> {
           ],
         ),
         const SizedBox12(),
-        const InputFieldButton(buttonText: 'Sign Up'),
+        InputFieldButton(
+            isLoading: signupProvider.isLoading,
+            onPressed: () async {
+              await signupProvider.signupUser(
+                context,
+                emailController.text,
+                usernameController.text,
+                passwordController.text,
+                nameController.text,
+                phoneController.text,
+              );
+            },
+            buttonText: 'Sign Up'),
         const SizedBox15(),
         BottomInputRow(
           onPressed: () {
