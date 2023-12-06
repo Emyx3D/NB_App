@@ -2,7 +2,12 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:naijabatternew/utilities/models/product.dart';
+import 'package:naijabatternew/utilities/provider/product.dart';
 import 'package:naijabatternew/widgets/indicator_dot.dart';
+
+import '../views/accesibility_page.dart';
+import '../views/more_product_description.dart';
 import '../widgets/advert_content.dart';
 import '../widgets/barter_scroll_card.dart';
 import '../widgets/declutter_scroll_card.dart';
@@ -10,8 +15,6 @@ import '../widgets/fields_content.dart';
 import '../widgets/flash_sales_card.dart';
 import '../widgets/gift_scroll_card.dart';
 import '../widgets/pages_header.dart';
-import '../views/accesibility_page.dart';
-import '../views/more_product_description.dart';
 
 class HomePageView extends ConsumerStatefulWidget {
   const HomePageView({
@@ -97,92 +100,108 @@ class _HomePageViewState extends ConsumerState<HomePageView> {
                       style: titleStyle,
                     ),
                   ),
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      padding: const EdgeInsets.all(0.0),
-                      child: Row(
-                        children: [
-                          BarterScrollCard(
-                            onPressed: () {
-                              Navigator.push(context,
-                                  MaterialPageRoute(builder: (context) {
-                                return const ProductDescriptionView(
-                                  image: AssetImage('images/chairimage.jpg'),
-                                  productName: 'Mid-Century Modern Chair',
-                                  location: 'Enugu',
-                                  expectedExchange: 'Mac Pro Max',
-                                  productDescription:
-                                      "Crafted with meticulous attention to detail, this chair showcases clean lines, gentle curves, and a minimalist yet impactful silhouette that effortlessly complements a range of interior styles. The carefully selected materials, including rich hardwoods and premium upholstery, not only ensure durability but also lend a sense of sophistication to any space.",
-                                );
-                              }));
-                            },
-                            image: const AssetImage('images/chairimage.jpg'),
-                            productName: 'Mid-Century Modern Chair',
-                            location: 'Enugu',
-                            expectedExchange: 'Mac Pro Max',
+                  Consumer(
+                    builder: (context, ref, child) {
+                      final products =
+                          ref.watch(testProduct);
+
+                          
+                      return Container(
+                        alignment: Alignment.centerLeft,
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          padding: const EdgeInsets.all(0.0),
+                          child: Row(
+                            children: [
+                              BarterScrollCard(
+                                onPressed: () {
+                                  Navigator.push(context,
+                                      MaterialPageRoute(builder: (context) {
+                                    return const ProductDescriptionView(
+                                      image:
+                                          AssetImage('images/chairimage.jpg'),
+                                      productName: 'Mid-Century Modern Chair',
+                                      location: 'Enugu',
+                                      expectedExchange: 'Mac Pro Max',
+                                      productDescription:
+                                          "Crafted with meticulous attention to detail, this chair showcases clean lines, gentle curves, and a minimalist yet impactful silhouette that effortlessly complements a range of interior styles. The carefully selected materials, including rich hardwoods and premium upholstery, not only ensure durability but also lend a sense of sophistication to any space.",
+                                    );
+                                  }));
+                                },
+                                image:
+                                    const AssetImage('images/chairimage.jpg'),
+                                productName: 'Mid-Century Modern Chair',
+                                location: 'Enugu',
+                                expectedExchange: 'Mac Pro Max',
+                              ),
+                              BarterScrollCard(
+                                onPressed: () {
+                                  Navigator.push(context,
+                                      MaterialPageRoute(builder: (context) {
+                                    return const ProductDescriptionView(
+                                      image:
+                                          AssetImage('images/cutleryimg.jpg'),
+                                      productName: 'Silverware Set',
+                                      location: "Abia",
+                                      expectedExchange: 'iPhone 15 Max',
+                                      productDescription:
+                                          "Elevate your dining experience with this exquisite silverware set. Crafted from high-quality stainless steel, each piece boasts a timeless design that adds a touch of sophistication to any meal. The set includes forks, knives, and spoons, all perfectly balanced for comfortable handling. Whether it's a casual family dinner or a formal gathering, this set brings both style and functionality to your table.",
+                                    );
+                                  }));
+                                },
+                                image:
+                                    const AssetImage('images/cutleryimg.jpg'),
+                                productName: 'Silverware Set',
+                                location: "Abia",
+                                expectedExchange: 'iPhone 15 Max',
+                              ),
+                              BarterScrollCard(
+                                image:
+                                    const AssetImage('images/chandelier.jpg'),
+                                productName: 'Crystal Chandelier',
+                                location: "Anambra",
+                                expectedExchange: 'Pixa Pro',
+                                onPressed: () {
+                                  Navigator.push(context,
+                                      MaterialPageRoute(builder: (context) {
+                                    return const ProductDescriptionView(
+                                      image:
+                                          AssetImage('images/chandelier.jpg'),
+                                      productName: 'Crystal Chandelier',
+                                      location: "Anambra",
+                                      expectedExchange: 'iPhone 15 Max',
+                                      productDescription:
+                                          "A crystal chandelier, the embodiment of timeless beauty and sophistication, captivates with its radiant elegance. Crafted with precision and adorned with meticulously cut crystals, it exudes opulence and charm in various styles, from classic to contemporary. Regardless of the design, it shares the ability to refract and reflect light, transforming any space with its mesmerizing play of prismatic colors and shadows. Beyond its aesthetic appeal, it signifies prestige and elegance, making it a coveted addition to luxurious interiors. In essence, a crystal chandelier is a radiant masterpiece that elevates ambiance and leaves an indelible mark of refined beauty.",
+                                    );
+                                  }));
+                                },
+                              ),
+                              BarterScrollCard(
+                                image:
+                                    const AssetImage('images/dinnerware.jpg'),
+                                productName: 'Antique China Dinnerware',
+                                location: "FCT - Abuja",
+                                expectedExchange: 'Old Books',
+                                onPressed: () {
+                                  Navigator.push(context,
+                                      MaterialPageRoute(builder: (context) {
+                                    return const ProductDescriptionView(
+                                      image:
+                                          AssetImage('images/dinnerware.jpg'),
+                                      productName: 'Antique China Dinnerware',
+                                      location: "FCT - Abuja",
+                                      expectedExchange: 'Old Books',
+                                      productDescription:
+                                          "Antique china dinnerware embodies an ageless elegance that transcends time. These exquisite dining sets, often adorned with intricate patterns and delicate craftsmanship, exude a sense of history and refinement. Available in a variety of styles, from traditional to Art Deco, antique china dinnerware collections feature exquisite designs that evoke a sense of nostalgia and sophistication. Each piece is a testament to the craftsmanship of bygone eras.",
+                                    );
+                                  }));
+                                },
+                              ),
+                            ],
                           ),
-                          BarterScrollCard(
-                            onPressed: () {
-                              Navigator.push(context,
-                                  MaterialPageRoute(builder: (context) {
-                                return const ProductDescriptionView(
-                                  image: AssetImage('images/cutleryimg.jpg'),
-                                  productName: 'Silverware Set',
-                                  location: "Abia",
-                                  expectedExchange: 'iPhone 15 Max',
-                                  productDescription:
-                                      "Elevate your dining experience with this exquisite silverware set. Crafted from high-quality stainless steel, each piece boasts a timeless design that adds a touch of sophistication to any meal. The set includes forks, knives, and spoons, all perfectly balanced for comfortable handling. Whether it's a casual family dinner or a formal gathering, this set brings both style and functionality to your table.",
-                                );
-                              }));
-                            },
-                            image: const AssetImage('images/cutleryimg.jpg'),
-                            productName: 'Silverware Set',
-                            location: "Abia",
-                            expectedExchange: 'iPhone 15 Max',
-                          ),
-                          BarterScrollCard(
-                            image: const AssetImage('images/chandelier.jpg'),
-                            productName: 'Crystal Chandelier',
-                            location: "Anambra",
-                            expectedExchange: 'Pixa Pro',
-                            onPressed: () {
-                              Navigator.push(context,
-                                  MaterialPageRoute(builder: (context) {
-                                return const ProductDescriptionView(
-                                  image: AssetImage('images/chandelier.jpg'),
-                                  productName: 'Crystal Chandelier',
-                                  location: "Anambra",
-                                  expectedExchange: 'iPhone 15 Max',
-                                  productDescription:
-                                      "A crystal chandelier, the embodiment of timeless beauty and sophistication, captivates with its radiant elegance. Crafted with precision and adorned with meticulously cut crystals, it exudes opulence and charm in various styles, from classic to contemporary. Regardless of the design, it shares the ability to refract and reflect light, transforming any space with its mesmerizing play of prismatic colors and shadows. Beyond its aesthetic appeal, it signifies prestige and elegance, making it a coveted addition to luxurious interiors. In essence, a crystal chandelier is a radiant masterpiece that elevates ambiance and leaves an indelible mark of refined beauty.",
-                                );
-                              }));
-                            },
-                          ),
-                          BarterScrollCard(
-                            image: const AssetImage('images/dinnerware.jpg'),
-                            productName: 'Antique China Dinnerware',
-                            location: "FCT - Abuja",
-                            expectedExchange: 'Old Books',
-                            onPressed: () {
-                              Navigator.push(context,
-                                  MaterialPageRoute(builder: (context) {
-                                return const ProductDescriptionView(
-                                  image: AssetImage('images/dinnerware.jpg'),
-                                  productName: 'Antique China Dinnerware',
-                                  location: "FCT - Abuja",
-                                  expectedExchange: 'Old Books',
-                                  productDescription:
-                                      "Antique china dinnerware embodies an ageless elegance that transcends time. These exquisite dining sets, often adorned with intricate patterns and delicate craftsmanship, exude a sense of history and refinement. Available in a variety of styles, from traditional to Art Deco, antique china dinnerware collections feature exquisite designs that evoke a sense of nostalgia and sophistication. Each piece is a testament to the craftsmanship of bygone eras.",
-                                );
-                              }));
-                            },
-                          ),
-                        ],
-                      ),
-                    ),
+                        ),
+                      );
+                    },
                   ),
 
                   // BarterScrollCard(

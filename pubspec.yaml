@@ -52,6 +52,7 @@ dependencies:
   flutter_riverpod: ^2.4.9
   riverpod_annotation: ^2.3.3
   dio: ^5.4.0
+  intl:
 
 dev_dependencies:
   flutter_test:

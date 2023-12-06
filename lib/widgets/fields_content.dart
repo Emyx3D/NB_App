@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../views/accesibility_page.dart';
+
 import '../utilities/colors.dart';
+import '../views/accesibility_page.dart';
 
 // Widget for the Form Input Fields
 class InputField extends ConsumerWidget {
@@ -253,9 +254,15 @@ class SizedBox165 extends StatelessWidget {
 
 // Widget for the big blue Form Button
 class InputFieldButton extends StatelessWidget {
-  const InputFieldButton({super.key, required this.buttonText, this.onPressed});
+  const InputFieldButton({
+    super.key,
+    required this.buttonText,
+    this.onPressed,
+    this.isLoading = false,
+  });
   final String buttonText;
   final void Function()? onPressed;
+  final bool isLoading;
 
   @override
   Widget build(BuildContext context) {
@@ -275,23 +282,23 @@ class InputFieldButton extends StatelessWidget {
             ),
           ),
         ),
-        onPressed: onPressed,
-        child: Text(
-          buttonText,
-          style: const TextStyle(
-            fontFamily: "Roboto",
-            color: Colors.white,
-            fontWeight: FontWeight.w700,
-            // backgroundColor: Color(0xFF0F28A9),
-            fontSize: 18.0,
-          ),
-        ),
+        onPressed: isLoading ? null : onPressed,
+        child: isLoading
+            ? CircularProgressIndicator(color: ProjectColors.whiteColor)
+            : Text(
+                buttonText,
+                style: const TextStyle(
+                  fontFamily: "Roboto",
+                  color: Colors.white,
+                  fontWeight: FontWeight.w700,
+                  // backgroundColor: Color(0xFF0F28A9),
+                  fontSize: 18.0,
+                ),
+              ),
       ),
     );
   }
 }
-
-
 
 const descTextStyle = TextStyle(
   fontSize: 18.0,

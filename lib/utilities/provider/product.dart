@@ -1,18 +1,13 @@
-import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:naijabatternew/brain/constants.dart';
 import 'package:naijabatternew/utilities/helper/dio.dart';
 import 'package:naijabatternew/utilities/models/product.dart';
 import 'package:naijabatternew/utilities/models/user.dart';
-import 'package:naijabatternew/utilities/provider/login/login.dart';
+import 'package:naijabatternew/utilities/provider/auth/auth.dart';
 
 Future<List<Product>> baseProduct(String paramStr, int page, int limit) async {
-  User? user = userObj();
+  User? user = getUser();
   final response = await dio.get<List<Map<String, dynamic>>>(
-      '$baseURL/product?page=$page&limit=$limit&$paramStr',
-      options: Options(headers: {
-        'Authorization': 'Bearer ${user?.token ?? ""}',
-      }));
+      '/product?page=$page&limit=$limit&$paramStr');
 
   List<Product> data =
       response.data?.map((e) => Product.fromJson(e)).toList() ?? [];
@@ -45,3 +40,8 @@ Provider<Future<List<Product>>> typeProductProvider(String productType,
     return data;
   });
 }
+
+final testProduct = FutureProvider<List<Product>>((ref,
+    {String productType = 'barter', int page = 1, int limit = 20}) async {
+  return await baseProduct('productType=$productType', page, limit);
+});

@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:naijabatternew/brain/constants.dart';
 
 class User {
@@ -9,7 +10,7 @@ class User {
   final String token;
   final bool isBusiness;
   final bool isBusinessApproved;
-  final DateTime dob;
+  final String dob;
 
   User({
     required this.id,
@@ -34,7 +35,9 @@ class User {
       isBusinessApproved: json['is_business_approved'] ?? false,
       image: json['image'] ?? '',
       token: json['token'] ?? '',
-      dob: DateTime.parse(json['dob']),
+      dob: json['dob'] != null
+          ? DateFormat('yyyy-MM-dd').format(DateTime.parse(json['dob']))
+          : notAvailable,
     );
   }
 }

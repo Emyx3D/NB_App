@@ -1,7 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:naijabatternew/brain/constants.dart';
 import 'package:naijabatternew/main.dart';
+import 'package:naijabatternew/utilities/helper/snackbar.dart';
 
 import '../brain/app_brain.dart';
 import '../utilities/colors.dart';
@@ -23,26 +25,33 @@ class _LoginViewState extends ConsumerState<LoginView> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
-  // function
+  // logic
+  bool isLoading = false;
 
   Future loginFunc(context) async {
+    setState(() {
+      isLoading = true;
+    });
     final response = await dio.post(
-      '$baseURL/login',
+      '/login',
       data: {
         "email": emailController.text,
         "password": passwordController.text
       },
     );
-    print(response.data.toString());
-    print(response.statusCode.toString());
-
-    await prefs.setString('user', response.data.toString());
-
-    if (response.statusCode == 200) {
-      Navigator.push(context, MaterialPageRoute(builder: (context) {
-        return const HomePage();
-      }));
+    setState(() {
+      isLoading = false;
+    });
+    if (response.statusCode != 200) {
+      failedSnackbar(context, response.data?['error'] ?? 'An error occured');
+      return;
     }
+
+    await prefs.setString('user', jsonEncode(response.data));
+
+    Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return const HomePage();
+    }));
   }
 
   @override
@@ -211,6 +220,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
                 InputFieldButton(
                   onPressed: () => loginFunc(context),
                   buttonText: 'Sign In',
+                  isLoading: isLoading,
                 ),
                 const SizedBox15(),
                 BottomInputRow(
