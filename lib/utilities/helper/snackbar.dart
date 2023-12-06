@@ -19,7 +19,7 @@ class SnackBarController {
           Text(msg),
         ],
       ),
-      backgroundColor: color, // Replace with your desired background color
+      backgroundColor: color,
       duration: const Duration(seconds: 2),
     );
 

@@ -22,18 +22,8 @@ class BusinessProfileView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final themeIsLight = ref.watch(themeProvider.notifier).state;
-    final loadingUserProvider = ref.watch(loadingUser);
     final userProvider = ref.watch(user.notifier).state;
     final userProductCountProvider = ref.watch(userProductCount.notifier).state;
-    // ref.read(user.notifier).state.getUser(context);
-    // userProvider.getUser(context);
-    // ref.listen(
-    //   user,
-    //   (previous, next) {
-    //     print(previous);
-    //     print(next);
-    //   },
-    // );
 
     // bool isPremiumVisible = true;
 
