@@ -40,11 +40,11 @@ class ForgotPassword {
     _ref.read(loadingForgotPassword.notifier).state = false;
 
     if (response.statusCode != 200) {
-      failedSnackbar(context, response.data?['error'] ?? 'An error occured');
+      failedSnackbar(response.data?['error'] ?? 'An error occured');
       return;
     }
 
-    successSnackbar(context, 'Email confirmation sent');
+    successSnackbar('Email confirmation sent');
 
     Navigator.of(context).push(
       MaterialPageRoute(
@@ -68,11 +68,11 @@ class ForgotPassword {
     _ref.read(loadingForgotPassword.notifier).state = false;
 
     if (response.statusCode != 200) {
-      failedSnackbar(context, response.data?['error'] ?? 'An error occured');
+      failedSnackbar(response.data?['error'] ?? 'An error occured');
       return;
     }
 
-    successSnackbar(context, 'OTP Verified');
+    successSnackbar('OTP Verified');
 
     Navigator.of(context).push(
       MaterialPageRoute(
@@ -96,11 +96,11 @@ class ForgotPassword {
     _ref.read(loadingForgotPassword.notifier).state = false;
 
     if (response.statusCode != 200) {
-      failedSnackbar(context, response.data?['error'] ?? 'An error occured');
+      failedSnackbar(response.data?['error'] ?? 'An error occured');
       return;
     }
 
-    successSnackbar(context, 'Password Reset you can now login');
+    successSnackbar('Password Reset you can now login');
 
     Navigator.of(context).push(
       MaterialPageRoute(

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:naijabatternew/brain/constants.dart';
 import 'package:naijabatternew/utilities/provider/user/user.dart';
 import 'package:naijabatternew/widgets/fields_content.dart';
-import 'package:naijabatternew/widgets/my_image.dart';
 import 'package:naijabatternew/widgets/profile_info.dart';
 import 'package:naijabatternew/widgets/profilepage_stack_products_grid.dart';
 
@@ -23,8 +23,17 @@ class BusinessProfileView extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final themeIsLight = ref.watch(themeProvider.notifier).state;
     final loadingUserProvider = ref.watch(loadingUser);
-    final userProvider = ref.watch(user);
-    userProvider.getUser(context);
+    final userProvider = ref.watch(user.notifier).state;
+    final userProductCountProvider = ref.watch(userProductCount.notifier).state;
+    // ref.read(user.notifier).state.getUser(context);
+    // userProvider.getUser(context);
+    // ref.listen(
+    //   user,
+    //   (previous, next) {
+    //     print(previous);
+    //     print(next);
+    //   },
+    // );
 
     // bool isPremiumVisible = true;
 
@@ -80,10 +89,8 @@ class BusinessProfileView extends ConsumerWidget {
                 ),
                 child: CircleAvatar(
                   radius: 80.0,
-                  // backgroundImage: AssetImage('images/gojo.png'),
-                  child: MyImage(
-                    url: userProvider.userObj().image,
-                  ),
+                  backgroundImage:
+                      NetworkImage(baseImage + userProvider.userObj().image),
                 ),
               ),
               Positioned(
@@ -149,10 +156,14 @@ class BusinessProfileView extends ConsumerWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              ProfileInfos(
-                title: 'Gift',
-                total: userProvider.getUserProductCounter['gift'] ?? 0,
-              ),
+              FutureBuilder(
+                  future: userProductCountProvider,
+                  builder: (context, controller) {
+                    return ProfileInfos(
+                      title: 'Gift',
+                      total: controller.data?['gift'] ?? 0,
+                    );
+                  }),
               Container(
                 margin: const EdgeInsets.symmetric(horizontal: 35.0),
                 width: 1.0,
@@ -161,9 +172,14 @@ class BusinessProfileView extends ConsumerWidget {
                     ? Colors.black
                     : ProjectColors.bigTxtWhite, // Set the color of the line
               ),
-              ProfileInfos(
-                title: 'Declutter',
-                total: userProvider.getUserProductCounter['declutter'] ?? 0,
+              FutureBuilder(
+                future: userProductCountProvider,
+                builder: (context, controller) {
+                  return ProfileInfos(
+                    title: 'Declutter',
+                    total: controller.data?['declutter'] ?? 0,
+                  );
+                },
               ),
               Container(
                 margin: const EdgeInsets.symmetric(horizontal: 35.0),
@@ -171,9 +187,14 @@ class BusinessProfileView extends ConsumerWidget {
                 height: 65.0, // Adjust the height as needed
                 color: themeIsLight ? Colors.black : ProjectColors.bigTxtWhite,
               ),
-              ProfileInfos(
-                title: 'Barter',
-                total: userProvider.getUserProductCounter['barter'] ?? 0,
+              FutureBuilder(
+                future: userProductCountProvider,
+                builder: (context, controller) {
+                  return ProfileInfos(
+                    title: 'Barter',
+                    total: controller.data?['barter'] ?? 0,
+                  );
+                },
               ),
             ],
           ),

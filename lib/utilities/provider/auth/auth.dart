@@ -38,7 +38,7 @@ checkUserAuth(context) async {
 checkAuth(context) async {
   bool isAuth = await isAuthorized();
   if (isAuth == false) {
-    failedSnackbar(context, "Please login to continue", "Login to continue!");
+    failedSnackbar("Please login to continue", "Login to continue!");
     deleteUser();
 
     return Navigator.pushAndRemoveUntil(

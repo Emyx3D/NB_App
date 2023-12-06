@@ -61,7 +61,7 @@ class Signup {
 
     if (response.statusCode == 450) {
       await sendConfirmEmail(context, email);
-      failedSnackbar(context, response.data?['error'] ?? 'An error occured');
+      failedSnackbar(response.data?['error'] ?? 'An error occured');
       Navigator.of(context).push(
         MaterialPageRoute(
           builder: (context) => ConfirmEmailPage(),
@@ -71,13 +71,13 @@ class Signup {
     }
 
     if (response.statusCode != 200) {
-      failedSnackbar(context, response.data?['error'] ?? 'An error occured');
+      failedSnackbar(response.data?['error'] ?? 'An error occured');
       return;
     }
 
     await prefs.setString('user', jsonEncode(response.data));
 
-    successSnackbar(context, 'login successful');
+    successSnackbar('login successful');
 
     Navigator.of(context).push(
       MaterialPageRoute(
@@ -110,11 +110,11 @@ class Signup {
     _ref.read(loadingSignup.notifier).state = false;
 
     if (response.statusCode != 200) {
-      failedSnackbar(context, response.data?['error'] ?? 'An error occured');
+      failedSnackbar(response.data?['error'] ?? 'An error occured');
       return;
     }
 
-    successSnackbar(context, 'Email confirmed you can login');
+    successSnackbar('Email confirmed you can login');
 
     Navigator.of(context).push(
       MaterialPageRoute(
@@ -140,12 +140,12 @@ class Signup {
     _ref.read(loadingSignup.notifier).state = false;
 
     if (response.statusCode != 201) {
-      failedSnackbar(context, response.data?['error'] ?? 'An error occured');
+      failedSnackbar(response.data?['error'] ?? 'An error occured');
       return;
     }
 
     await sendConfirmEmail(context, email);
-    successSnackbar(context, 'Signup successful');
+    successSnackbar('Signup successful');
 
     Navigator.of(context).push(
       MaterialPageRoute(
@@ -198,13 +198,13 @@ class Signup {
     _ref.read(loadingSignup.notifier).state = false;
 
     if (response.statusCode != 201) {
-      failedSnackbar(context, response.data?['error'] ?? 'An error occured');
+      failedSnackbar(response.data?['error'] ?? 'An error occured');
       return;
     }
 
     await sendConfirmEmail(context, getEmail);
 
-    successSnackbar(context, 'Signup successful');
+    successSnackbar('Signup successful');
 
     Navigator.push(context, MaterialPageRoute(builder: (context) {
       return const DeclutterBusinessPaymentScreen();

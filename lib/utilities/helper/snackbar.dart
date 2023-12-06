@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:naijabatternew/utilities/colors.dart';
 
-void showSnackbar(BuildContext context, String title, String msg, Color color) {
-  ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(
+class SnackBarController {
+  final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey =
+      GlobalKey<ScaffoldMessengerState>();
+
+  void showSnackBar(String title, String msg, Color color) {
+    final snackBar = SnackBar(
       content: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
@@ -18,16 +21,16 @@ void showSnackbar(BuildContext context, String title, String msg, Color color) {
       ),
       backgroundColor: color, // Replace with your desired background color
       duration: const Duration(seconds: 2),
-    ),
-  );
+    );
+
+    scaffoldMessengerKey.currentState?.showSnackBar(snackBar);
+  }
 }
 
-void successSnackbar(BuildContext context, String msg,
-    [String title = 'Success']) {
-  showSnackbar(context, title, msg, ProjectColors.successColor);
+void successSnackbar(String msg, [String title = 'Success']) {
+  SnackBarController().showSnackBar(title, msg, ProjectColors.successColor);
 }
 
-void failedSnackbar(BuildContext context, String msg,
-    [String title = 'Failed']) {
-  showSnackbar(context, title, msg, ProjectColors.errorColor);
+void failedSnackbar(String msg, [String title = 'Failed']) {
+  SnackBarController().showSnackBar(title, msg, ProjectColors.errorColor);
 }
