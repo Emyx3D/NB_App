@@ -2,16 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:naijabatternew/utilities/fonts.dart';
+import 'package:naijabatternew/utilities/provider/auth/auth.dart';
 import 'package:naijabatternew/views/change_password_screen.dart';
 import 'package:naijabatternew/views/help_screen.dart';
 import 'package:naijabatternew/views/language_screen.dart';
 import 'package:naijabatternew/views/privacy_settings_screen.dart';
-import '../widgets/fields_content.dart';
 import 'package:naijabatternew/widgets/previous_page_icon.dart';
-import '../widgets/setting_button.dart';
-import '../views/accesibility_page.dart';
+
 import '../utilities/colors.dart';
+import '../views/accesibility_page.dart';
 import '../views/login_view.dart';
+import '../widgets/fields_content.dart';
+import '../widgets/setting_button.dart';
 
 class SettingsPage extends ConsumerWidget {
   const SettingsPage({super.key});
@@ -255,14 +257,16 @@ class SettingsPage extends ConsumerWidget {
                             ),
                             TextButton(
                               onPressed: () {
-                                Navigator.of(context).pop();
-                                Navigator.pushAndRemoveUntil(
-                                  context,
-                                  MaterialPageRoute(builder: (context) {
-                                    return const LoginView();
-                                  }),
-                                  (route) => false,
-                                );
+                                logoutUser().then((value) {
+                                  Navigator.of(context).pop();
+                                  Navigator.pushAndRemoveUntil(
+                                    context,
+                                    MaterialPageRoute(builder: (context) {
+                                      return const LoginView();
+                                    }),
+                                    (route) => false,
+                                  );
+                                });
                               },
                               child: const Text(
                                 'Logout',

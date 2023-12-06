@@ -18,4 +18,5 @@ final dio = Dio(BaseOptions(
       return true;
     },
     baseUrl: baseURL,
-    headers: headerFunc()));
+    headers: headerFunc(),
+    connectTimeout: const Duration(seconds: 20)));

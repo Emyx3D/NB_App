@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../widgets/fields_content.dart';
+import 'package:naijabatternew/utilities/provider/user/forgot_password.dart';
 import 'package:naijabatternew/widgets/previous_page_icon.dart';
+
 import '../utilities/colors.dart';
 import '../views/accesibility_page.dart';
 import '../views/register_view.dart';
-import '../views/reset_password_view.dart';
+import '../widgets/fields_content.dart';
 
 class OTPEntryPage extends ConsumerWidget {
-  const OTPEntryPage({super.key});
+  OTPEntryPage({super.key});
+  final TextEditingController otpController = TextEditingController();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final forgotPasswordProvider = ref.watch(forgotPassword);
     final themeIsLight = ref.watch(themeProvider.notifier).state;
 
     return Scaffold(
@@ -33,7 +36,8 @@ class OTPEntryPage extends ConsumerWidget {
               color: themeIsLight ? Colors.black : ProjectColors.bigTxtWhite,
             ),
             const SizedBox28(),
-            const InputField(
+            InputField(
+              controller: otpController,
               enableSuggestions: false,
               autocorrect: false,
               keyboardType: TextInputType.number,
@@ -43,12 +47,10 @@ class OTPEntryPage extends ConsumerWidget {
             ),
             const SizedBox19(),
             InputFieldButton(
-              onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => const ResetPasswordView(),
-                  ),
-                );
+              isLoading: forgotPasswordProvider.isLoading,
+              onPressed: () async {
+                await forgotPasswordProvider.sendForgotPassword(
+                    context, otpController.text);
               },
               buttonText: 'Confirm',
             ),

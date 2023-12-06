@@ -1,11 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:naijabatternew/utilities/helper/dio.dart';
 import 'package:naijabatternew/utilities/models/product.dart';
-import 'package:naijabatternew/utilities/models/user.dart';
-import 'package:naijabatternew/utilities/provider/auth/auth.dart';
 
 Future<List<Product>> baseProduct(String paramStr, int page, int limit) async {
-  User? user = getUser();
   final response = await dio.get<List<Map<String, dynamic>>>(
       '/product?page=$page&limit=$limit&$paramStr');
 

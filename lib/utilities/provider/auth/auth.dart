@@ -84,6 +84,11 @@ Future<bool> deleteUser() async {
   return prefs.remove('user');
 }
 
+Future logoutUser() async {
+  await dio.get('/logout');
+  await deleteUser();
+}
+
 Options authHeader([String? authToken, String? contentType]) {
   if (authToken == null) {
     User? user = getUser();

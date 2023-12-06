@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:naijabatternew/utilities/provider/user/forgot_password.dart';
+
 import '../brain/app_brain.dart';
-import '../widgets/fields_content.dart';
 import '../utilities/colors.dart';
 import '../views/accesibility_page.dart';
+import '../widgets/fields_content.dart';
 
 class ResetPasswordView extends ConsumerStatefulWidget {
   const ResetPasswordView({super.key});
@@ -13,8 +15,13 @@ class ResetPasswordView extends ConsumerStatefulWidget {
 }
 
 class _ResetPasswordViewState extends ConsumerState<ResetPasswordView> {
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
+
   @override
   Widget build(BuildContext context) {
+    final forgotPasswordProvider = ref.watch(forgotPassword);
     final themeIsLight = ref.watch(themeProvider.notifier).state;
 
     return Scaffold(
@@ -29,6 +36,7 @@ class _ResetPasswordViewState extends ConsumerState<ResetPasswordView> {
             ),
             const SizedBox28(),
             TextFormField(
+              controller: passwordController,
               onTapOutside: (event) {
                 FocusManager.instance.primaryFocus?.unfocus();
               },
@@ -84,6 +92,7 @@ class _ResetPasswordViewState extends ConsumerState<ResetPasswordView> {
             ),
             const SizedBox19(),
             TextFormField(
+              controller: confirmPasswordController,
               onTapOutside: (event) {
                 FocusManager.instance.primaryFocus?.unfocus();
               },
@@ -138,8 +147,13 @@ class _ResetPasswordViewState extends ConsumerState<ResetPasswordView> {
               ),
             ),
             const SizedBox26(),
-            const InputFieldButton(
+            InputFieldButton(
               buttonText: 'Change Password',
+              isLoading: forgotPasswordProvider.isLoading,
+              onPressed: () async {
+                await forgotPasswordProvider.sendForgotPassword(
+                    context, passwordController.text);
+              },
             ),
           ],
         ),

@@ -200,7 +200,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
                     onPressed: () {
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (context) => const ForgotPasswordView(),
+                          builder: (context) => ForgotPasswordView(),
                         ),
                       );
                     },

@@ -13,19 +13,22 @@ class InputField extends ConsumerWidget {
       required this.keyboardType,
       required this.hintText,
       required this.obscureText,
-      this.maxLength});
+      this.maxLength,
+      this.controller});
   final bool enableSuggestions;
   final bool autocorrect;
   final bool obscureText;
   final TextInputType keyboardType;
   final String hintText;
   final int? maxLength;
+  final TextEditingController? controller;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final themeIsLight = ref.watch(themeProvider.notifier).state;
 
     return TextFormField(
+      controller: controller,
       onTapOutside: (event) {
         FocusManager.instance.primaryFocus?.unfocus();
       },
