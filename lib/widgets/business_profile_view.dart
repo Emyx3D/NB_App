@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:naijabatternew/utilities/provider/user/user.dart';
 import 'package:naijabatternew/widgets/fields_content.dart';
+import 'package:naijabatternew/widgets/my_image.dart';
 import 'package:naijabatternew/widgets/profile_info.dart';
 import 'package:naijabatternew/widgets/profilepage_stack_products_grid.dart';
-import '../views/accesibility_page.dart';
+
 import '../utilities/colors.dart';
+import '../views/accesibility_page.dart';
 import '../views/edit_business_profile.dart';
-import '../views/profilepage_view.dart';
 import '../views/promote_page.dart';
 import '../views/settings_view.dart';
 // import '../views/upgradenow_declutter_premium_view.dart';
@@ -20,6 +22,10 @@ class BusinessProfileView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final themeIsLight = ref.watch(themeProvider.notifier).state;
+    final loadingUserProvider = ref.watch(loadingUser);
+    final userProvider = ref.watch(user);
+    userProvider.getUser(context);
+
     // bool isPremiumVisible = true;
 
     return Padding(
@@ -72,9 +78,12 @@ class BusinessProfileView extends ConsumerWidget {
                     width: 1.0,
                   ),
                 ),
-                child: const CircleAvatar(
+                child: CircleAvatar(
                   radius: 80.0,
-                  backgroundImage: AssetImage('images/gojo.png'),
+                  // backgroundImage: AssetImage('images/gojo.png'),
+                  child: MyImage(
+                    url: userProvider.userObj().image,
+                  ),
                 ),
               ),
               Positioned(
@@ -102,7 +111,7 @@ class BusinessProfileView extends ConsumerWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                'Gojo Satoru',
+                userProvider.userObj().name,
                 style: TextStyle(
                   fontSize: 15.0,
                   fontFamily: 'Roboto',
@@ -142,7 +151,7 @@ class BusinessProfileView extends ConsumerWidget {
             children: [
               ProfileInfos(
                 title: 'Gift',
-                total: totalNumberOfGifts,
+                total: userProvider.getUserProductCounter['gift'] ?? 0,
               ),
               Container(
                 margin: const EdgeInsets.symmetric(horizontal: 35.0),
@@ -154,7 +163,7 @@ class BusinessProfileView extends ConsumerWidget {
               ),
               ProfileInfos(
                 title: 'Declutter',
-                total: totalNumberOfDeclutter,
+                total: userProvider.getUserProductCounter['declutter'] ?? 0,
               ),
               Container(
                 margin: const EdgeInsets.symmetric(horizontal: 35.0),
@@ -164,7 +173,7 @@ class BusinessProfileView extends ConsumerWidget {
               ),
               ProfileInfos(
                 title: 'Barter',
-                total: totalNumberOfBarter,
+                total: userProvider.getUserProductCounter['barter'] ?? 0,
               ),
             ],
           ),

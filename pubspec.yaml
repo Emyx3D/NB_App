@@ -53,6 +53,8 @@ dependencies:
   riverpod_annotation: ^2.3.3
   dio: ^5.4.0
   intl:
+  cached_network_image:
+
 
 dev_dependencies:
   flutter_test:
