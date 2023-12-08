@@ -8,6 +8,7 @@ class User {
   final String username;
   final String image;
   final String token;
+  final String location;
   final bool isBusiness;
   final bool isBusinessApproved;
   final String dob;
@@ -19,6 +20,7 @@ class User {
     required this.username,
     required this.image,
     required this.token,
+    required this.location,
     required this.isBusiness,
     required this.isBusinessApproved,
     required this.dob,
@@ -35,6 +37,7 @@ class User {
       isBusinessApproved: json['is_business_approved'] ?? false,
       image: json['image'] ?? '',
       token: json['token'] ?? '',
+      location: json['location'] ?? notAvailable,
       dob: json['dob'] != null
           ? DateFormat('yyyy-MM-dd').format(DateTime.parse(json['dob']))
           : notAvailable,

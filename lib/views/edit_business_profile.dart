@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../widgets/fields_content.dart';
+import 'package:naijabatternew/brain/constants.dart';
+import 'package:naijabatternew/utilities/provider/auth/auth.dart';
+import 'package:naijabatternew/utilities/provider/user/user.dart';
 import 'package:naijabatternew/widgets/previous_page_icon.dart';
-import '../widgets/profile_info.dart';
-import '../views/accesibility_page.dart';
+
 import '../utilities/colors.dart';
-import '../views/profilepage_view.dart';
+import '../views/accesibility_page.dart';
+import '../widgets/fields_content.dart';
+import '../widgets/profile_info.dart';
 
 class EditBusinessProfilePage extends ConsumerWidget {
   const EditBusinessProfilePage({super.key});
@@ -13,6 +16,7 @@ class EditBusinessProfilePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final themeIsLight = ref.watch(themeProvider.notifier).state;
+    final userProductCountProvider = ref.watch(userProductCount.notifier).state;
 
     return SafeArea(
       child: Scaffold(
@@ -77,9 +81,10 @@ class EditBusinessProfilePage extends ConsumerWidget {
                         width: 1.0,
                       ),
                     ),
-                    child: const CircleAvatar(
+                    child: CircleAvatar(
                       radius: 80.0,
-                      backgroundImage: AssetImage('images/gojo.png'),
+                      backgroundImage:
+                          NetworkImage(baseImage + getUserOrNa().image),
                     ),
                   ),
                   Positioned(
@@ -112,9 +117,29 @@ class EditBusinessProfilePage extends ConsumerWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  ProfileInfos(
-                    title: 'Gift',
-                    total: totalNumberOfGifts,
+                  FutureBuilder(
+                      future: userProductCountProvider,
+                      builder: (context, controller) {
+                        return ProfileInfos(
+                          title: 'Gift',
+                          total: controller.data?['gift'] ?? 0,
+                        );
+                      }),
+                  Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 35.0),
+                    width: 1.0,
+                    height: 65.0, // Adjust the height as needed
+                    color:
+                        themeIsLight ? Colors.black : ProjectColors.bigTxtWhite,
+                  ),
+                  FutureBuilder(
+                    future: userProductCountProvider,
+                    builder: (context, controller) {
+                      return ProfileInfos(
+                        title: 'Declutter',
+                        total: controller.data?['declutter'] ?? 0,
+                      );
+                    },
                   ),
                   Container(
                     margin: const EdgeInsets.symmetric(horizontal: 35.0),
@@ -123,45 +148,39 @@ class EditBusinessProfilePage extends ConsumerWidget {
                     color:
                         themeIsLight ? Colors.black : ProjectColors.bigTxtWhite,
                   ),
-                  ProfileInfos(
-                    title: 'Declutter',
-                    total: totalNumberOfDeclutter,
-                  ),
-                  Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 35.0),
-                    width: 1.0,
-                    height: 65.0, // Adjust the height as needed
-                    color:
-                        themeIsLight ? Colors.black : ProjectColors.bigTxtWhite,
-                  ),
-                  ProfileInfos(
-                    title: 'Barter',
-                    total: totalNumberOfBarter,
+                  FutureBuilder(
+                    future: userProductCountProvider,
+                    builder: (context, controller) {
+                      return ProfileInfos(
+                        title: 'Barter',
+                        total: controller.data?['barter'] ?? 0,
+                      );
+                    },
                   ),
                 ],
               ),
               const SizedBox(
                 height: 28.0,
               ),
-              const EditProfileInfoRow(
+              EditProfileInfoRow(
                 title: "Name:",
-                userInfoValue: "Gojo Satoru",
+                userInfoValue: getUserOrNa().name,
               ),
               const SizedBox19(),
-              const EditProfileInfoRow(
+              EditProfileInfoRow(
                 title: "Location:",
-                userInfoValue: "Lagos, Nigeria",
+                userInfoValue: getUserOrNa().location,
               ),
               const SizedBox19(),
-              const EditProfileInfoRow(
+              EditProfileInfoRow(
                 title: "DOB:",
-                userInfoValue: "12/06/2002",
+                userInfoValue: getUserOrNa().dob, //"12/06/2002"
               ),
               const SizedBox19(),
-              const EditProfileInfoRow(
+              EditProfileInfoRow(
                 title: "E-mail:",
-                userInfoValue: "Melpeters@bartar.com",
-              ),
+                userInfoValue: getUserOrNa().email,
+              )
             ],
           ),
         ),

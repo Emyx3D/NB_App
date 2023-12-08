@@ -18,6 +18,15 @@ User? getUser() {
   return User.fromJson(jsonData);
 }
 
+User getUserOrNa() {
+  String? user = prefs.getString('user');
+  if (user == null) {
+    return User.fromJson(null);
+  }
+  final jsonData = jsonDecode(user);
+  return User.fromJson(jsonData);
+}
+
 checkUserAuth(context) async {
   User? haveUser = getUser();
   if (haveUser == null) {
