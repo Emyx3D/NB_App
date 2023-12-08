@@ -104,6 +104,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:naijabatternew/widgets/fields_content.dart';
+
 import '../views/accesibility_page.dart';
 
 class BarterScrollCard extends ConsumerStatefulWidget {

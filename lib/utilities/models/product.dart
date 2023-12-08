@@ -4,10 +4,11 @@ import 'package:naijabatternew/utilities/models/location.dart';
 
 class Product {
   final String id;
-  final String price;
+  final double price;
   final String name;
   final String productType;
   final String image;
+  final String exchange;
   final String description;
   final Category category;
   final Location location;
@@ -20,6 +21,7 @@ class Product {
     required this.image,
     required this.description,
     required this.category,
+    required this.exchange,
     required this.location,
   });
 
@@ -27,11 +29,13 @@ class Product {
     json ??= {};
     return Product(
       id: json['_id'] ?? '',
-      price: json['price'] ?? 0.0,
+      price:
+          json['price'] == null ? 0.0 : double.parse(json['price'].toString()),
       name: json['name'] ?? notAvailable,
-      productType: json['productType'] ?? 'barter',
+      productType: json['product_type'] ?? 'barter',
       description: json['description'] ?? notAvailable,
       image: json['image'] ?? '',
+      exchange: json['exchange'] ?? notAvailable,
       category: Category.fromJson(json['category']),
       location: Location.fromJson(json['location']),
     );

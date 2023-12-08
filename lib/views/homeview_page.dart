@@ -2,8 +2,10 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:naijabatternew/utilities/models/product.dart';
+import 'package:naijabatternew/brain/constants.dart';
+import 'package:naijabatternew/utilities/helper/helper.dart';
 import 'package:naijabatternew/utilities/provider/product.dart';
+import 'package:naijabatternew/widgets/empty.dart';
 import 'package:naijabatternew/widgets/indicator_dot.dart';
 
 import '../views/accesibility_page.dart';
@@ -102,120 +104,64 @@ class _HomePageViewState extends ConsumerState<HomePageView> {
                   ),
                   Consumer(
                     builder: (context, ref, child) {
-                      final products =
-                          ref.watch(testProduct);
+                      final products = ref.watch(barterProduct);
 
-                          
-                      return Container(
-                        alignment: Alignment.centerLeft,
-                        child: SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          padding: const EdgeInsets.all(0.0),
-                          child: Row(
-                            children: [
-                              BarterScrollCard(
+                      return FutureBuilder(
+                        future: products,
+                        builder: (context, controller) {
+                          if (!controller.hasData) {
+                            return const Text('Loading...');
+                          }
+                          if (controller.data!.isEmpty) {
+                            return const EmptyCard();
+                          }
+                          return Container(
+                            height: 300,
+                            width: MediaQuery.of(context).size.width - 11,
+                            alignment: Alignment.centerLeft,
+                            child: ListView.builder(
+                              shrinkWrap: true,
+                              scrollDirection: Axis.horizontal,
+                              itemCount: controller.data!.length,
+                              itemBuilder: (context, index) => BarterScrollCard(
                                 onPressed: () {
-                                  Navigator.push(context,
-                                      MaterialPageRoute(builder: (context) {
-                                    return const ProductDescriptionView(
-                                      image:
-                                          AssetImage('images/chairimage.jpg'),
-                                      productName: 'Mid-Century Modern Chair',
-                                      location: 'Enugu',
-                                      expectedExchange: 'Mac Pro Max',
-                                      productDescription:
-                                          "Crafted with meticulous attention to detail, this chair showcases clean lines, gentle curves, and a minimalist yet impactful silhouette that effortlessly complements a range of interior styles. The carefully selected materials, including rich hardwoods and premium upholstery, not only ensure durability but also lend a sense of sophistication to any space.",
-                                    );
-                                  }));
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) {
+                                        return ProductDescriptionView(
+                                          image: NetworkImage(
+                                            baseImage +
+                                                controller.data![index].image,
+                                          ),
+                                          productName:
+                                              controller.data![index].name,
+                                          location: controller
+                                              .data![index].location.state,
+                                          expectedExchange:
+                                              controller.data![index].exchange,
+                                          productDescription: controller
+                                              .data![index].description,
+                                        );
+                                      },
+                                    ),
+                                  );
                                 },
-                                image:
-                                    const AssetImage('images/chairimage.jpg'),
-                                productName: 'Mid-Century Modern Chair',
-                                location: 'Enugu',
-                                expectedExchange: 'Mac Pro Max',
+                                image: NetworkImage(
+                                  baseImage + controller.data![index].image,
+                                ),
+                                productName: controller.data![index].name,
+                                location:
+                                    controller.data![index].location.state,
+                                expectedExchange:
+                                    controller.data![index].exchange,
                               ),
-                              BarterScrollCard(
-                                onPressed: () {
-                                  Navigator.push(context,
-                                      MaterialPageRoute(builder: (context) {
-                                    return const ProductDescriptionView(
-                                      image:
-                                          AssetImage('images/cutleryimg.jpg'),
-                                      productName: 'Silverware Set',
-                                      location: "Abia",
-                                      expectedExchange: 'iPhone 15 Max',
-                                      productDescription:
-                                          "Elevate your dining experience with this exquisite silverware set. Crafted from high-quality stainless steel, each piece boasts a timeless design that adds a touch of sophistication to any meal. The set includes forks, knives, and spoons, all perfectly balanced for comfortable handling. Whether it's a casual family dinner or a formal gathering, this set brings both style and functionality to your table.",
-                                    );
-                                  }));
-                                },
-                                image:
-                                    const AssetImage('images/cutleryimg.jpg'),
-                                productName: 'Silverware Set',
-                                location: "Abia",
-                                expectedExchange: 'iPhone 15 Max',
-                              ),
-                              BarterScrollCard(
-                                image:
-                                    const AssetImage('images/chandelier.jpg'),
-                                productName: 'Crystal Chandelier',
-                                location: "Anambra",
-                                expectedExchange: 'Pixa Pro',
-                                onPressed: () {
-                                  Navigator.push(context,
-                                      MaterialPageRoute(builder: (context) {
-                                    return const ProductDescriptionView(
-                                      image:
-                                          AssetImage('images/chandelier.jpg'),
-                                      productName: 'Crystal Chandelier',
-                                      location: "Anambra",
-                                      expectedExchange: 'iPhone 15 Max',
-                                      productDescription:
-                                          "A crystal chandelier, the embodiment of timeless beauty and sophistication, captivates with its radiant elegance. Crafted with precision and adorned with meticulously cut crystals, it exudes opulence and charm in various styles, from classic to contemporary. Regardless of the design, it shares the ability to refract and reflect light, transforming any space with its mesmerizing play of prismatic colors and shadows. Beyond its aesthetic appeal, it signifies prestige and elegance, making it a coveted addition to luxurious interiors. In essence, a crystal chandelier is a radiant masterpiece that elevates ambiance and leaves an indelible mark of refined beauty.",
-                                    );
-                                  }));
-                                },
-                              ),
-                              BarterScrollCard(
-                                image:
-                                    const AssetImage('images/dinnerware.jpg'),
-                                productName: 'Antique China Dinnerware',
-                                location: "FCT - Abuja",
-                                expectedExchange: 'Old Books',
-                                onPressed: () {
-                                  Navigator.push(context,
-                                      MaterialPageRoute(builder: (context) {
-                                    return const ProductDescriptionView(
-                                      image:
-                                          AssetImage('images/dinnerware.jpg'),
-                                      productName: 'Antique China Dinnerware',
-                                      location: "FCT - Abuja",
-                                      expectedExchange: 'Old Books',
-                                      productDescription:
-                                          "Antique china dinnerware embodies an ageless elegance that transcends time. These exquisite dining sets, often adorned with intricate patterns and delicate craftsmanship, exude a sense of history and refinement. Available in a variety of styles, from traditional to Art Deco, antique china dinnerware collections feature exquisite designs that evoke a sense of nostalgia and sophistication. Each piece is a testament to the craftsmanship of bygone eras.",
-                                    );
-                                  }));
-                                },
-                              ),
-                            ],
-                          ),
-                        ),
+                            ),
+                          );
+                        },
                       );
                     },
                   ),
-
-                  // BarterScrollCard(
-                  //   image: AssetImage('images/chairimage.jpg'),
-                  //   productName: 'Mid-Century Modern Chair',
-                  //   location: 'Lagos',
-                  //   expectedExchange: 'Mac Pro Max',
-                  // ),
-                  // BarterScrollCard(
-                  //   image: AssetImage('images/cutleryimg.jpg'),
-                  //   productName: 'Silverware Set',
-                  //   location: 'Lagos',
-                  //   expectedExchange: 'iPhone 15 Max',
-                  // ),
                 ],
               ),
             ),
@@ -334,83 +280,67 @@ class _HomePageViewState extends ConsumerState<HomePageView> {
                       style: titleStyle,
                     ),
                   ),
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      padding: const EdgeInsets.all(0.0),
-                      child: Row(
-                        children: [
-                          DeclutterScrollCard(
-                            onPressed: () {
-                              Navigator.push(context,
-                                  MaterialPageRoute(builder: (context) {
-                                return const ProductDescriptionView(
-                                  image: AssetImage('images/chair2.jpg'),
-                                  productName:
-                                      "Mid-Century Modern Chair 2023 Model",
-                                  location: "Imo",
-                                  price: '₦51,500',
-                                  productDescription:
-                                      "Crafted with meticulous attention to detail, this chair showcases clean lines, gentle curves, and a minimalist yet impactful silhouette that effortlessly complements a range of interior styles. The carefully selected materials, including rich hardwoods and premium upholstery, not only ensure durability but also lend a sense of sophistication to any space.",
-                                );
-                              }));
-                            },
-                            image: const AssetImage('images/chair2.jpg'),
-                            productName: 'Mid-Century Modern Chair 2023 Model',
-                            location: "Imo",
-                            price: '₦51,500',
-                          ),
-                          DeclutterScrollCard(
-                            onPressed: () {
-                              Navigator.push(context,
-                                  MaterialPageRoute(builder: (context) {
-                                return const ProductDescriptionView(
-                                  image: AssetImage('images/cutlery2.jpg'),
-                                  productName: 'Silverware Set',
-                                  location: "Yobe",
-                                  price: '₦590,670,000',
-                                  productDescription:
-                                      "Introducing a sleek and contemporary silverware collection that enhances your table setting. Meticulously crafted from durable stainless steel, this set showcases clean lines and a minimalist aesthetic. With ergonomic handles for a comfortable grip, each piece embodies a perfect balance of form and function. Upgrade your dining ambiance with this versatile silverware set that complements any culinary occasion",
-                                );
-                              }));
-                            },
-                            image: const AssetImage('images/cutlery2.jpg'),
-                            productName: 'Silverware Set',
-                            location: "Yobe",
-                            price: '₦590,670,000',
-                          ),
-                          DeclutterScrollCard(
-                            image: const AssetImage('images/chandelier.jpg'),
-                            productName: 'Crystal Chandelier',
-                            location: 'Abuja',
-                            price: '₦185,000',
-                            onPressed: () {},
-                          ),
-                          DeclutterScrollCard(
-                            image: const AssetImage('images/dinnerware.jpg'),
-                            productName: 'Antique China Dinnerware',
-                            location: 'Port-Hacourt',
-                            price: '₦320,000',
-                            onPressed: () {},
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+                  Consumer(
+                    builder: (context, ref, child) {
+                      final products = ref.watch(declutterProduct);
 
-                  // BarterScrollCard(
-                  //   image: AssetImage('images/img1.png'),
-                  //   productName: 'Mid-Century Modern Chair 2023 Model jgspjgtrjjggggggggggggggggggggghfhhrehjgjjkjjkjjj',
-                  //   location: 'Lagos',
-                  //   expectedExchange: 'Mac Pro Max jgspjgtrjjggggggggggggggggggggghfhhrehjgjjkjjkjjj',
-                  // ),
-                  // BarterScrollCard(
-                  //   image: AssetImage('images/img2.png'),
-                  //   productName: 'Silverware Set',
-                  //   location: 'Lagos',
-                  //   expectedExchange: 'iPhone 15 Max',
-                  // ),
+                      return FutureBuilder(
+                        future: products,
+                        builder: (context, controller) {
+                          if (!controller.hasData) {
+                            return const Text('Loading...');
+                          }
+                          if (controller.data!.isEmpty) {
+                            return const EmptyCard();
+                          }
+                          return Container(
+                            height: 300,
+                            width: MediaQuery.of(context).size.width - 11,
+                            alignment: Alignment.centerLeft,
+                            child: ListView.builder(
+                              shrinkWrap: true,
+                              scrollDirection: Axis.horizontal,
+                              itemCount: controller.data!.length,
+                              itemBuilder: (context, index) =>
+                                  DeclutterScrollCard(
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) {
+                                        return ProductDescriptionView(
+                                          image: NetworkImage(
+                                            baseImage +
+                                                controller.data![index].image,
+                                          ),
+                                          productName:
+                                              controller.data![index].name,
+                                          location: controller
+                                              .data![index].location.state,
+                                          expectedExchange:
+                                              controller.data![index].exchange,
+                                          productDescription: controller
+                                              .data![index].description,
+                                        );
+                                      },
+                                    ),
+                                  );
+                                },
+                                image: NetworkImage(
+                                  baseImage + controller.data![index].image,
+                                ),
+                                productName: controller.data![index].name,
+                                location:
+                                    controller.data![index].location.state,
+                                price:
+                                    '₦${formattedPrice(controller.data![index].price)}',
+                              ),
+                            ),
+                          );
+                        },
+                      );
+                    },
+                  ),
                 ],
               ),
             ),
@@ -446,76 +376,64 @@ class _HomePageViewState extends ConsumerState<HomePageView> {
                       style: titleStyle,
                     ),
                   ),
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      padding: const EdgeInsets.all(0.0),
-                      child: Row(
-                        children: [
-                          GiftScrollCard(
-                            onPressed: () {
-                              Navigator.push(context,
-                                  MaterialPageRoute(builder: (context) {
-                                return const ProductDescriptionView(
-                                  image: AssetImage('images/bikehelmet.jpg'),
-                                  productName: "Bicycle helmet",
-                                  location: "Ogun",
-                                  productDescription:
-                                      "Stay safe on your cycling adventures with this high-quality bicycle helmet. Designed for both style and protection, it features a sleek aerodynamic shape and adjustable straps for a secure fit. The impact-resistant outer shell and cushioned interior provide excellent head protection, ensuring you can pedal with confidence on roads or trails.",
-                                );
-                              }));
-                            },
-                            image: const AssetImage('images/bikehelmet.jpg'),
-                            productName: "Bicycle helmet",
-                            location: "Ogun",
-                          ),
-                          GiftScrollCard(
-                            onPressed: () {
-                              Navigator.push(context,
-                                  MaterialPageRoute(builder: (context) {
-                                return const ProductDescriptionView(
-                                  image: AssetImage('images/sunglasses.jpg'),
-                                  productName: "Sunglasses",
-                                  location: "Delta",
-                                  productDescription:
-                                      "Step into the sun with confidence wearing these timeless aviator sunglasses. Featuring a sleek metal frame and UV-protective lenses, they offer both style and practicality. The iconic teardrop shape and adjustable nose pads ensure a comfortable fit, while reducing glare and shielding your eyes from harmful rays. Whether you're strolling through the city or lounging on the beach, these sunglasses are a must-have accessory for any sunny day.",
-                                );
-                              }));
-                            },
-                            image: const AssetImage('images/sunglasses.jpg'),
-                            productName: "Sunglasses",
-                            location: "Delta",
-                          ),
-                          GiftScrollCard(
-                            image: const AssetImage('images/mug.jpg'),
-                            productName: "Coffee mug",
-                            location: "Kwara",
-                            onPressed: () {},
-                          ),
-                          GiftScrollCard(
-                            image: const AssetImage('images/umbrella.jpg'),
-                            productName: "Umbrella",
-                            location: "Plateau",
-                            onPressed: () {},
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+                  Consumer(
+                    builder: (context, ref, child) {
+                      final products = ref.watch(giftProduct);
 
-                  // BarterScrollCard(
-                  //   image: AssetImage('images/img1.png'),
-                  //   productName: 'Mid-Century Modern Chair 2023 Model jgspjgtrjjggggggggggggggggggggghfhhrehjgjjkjjkjjj',
-                  //   location: 'Lagos',
-                  //   expectedExchange: 'Mac Pro Max jgspjgtrjjggggggggggggggggggggghfhhrehjgjjkjjkjjj',
-                  // ),
-                  // BarterScrollCard(
-                  //   image: AssetImage('images/img2.png'),
-                  //   productName: 'Silverware Set',
-                  //   location: 'Lagos',
-                  //   expectedExchange: 'iPhone 15 Max',
-                  // ),
+                      return FutureBuilder(
+                        future: products,
+                        builder: (context, controller) {
+                          if (!controller.hasData) {
+                            return const Text('Loading...');
+                          }
+                          if (controller.data!.isEmpty) {
+                            return const EmptyCard();
+                          }
+                          return Container(
+                            height: 300,
+                            width: MediaQuery.of(context).size.width - 11,
+                            alignment: Alignment.centerLeft,
+                            child: ListView.builder(
+                              shrinkWrap: true,
+                              scrollDirection: Axis.horizontal,
+                              itemCount: controller.data!.length,
+                              itemBuilder: (context, index) => GiftScrollCard(
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) {
+                                        return ProductDescriptionView(
+                                          image: NetworkImage(
+                                            baseImage +
+                                                controller.data![index].image,
+                                          ),
+                                          productName:
+                                              controller.data![index].name,
+                                          location: controller
+                                              .data![index].location.state,
+                                          expectedExchange:
+                                              controller.data![index].exchange,
+                                          productDescription: controller
+                                              .data![index].description,
+                                        );
+                                      },
+                                    ),
+                                  );
+                                },
+                                image: NetworkImage(
+                                  baseImage + controller.data![index].image,
+                                ),
+                                productName: controller.data![index].name,
+                                location:
+                                    controller.data![index].location.state,
+                              ),
+                            ),
+                          );
+                        },
+                      );
+                    },
+                  ),
                 ],
               ),
             ),
