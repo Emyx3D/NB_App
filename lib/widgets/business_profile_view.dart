@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:naijabatternew/brain/constants.dart';
+import 'package:naijabatternew/utilities/provider/product.dart';
 import 'package:naijabatternew/utilities/provider/user/user.dart';
+import 'package:naijabatternew/widgets/empty.dart';
 import 'package:naijabatternew/widgets/fields_content.dart';
 import 'package:naijabatternew/widgets/profile_info.dart';
 import 'package:naijabatternew/widgets/profilepage_stack_products_grid.dart';
@@ -323,12 +325,29 @@ class BusinessProfileView extends ConsumerWidget {
           const SizedBox(
             height: 17.0,
           ),
-          Container(
-            margin: const EdgeInsets.symmetric(
-              horizontal: 30.0,
-            ),
-            child: profilepageStackProductsGrid(),
-          ),
+          Consumer(
+            builder: (context, ref, child) {
+              final products = ref.watch(userProduct);
+
+              return FutureBuilder(
+                future: products,
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) {
+                    return const Text('Loading...');
+                  }
+                  if (snapshot.data!.isEmpty) {
+                    return const EmptyCard();
+                  }
+                  return Container(
+                    margin: const EdgeInsets.symmetric(
+                      horizontal: 30.0,
+                    ),
+                    child: profilepageStackProductsGrid(snapshot.data ?? []),
+                  );
+                },
+              );
+            },
+          )
         ],
       ),
     );

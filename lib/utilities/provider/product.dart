@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:naijabatternew/utilities/helper/dio.dart';
 import 'package:naijabatternew/utilities/models/product.dart';
+import 'package:naijabatternew/utilities/provider/auth/auth.dart';
 
 Future<List<Product>> baseProduct(String paramStr, int page, int limit) async {
   final response = await dio.get('/product?$paramStr&page=$page&limit=$limit');
@@ -30,10 +31,12 @@ final declutterProduct = Provider((ref) async {
   return data;
 });
 
-final userProduct = Provider.family((ref, String user) async {
+final userProduct = Provider((ref) async {
+  final user = getUser();
   int page = 1;
   int limit = 20;
-  List<Product> data = await baseProduct('user=$user', page, limit);
+  List<Product> data =
+      await baseProduct('user=${user?.id ?? "0"}', page, limit);
   return data;
 });
 
