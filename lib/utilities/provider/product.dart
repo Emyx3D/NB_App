@@ -40,6 +40,15 @@ final userProduct = Provider((ref) async {
   return data;
 });
 
+final hotDealsProduct = Provider((ref) async {
+  final user = getUser();
+  int page = 1;
+  int limit = 20;
+  List<Product> data =
+      await baseProduct('user=${user?.id ?? "0"}', page, limit);
+  return data;
+});
+
 final searchProduct = Provider.family((ref, String search) async {
   int page = 1;
   int limit = 20;

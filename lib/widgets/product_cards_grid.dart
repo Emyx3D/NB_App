@@ -1,85 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:naijabatternew/brain/constants.dart';
+import 'package:naijabatternew/utilities/models/product.dart';
 import 'package:naijabatternew/widgets/product_card.dart';
 import 'package:responsive_grid/responsive_grid.dart';
 
-Widget productsGrid() {
+Widget productsGrid(List<Product> products) {
   return ResponsiveGridRow(
-    children: [
-      ResponsiveGridCol(
-        xs: 4,
-        md: 2,
-        child: Container(
-          margin: const EdgeInsets.only(left: 5, right: 5, bottom: 12),
-          alignment: Alignment.center,
-          child: const ProductCard(
-            image: AssetImage('images/chairimage.jpg'),
-            productName: 'Mid-Century Modern Chair',
-            productLocation: 'Lagos',
-            productType: 'Television',
-            eeisVisible: true,
+    children: products
+        .map(
+          (item) => ResponsiveGridCol(
+            xs: 4,
+            md: 2,
+            child: Container(
+              margin: const EdgeInsets.only(left: 5, right: 5, bottom: 12),
+              alignment: Alignment.center,
+              child: ProductCard(
+                image: NetworkImage(baseImage + item.image),
+                productName: item.name,
+                productLocation: item.location.state,
+                productType: item.productType,
+                eeisVisible: true,
+              ),
+            ),
           ),
-        ),
-      ),
-      ResponsiveGridCol(
-        xs: 4,
-        md: 2,
-        child: Container(
-          margin: const EdgeInsets.only(left: 5, right: 5, bottom: 12),
-          alignment: Alignment.center,
-          child: const ProductCard(
-            image: AssetImage('images/chairimg.jpg'),
-            productName: 'Mid-Century Modern Chair',
-            productLocation: 'Lagos',
-            productType: 'Gift',
-            eeisVisible: false,
-          ),
-        ),
-      ),
-      ResponsiveGridCol(
-        xs: 4,
-        md: 2,
-        child: Container(
-          margin: const EdgeInsets.only(left: 5, right: 5, bottom: 12),
-          alignment: Alignment.center,
-          child: const ProductCard(
-            image: AssetImage('images/chairimg.jpg'),
-            productName: 'Mid-Century Modern Chair',
-            productLocation: 'Lagos',
-            productType: 'Gift',
-            eeisVisible: false,
-          ),
-        ),
-      ),
-      ResponsiveGridCol(
-        xs: 4,
-        md: 2,
-        child: Container(
-          margin: const EdgeInsets.only(left: 5, right: 5, bottom: 12),
-          alignment: Alignment.center,
-          child: const ProductCard(
-            image: AssetImage('images/chairimg.jpg'),
-            productName: 'Mid-Century Modern Chair',
-            productLocation: 'Lagos',
-            productType: 'Gift',
-            eeisVisible: false,
-          ),
-        ),
-      ),
-      ResponsiveGridCol(
-        xs: 4,
-        md: 2,
-        child: Container(
-          margin: const EdgeInsets.only(left: 5, right: 5, bottom: 12),
-          alignment: Alignment.center,
-          child: const ProductCard(
-            image: AssetImage('images/chairimage.jpg'),
-            productName: 'Mid-Century Modern Chair',
-            productLocation: 'Lagos',
-            productType: 'Wristwatch',
-            eeisVisible: true,
-          ),
-        ),
-      ),
-    ],
+        )
+        .toList(),
   );
 }

@@ -2,11 +2,14 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:naijabatternew/utilities/provider/product.dart';
+import 'package:naijabatternew/widgets/empty.dart';
 import 'package:naijabatternew/widgets/indicator_dot.dart';
+
+import '../utilities/colors.dart';
+import '../views/accesibility_page.dart';
 import '../widgets/pages_header.dart';
 import '../widgets/product_cards_grid.dart';
-import '../views/accesibility_page.dart';
-import '../utilities/colors.dart';
 // import 'package:responsive_grid_list/responsive_grid_list.dart';
 
 class HotDealsPage extends ConsumerStatefulWidget {
@@ -17,7 +20,7 @@ class HotDealsPage extends ConsumerStatefulWidget {
 }
 
 class _HotDealsPageState extends ConsumerState<HotDealsPage> {
-final List<String> _images = [
+  final List<String> _images = [
     "images/cokead.png",
     "images/cokead.png",
     "images/cokead.png",
@@ -55,7 +58,6 @@ final List<String> _images = [
     super.dispose();
   }
 
-
   @override
   Widget build(BuildContext context) {
     final themeIsLight = ref.watch(themeProvider.notifier).state;
@@ -82,7 +84,9 @@ final List<String> _images = [
                     Container(
                       alignment: Alignment.centerLeft,
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 7.0, vertical: 7.0,),
+                        horizontal: 7.0,
+                        vertical: 7.0,
+                      ),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
@@ -224,10 +228,27 @@ final List<String> _images = [
             const SizedBox(
               height: 8.0,
             ),
-            Container(
-              alignment: Alignment.center,
-              padding: const EdgeInsets.symmetric(horizontal: 5.0),
-              child: productsGrid(),
+            Consumer(
+              builder: (context, ref, child) {
+                final products = ref.watch(hotDealsProduct);
+
+                return FutureBuilder(
+                  future: products,
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData) {
+                      return const Text('Loading...');
+                    }
+                    if (snapshot.data!.isEmpty) {
+                      return const EmptyCard();
+                    }
+                    return Container(
+                      alignment: Alignment.center,
+                      padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                      child: productsGrid(snapshot.data ?? []),
+                    );
+                  },
+                );
+              },
             ),
           ],
         ),
