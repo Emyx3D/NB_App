@@ -10,7 +10,7 @@ Item Bartering: Users can post items they wish to trade and browse through avail
 
 Gifting: Users have the option to give away items they no longer need to individuals who can benefit from them. This fosters a spirit of generosity and promotes social responsibility within the community.
 
-Affordable Household Items: For those who are relocating or moving, the Naija Barter App offers a cost-effective solution to sell their household items at discounted prices. This benefits both sellers and buyers by providing a platform to sell items quickly and at a lower cost compared to traditional marketplaces.
+Decluster: For those who are relocating or moving, the Naija Barter App offers a cost-effective solution to sell their household items at discounted prices. This benefits both sellers and buyers by providing a platform to sell items quickly and at a lower cost compared to traditional marketplaces.
 
 #Getting Started
 
