@@ -49,9 +49,26 @@ final hotDealsProduct = Provider((ref) async {
   return data;
 });
 
-final searchProduct = Provider.family((ref, String search) async {
-  int page = 1;
-  int limit = 20;
-  List<Product> data = await baseProduct('search=$search', page, limit);
-  return data;
+// final searchProduct = Provider.family((ref, String search) async {
+//   int page = 1;
+//   int limit = 20;
+//   List<Product> data = await baseProduct('search=$search', page, limit);
+//   return data;
+// });
+
+class SearchProductNotifier extends StateNotifier<List<Product>> {
+  SearchProductNotifier() : super([]);
+
+  void search(String text) async {
+    print('text $text');
+    int page = 1;
+    int limit = 20;
+    List<Product> data = await baseProduct('search=$text', page, limit);
+    state = data;
+  }
+}
+
+final searchProductNotify =
+    StateNotifierProvider<SearchProductNotifier, List<Product>>((ref) {
+  return SearchProductNotifier();
 });

@@ -25,7 +25,7 @@ class SearchPage extends ConsumerWidget {
         scrollDirection: Axis.vertical,
         child: Consumer(
           builder: (context, ref, child) {
-            var products = ref.watch(searchProduct(searchController.text));
+            var products = ref.watch(searchProductNotify);
             return Column(
               children: [
                 const SizedBox(
@@ -43,8 +43,9 @@ class SearchPage extends ConsumerWidget {
                               width: 295.0,
                               child: TextFormField(
                                 onChanged: (value) {
-                                  print(value);
-                                  products = ref.watch(searchProduct(value));
+                                  ref
+                                      .read(searchProductNotify.notifier)
+                                      .search(value);
                                 },
                                 controller: searchController,
                                 onTapOutside: (event) {
@@ -158,7 +159,7 @@ class SearchPage extends ConsumerWidget {
                           height: 6.0,
                         ),
                         FutureBuilder(
-                          future: products,
+                          future: Future(() => products),
                           builder: (context, snapshot) {
                             if (!snapshot.hasData) {
                               return const Text('Loading...');
