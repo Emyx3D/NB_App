@@ -10,28 +10,28 @@ Future<List<Product>> baseProduct(String paramStr, int page, int limit) async {
   return data;
 }
 
-final barterProduct = Provider((ref) async {
+final barterProduct = FutureProvider((ref) async {
   int page = 1;
   int limit = 20;
   List<Product> data = await baseProduct('productType=barter', page, limit);
   return data;
 });
 
-final giftProduct = Provider((ref) async {
+final giftProduct = FutureProvider((ref) async {
   int page = 1;
   int limit = 20;
   List<Product> data = await baseProduct('productType=gift', page, limit);
   return data;
 });
 
-final declutterProduct = Provider((ref) async {
+final declutterProduct = FutureProvider((ref) async {
   int page = 1;
   int limit = 20;
   List<Product> data = await baseProduct('productType=declutter', page, limit);
   return data;
 });
 
-final userProduct = Provider((ref) async {
+final userProduct = FutureProvider((ref) async {
   final user = getUser();
   int page = 1;
   int limit = 20;
@@ -40,7 +40,7 @@ final userProduct = Provider((ref) async {
   return data;
 });
 
-final hotDealsProduct = Provider((ref) async {
+final hotDealsProduct = FutureProvider((ref) async {
   final user = getUser();
   int page = 1;
   int limit = 20;
@@ -49,18 +49,11 @@ final hotDealsProduct = Provider((ref) async {
   return data;
 });
 
-// final searchProduct = Provider.family((ref, String search) async {
-//   int page = 1;
-//   int limit = 20;
-//   List<Product> data = await baseProduct('search=$search', page, limit);
-//   return data;
-// });
 
 class SearchProductNotifier extends StateNotifier<List<Product>> {
   SearchProductNotifier() : super([]);
 
   void search(String text) async {
-    print('text $text');
     int page = 1;
     int limit = 20;
     List<Product> data = await baseProduct('search=$text', page, limit);

@@ -327,7 +327,7 @@ class BusinessProfileView extends ConsumerWidget {
           ),
           Consumer(
             builder: (context, ref, child) {
-              final products = ref.watch(userProduct);
+              final products = ref.watch(userProduct.future);
 
               return FutureBuilder(
                 future: products,

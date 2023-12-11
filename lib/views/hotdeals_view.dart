@@ -230,7 +230,7 @@ class _HotDealsPageState extends ConsumerState<HotDealsPage> {
             ),
             Consumer(
               builder: (context, ref, child) {
-                final products = ref.watch(hotDealsProduct);
+                final products = ref.watch(hotDealsProduct.future);
 
                 return FutureBuilder(
                   future: products,
