@@ -1,7 +1,9 @@
 import 'dart:convert';
 
+import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:naijabatternew/utilities/helper/dio.dart';
+import 'package:naijabatternew/utilities/helper/helper.dart';
 import 'package:naijabatternew/utilities/helper/snackbar.dart';
 import 'package:naijabatternew/utilities/models/user.dart';
 
@@ -10,7 +12,8 @@ import '../../../main.dart';
 final loadingUser = StateProvider((ref) => false);
 
 final userProductCount = StateProvider((ref) async {
-  final response = await dio.get('/user-product-count');
+  final response = await dio.get('/user-product-count',
+      options: Options(headers: headerFunc()));
 
   if (response.statusCode != 200) {
     failedSnackbar(response.data?['error'] ?? 'An error occured');
@@ -56,21 +59,4 @@ class UserObj {
 
     await prefs.setString('user', jsonEncode(response.data));
   }
-
-  // Future getUserProductCount(context) async {
-  //   _ref.read(loadingUser.notifier).state = true;
-  //   final response = await dio.get('/user-product-count');
-  //   _ref.read(loadingUser.notifier).state = false;
-
-  //   if (response.statusCode != 200) {
-  //     failedSnackbar(response.data?['error'] ?? 'An error occured');
-  //     return;
-  //   }
-  //   print(response.data);
-  //   _ref.read(userProductCount.notifier).state = {
-  //     'barter': response.data['barter'],
-  //     'declutter': response.data['declutter'],
-  //     'gift': response.data['gift'],
-  //   };
-  // }
 }
