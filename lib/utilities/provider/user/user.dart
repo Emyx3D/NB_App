@@ -11,7 +11,7 @@ import '../../../main.dart';
 
 final loadingUser = StateProvider((ref) => false);
 
-final userProductCount = StateProvider((ref) async {
+final userProductCount = FutureProvider((ref) async {
   final response = await dio.get('/user-product-count',
       options: Options(headers: headerFunc()));
 
@@ -19,7 +19,6 @@ final userProductCount = StateProvider((ref) async {
     failedSnackbar(response.data?['error'] ?? 'An error occured');
     return {"barter": 0, "gift": 0, "declutter": 0};
   }
-  print(response.data);
   return {
     'barter': response.data['barter'],
     'declutter': response.data['declutter'],
@@ -27,7 +26,7 @@ final userProductCount = StateProvider((ref) async {
   };
 });
 
-final user = StateProvider<UserObj>((ref) {
+final user = FutureProvider<UserObj>((ref) {
   return UserObj(ref);
 });
 

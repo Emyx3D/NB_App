@@ -16,7 +16,6 @@ class EditBusinessProfilePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final themeIsLight = ref.watch(themeProvider.notifier).state;
-    final userProductCountProvider = ref.watch(userProductCount.notifier).state;
 
     return SafeArea(
       child: Scaffold(
@@ -114,50 +113,49 @@ class EditBusinessProfilePage extends ConsumerWidget {
               const SizedBox(
                 height: 9.0,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  FutureBuilder(
-                      future: userProductCountProvider,
-                      builder: (context, controller) {
-                        return ProfileInfos(
+              Consumer(
+                builder: (context, ref, child) {
+                  final userProductCountProvider = ref.watch(userProductCount);
+
+                  return userProductCountProvider.when(
+                    data: (data) => Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ProfileInfos(
                           title: 'Gift',
-                          total: controller.data?['gift'] ?? 0,
-                        );
-                      }),
-                  Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 35.0),
-                    width: 1.0,
-                    height: 65.0, // Adjust the height as needed
-                    color:
-                        themeIsLight ? Colors.black : ProjectColors.bigTxtWhite,
-                  ),
-                  FutureBuilder(
-                    future: userProductCountProvider,
-                    builder: (context, controller) {
-                      return ProfileInfos(
-                        title: 'Declutter',
-                        total: controller.data?['declutter'] ?? 0,
-                      );
-                    },
-                  ),
-                  Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 35.0),
-                    width: 1.0,
-                    height: 65.0, // Adjust the height as needed
-                    color:
-                        themeIsLight ? Colors.black : ProjectColors.bigTxtWhite,
-                  ),
-                  FutureBuilder(
-                    future: userProductCountProvider,
-                    builder: (context, controller) {
-                      return ProfileInfos(
-                        title: 'Barter',
-                        total: controller.data?['barter'] ?? 0,
-                      );
-                    },
-                  ),
-                ],
+                          total: data['gift'] ?? 0,
+                        ),
+                        Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 35.0),
+                          width: 1.0,
+                          height: 65.0, // Adjust the height as needed
+                          color: themeIsLight
+                              ? Colors.black
+                              : ProjectColors
+                                  .bigTxtWhite, // Set the color of the line
+                        ),
+                        ProfileInfos(
+                          title: 'Declutter',
+                          total: data['declutter'] ?? 0,
+                        ),
+                        Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 35.0),
+                          width: 1.0,
+                          height: 65.0, // Adjust the height as needed
+                          color: themeIsLight
+                              ? Colors.black
+                              : ProjectColors.bigTxtWhite,
+                        ),
+                        ProfileInfos(
+                          title: 'Barter',
+                          total: data['barter'] ?? 0,
+                        )
+                      ],
+                    ),
+                    error: (error, stackTrace) => Text(error.toString()),
+                    loading: () => const Text('Loading...'),
+                  );
+                },
               ),
               const SizedBox(
                 height: 28.0,
