@@ -327,25 +327,21 @@ class BusinessProfileView extends ConsumerWidget {
           ),
           Consumer(
             builder: (context, ref, child) {
-              final products = ref.watch(userProduct.future);
-
-              return FutureBuilder(
-                future: products,
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData) {
-                    return const Text('Loading...');
-                  }
-                  if (snapshot.data!.isEmpty) {
-                    return const EmptyCard();
-                  }
-                  return Container(
-                    margin: const EdgeInsets.symmetric(
-                      horizontal: 30.0,
-                    ),
-                    child: profilepageStackProductsGrid(snapshot.data ?? []),
-                  );
-                },
-              );
+              final products = ref.watch(userProduct);
+              return products.when(
+                  data: (data) {
+                    if (data.isEmpty) {
+                      return const EmptyCard();
+                    }
+                    return Container(
+                      margin: const EdgeInsets.symmetric(
+                        horizontal: 30.0,
+                      ),
+                      child: profilepageStackProductsGrid(data),
+                    );
+                  },
+                  error: (error, stackTrace) => Text(error.toString()),
+                  loading: () => const Text('Loading...'));
             },
           )
         ],
