@@ -1,10 +1,12 @@
 import 'dart:convert';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:naijabatternew/main.dart';
 import 'package:naijabatternew/utilities/forms/forms_collection.dart';
 import 'package:naijabatternew/utilities/helper/dio.dart';
+import 'package:naijabatternew/utilities/helper/helper.dart';
 import 'package:naijabatternew/utilities/helper/snackbar.dart';
 import 'package:naijabatternew/views/confirm_email_view.dart';
 import 'package:naijabatternew/views/declutter_business_payment_screen.dart';
@@ -88,13 +90,12 @@ class Signup {
   Future changePassword(context, String oldPassword, String newPassword) async {
     _ref.read(loadingSignup.notifier).state = true;
 
-    final response = await dio.post(
-      '/change-password',
-      data: {
-        "oldPassword": oldPassword,
-        "newPassword": newPassword,
-      },
-    );
+    final response = await dio.post('/change-password',
+        data: {
+          "oldPassword": oldPassword,
+          "newPassword": newPassword,
+        },
+        options: Options(headers: headerFunc()));
     _ref.read(loadingSignup.notifier).state = false;
 
     if (response.statusCode != 200) {
