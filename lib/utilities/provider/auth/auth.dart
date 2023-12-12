@@ -8,6 +8,7 @@ import 'package:naijabatternew/utilities/helper/helper.dart';
 import 'package:naijabatternew/utilities/helper/snackbar.dart';
 import 'package:naijabatternew/utilities/models/user.dart';
 import 'package:naijabatternew/views/homepage_view.dart';
+import 'package:naijabatternew/views/landing_page.dart';
 import 'package:naijabatternew/views/login_view.dart';
 
 User? getUser() {
@@ -72,6 +73,16 @@ isLoggedIn(context) async {
       MaterialPageRoute(
         builder: (context) {
           return const HomePage();
+        },
+      ),
+      (route) => false,
+    );
+  } else {
+    return Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(
+        builder: (context) {
+          return const LandingPage();
         },
       ),
       (route) => false,
