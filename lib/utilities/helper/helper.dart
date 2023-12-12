@@ -14,7 +14,5 @@ Map<String, dynamic> headerFunc() {
   Map<String, dynamic> res = {
     'Authorization': 'Bearer $authToken',
   };
-
-  print(res);
   return res;
 }
