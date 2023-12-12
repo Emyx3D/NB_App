@@ -49,7 +49,10 @@ class Signup {
 
   Future loginUser(context, String email, String password) async {
     _ref.read(loadingSignup.notifier).state = true;
-
+    print({
+      "email": email,
+      "password": password,
+    });
     final response = await dio.post(
       '/login',
       data: {

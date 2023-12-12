@@ -1,1 +1,2 @@
 * can't find view for confirm email with codes
+* we can't store files on render so we need s3 eg cloudinary etc
