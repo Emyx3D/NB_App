@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:naijabatternew/brain/constants.dart';
 import 'package:naijabatternew/utilities/models/product.dart';
 import 'package:naijabatternew/widgets/profile_page_imagebox.dart';
 import 'package:responsive_grid/responsive_grid.dart';
@@ -14,7 +13,7 @@ Widget profilepageStackProductsGrid(List<Product> product) {
             child: Container(
               margin: const EdgeInsets.only(left: 1, right: 1, bottom: 2),
               child: SweetDealsImageBox(
-                image: NetworkImage(baseImage + item.image),
+                image: NetworkImage(item.image),
                 productName: item.name,
               ),
             ),

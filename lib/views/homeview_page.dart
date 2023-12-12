@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:naijabatternew/brain/constants.dart';
 import 'package:naijabatternew/utilities/helper/helper.dart';
 import 'package:naijabatternew/utilities/provider/product/product.dart';
 import 'package:naijabatternew/utilities/provider/promotion/promotion.dart';
@@ -92,7 +91,7 @@ class _HomePageViewState extends ConsumerState<HomePageView> {
                                           builder: (context) {
                                             return ProductDescriptionView(
                                               image: NetworkImage(
-                                                baseImage + data[index].image,
+                                                data[index].image,
                                               ),
                                               productName: data[index].name,
                                               location:
@@ -107,7 +106,7 @@ class _HomePageViewState extends ConsumerState<HomePageView> {
                                       );
                                     },
                                     image: NetworkImage(
-                                      baseImage + data[index].image,
+                                      data[index].image,
                                     ),
                                     productName: data[index].name,
                                     location: data[index].location.state,
@@ -138,7 +137,7 @@ class _HomePageViewState extends ConsumerState<HomePageView> {
                     padding: const EdgeInsets.symmetric(horizontal: 21.0),
                     child: BarterFlashSaleCard(
                       promotionExpiresAtHm: data.promotionExpiresAtHm,
-                      image: NetworkImage(baseImage + data.image),
+                      image: NetworkImage(data.image),
                       productName: data.name,
                       location: data.location.state,
                       expectedExchange: data.exchange,
@@ -188,7 +187,7 @@ class _HomePageViewState extends ConsumerState<HomePageView> {
                                           builder: (context) {
                                             return ProductDescriptionView(
                                               image: NetworkImage(
-                                                baseImage + data[index].image,
+                                                data[index].image,
                                               ),
                                               productName: data[index].name,
                                               location:
@@ -203,7 +202,7 @@ class _HomePageViewState extends ConsumerState<HomePageView> {
                                       );
                                     },
                                     image: NetworkImage(
-                                      baseImage + data[index].image,
+                                      data[index].image,
                                     ),
                                     productName: data[index].name,
                                     location: data[index].location.state,
@@ -234,7 +233,7 @@ class _HomePageViewState extends ConsumerState<HomePageView> {
                     padding: const EdgeInsets.symmetric(horizontal: 21.0),
                     child: DeclutterFlashsalesCard(
                       promotionExpiresAtHm: data.promotionExpiresAtHm,
-                      image: NetworkImage(baseImage + data.image),
+                      image: NetworkImage(data.image),
                       productName: data.name,
                       location: data.location.state,
                       oldPrice: data.price.toString(),
@@ -284,7 +283,7 @@ class _HomePageViewState extends ConsumerState<HomePageView> {
                                           builder: (context) {
                                             return ProductDescriptionView(
                                               image: NetworkImage(
-                                                baseImage + data[index].image,
+                                                data[index].image,
                                               ),
                                               productName: data[index].name,
                                               location:
@@ -299,7 +298,7 @@ class _HomePageViewState extends ConsumerState<HomePageView> {
                                       );
                                     },
                                     image: NetworkImage(
-                                      baseImage + data[index].image,
+                                      data[index].image,
                                     ),
                                     productName: data[index].name,
                                     location: data[index].location.state,

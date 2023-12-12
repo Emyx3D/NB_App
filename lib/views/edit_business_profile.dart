@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:naijabatternew/brain/constants.dart';
 import 'package:naijabatternew/utilities/provider/auth/auth.dart';
 import 'package:naijabatternew/utilities/provider/user/user.dart';
 import 'package:naijabatternew/widgets/previous_page_icon.dart';
@@ -82,8 +81,7 @@ class EditBusinessProfilePage extends ConsumerWidget {
                     ),
                     child: CircleAvatar(
                       radius: 80.0,
-                      backgroundImage:
-                          NetworkImage(baseImage + getUserOrNa().image),
+                      backgroundImage: NetworkImage(getUserOrNa().image),
                     ),
                   ),
                   Positioned(
