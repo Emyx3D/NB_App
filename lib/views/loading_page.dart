@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import '../views/homepage_view.dart';
+import 'package:naijabatternew/utilities/provider/auth/auth.dart';
 
 class LoadingPage extends StatefulWidget {
   const LoadingPage({super.key});
@@ -10,17 +10,15 @@ class LoadingPage extends StatefulWidget {
 }
 
 class _LoadingPageState extends State<LoadingPage> {
-  void redirect() {
-    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
-      return const HomePage();
-    }));
+  @override
+  void initState() {
+    isLoggedIn(context);
+    super.initState();
   }
-
-  // @override
-  // void initState() {
-  //   super.initState();
-
-  //   Timer(const Duration(seconds: 4), redirect);
+  // void redirect() {
+  //   Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
+  //     return const HomePage();
+  //   }));
   // }
 
   @override

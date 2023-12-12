@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:naijabatternew/utilities/provider/product/product.dart';
@@ -20,44 +18,6 @@ class HotDealsPage extends ConsumerStatefulWidget {
 }
 
 class _HotDealsPageState extends ConsumerState<HotDealsPage> {
-  final List<String> _images = [
-    "images/cokead.png",
-    "images/cokead.png",
-    "images/cokead.png",
-    "images/cokead.png",
-  ];
-
-  late PageController _pageController;
-
-  late Timer _timer;
-
-  int _currentIndex = 0;
-
-  @override
-  void initState() {
-    super.initState();
-    _pageController = PageController(initialPage: _currentIndex);
-    _timer = Timer.periodic(const Duration(seconds: 10), (timer) {
-      if (_currentIndex < _images.length - 1) {
-        _currentIndex++;
-      } else {
-        _currentIndex = 0;
-      }
-      _pageController.animateToPage(
-        _currentIndex,
-        duration: const Duration(milliseconds: 350),
-        curve: Curves.easeOutCubic,
-      );
-    });
-  }
-
-  @override
-  void dispose() {
-    _pageController.dispose();
-    _timer.cancel();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
     final themeIsLight = ref.watch(themeProvider.notifier).state;

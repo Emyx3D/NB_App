@@ -5,7 +5,7 @@ import 'package:naijabatternew/brain/provider.dart';
 import 'package:naijabatternew/utilities/colors.dart';
 import 'package:naijabatternew/utilities/themes/themes.dart';
 import 'package:naijabatternew/views/accesibility_page.dart';
-import 'package:naijabatternew/views/landing_page.dart';
+import 'package:naijabatternew/views/loading_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 // final themeProvider = StateProvider<bool>((ref) => true);
@@ -61,7 +61,7 @@ class MyApp extends ConsumerWidget {
       debugShowCheckedModeBanner: false,
       // home: const HomePage(),
       // home: const LoginView(),
-      home: const LandingPage(),
+      home: const LoadingPage(),
     );
   }
 }

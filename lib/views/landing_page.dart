@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:naijabatternew/utilities/fonts.dart';
-import 'package:naijabatternew/utilities/provider/auth/auth.dart';
 import 'package:naijabatternew/views/login_view.dart';
 import 'package:naijabatternew/widgets/landing_page_carousel_items_slides.dart';
 
@@ -14,12 +13,6 @@ class LandingPage extends StatefulWidget {
 }
 
 class _LandingPageState extends State<LandingPage> {
-  @override
-  void initState() {
-    isLoggedIn(context);
-    super.initState();
-  }
-
   double currentPage = 0.0;
   String _buttonText = "Skip";
 
