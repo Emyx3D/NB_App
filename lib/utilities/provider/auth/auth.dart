@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:naijabatternew/main.dart';
 import 'package:naijabatternew/utilities/helper/dio.dart';
+import 'package:naijabatternew/utilities/helper/helper.dart';
 import 'package:naijabatternew/utilities/helper/snackbar.dart';
 import 'package:naijabatternew/utilities/models/user.dart';
 import 'package:naijabatternew/views/homepage_view.dart';
@@ -87,27 +88,10 @@ Future logoutUser() async {
   await deleteUser();
 }
 
-Options authHeader([String? authToken, String? contentType]) {
-  if (authToken == null) {
-    User? user = getUser();
-    authToken = user?.token ?? '';
-  }
-
-  Map<String, dynamic> res = {
-    'Authorization': 'Bearer $authToken',
-  };
-
-  // 'Content-Type': 'application/json', 'application/x-www-form-urlencoded'
-  if (contentType != null) {
-    res['Content-Type'] = contentType;
-  }
-
-  return Options(headers: res);
-}
-
 Future<bool> isAuthorized() async {
   try {
-    final response = await dio.get('/auth-user');
+    final response =
+        await dio.get('/auth-user', options: Options(headers: headerFunc()));
     if (response.statusCode == 200) {
       await prefs.setString('user', jsonEncode(response.data));
       return true;
