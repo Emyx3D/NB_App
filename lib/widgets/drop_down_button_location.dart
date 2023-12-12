@@ -1,11 +1,13 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../views/accesibility_page.dart';
-import '../utilities/colors.dart';
+import 'package:naijabatternew/utilities/models/location.dart';
 
-class DropdownFormButton extends ConsumerWidget {
-  const DropdownFormButton({
+import '../utilities/colors.dart';
+import '../views/accesibility_page.dart';
+
+class DropdownFormButtonLocation extends ConsumerWidget {
+  const DropdownFormButtonLocation({
     super.key,
     required this.list,
     required this.disabledText,
@@ -19,10 +21,10 @@ class DropdownFormButton extends ConsumerWidget {
     this.dropdownValue,
   });
 
-  final List<String> list;
+  final List<Location> list;
   final String disabledText;
   final String ifvalueisNull;
-  final void Function(String?) onChanged;
+  final void Function(String?)? onChanged;
   final void Function(dynamic) onSaved;
   final double pl;
   final double pt;
@@ -50,9 +52,9 @@ class DropdownFormButton extends ConsumerWidget {
       items: list
           .map(
             (item) => DropdownMenuItem<String>(
-              value: item,
+              value: item.id,
               child: Text(
-                item,
+                item.state,
                 style: TextStyle(
                   fontSize: 14.0,
                   color: themeIsLight

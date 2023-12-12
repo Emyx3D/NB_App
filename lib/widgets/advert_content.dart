@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:naijabatternew/brain/constants.dart';
 import 'package:naijabatternew/utilities/provider/promotion/ad.dart';
 
 class AdvertContent extends StatelessWidget {
@@ -25,7 +24,7 @@ class AdvertContent extends StatelessWidget {
             child: Stack(
               children: [
                 Image(
-                  image: NetworkImage(baseImage + data[0].image),
+                  image: NetworkImage(data[0].image),
                 ),
                 Positioned(
                   right: 10,

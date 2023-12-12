@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:naijabatternew/brain/constants.dart';
 import 'package:naijabatternew/utilities/provider/promotion/ad.dart';
 import 'package:naijabatternew/widgets/indicator_dot.dart';
 
@@ -82,7 +81,7 @@ class _AdvertContentsSliderState extends ConsumerState<AdvertContentsSlider> {
                         });
                       },
                       itemBuilder: (context, index) => Image.network(
-                        baseImage + data[index].image,
+                        data[index].image,
                         fit: BoxFit.cover,
                       ),
                     ),

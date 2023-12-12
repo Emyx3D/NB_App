@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:naijabatternew/brain/constants.dart';
 import 'package:naijabatternew/utilities/provider/product/product.dart';
 import 'package:naijabatternew/widgets/advert_content_slider.dart';
 import 'package:naijabatternew/widgets/empty.dart';
@@ -89,7 +88,7 @@ class _HotDealsPageState extends ConsumerState<HotDealsPage> {
                               height: 250.0,
                               fit: BoxFit.cover,
                               alignment: Alignment.center,
-                              image: NetworkImage(baseImage + firstData.image),
+                              image: NetworkImage(firstData.image),
                             ),
                             Container(
                               alignment: Alignment.centerLeft,

@@ -84,7 +84,7 @@ Future<bool> deleteUser() async {
 }
 
 Future logoutUser() async {
-  await dio.get('/logout');
+  await dio.get('/logout', options: Options(headers: headerFunc()));
   await deleteUser();
 }
 
