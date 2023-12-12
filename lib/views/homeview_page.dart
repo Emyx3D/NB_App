@@ -6,7 +6,7 @@ import 'package:naijabatternew/brain/constants.dart';
 import 'package:naijabatternew/utilities/helper/helper.dart';
 import 'package:naijabatternew/utilities/provider/product/product.dart';
 import 'package:naijabatternew/utilities/provider/promotion/promotion.dart';
-import 'package:naijabatternew/widgets/indicator_dot.dart';
+import 'package:naijabatternew/widgets/advert_content_slider.dart';
 
 import '../views/accesibility_page.dart';
 import '../views/more_product_description.dart';
@@ -154,65 +154,7 @@ class _HomePageViewState extends ConsumerState<HomePageView> {
               ),
             ),
             // const SizedBox15(),
-            // const AdvertContent(),
-
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8.0),
-              child: Stack(
-                alignment: Alignment.bottomCenter,
-                children: [
-                  SizedBox(
-                    width: screenWidth,
-                    height: 60,
-                    child: PageView.builder(
-                      itemCount: _images.length,
-                      controller: _pageController,
-                      onPageChanged: (value) {
-                        setState(() {
-                          _currentIndex = value;
-                        });
-                      },
-                      itemBuilder: (context, index) => Image.asset(
-                        _images[index],
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: List.generate(
-                      _images.length,
-                      (index) => IndicatorDot(
-                        isActive: index == _currentIndex,
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    right: 10,
-                    top: 10,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 7.0,
-                        vertical: 4.0,
-                      ),
-                      decoration: BoxDecoration(
-                        color: const Color(0xCE0F29A9),
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      child: const Text(
-                        'AD',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 9.0,
-                          fontFamily: 'Nunito',
-                          fontWeight: FontWeight.w900,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            const AdvertContentsSlider(),
 
             const SizedBox12(),
             Consumer(builder: (context, ref, child) {
