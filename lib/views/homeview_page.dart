@@ -5,7 +5,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:naijabatternew/brain/constants.dart';
 import 'package:naijabatternew/utilities/helper/helper.dart';
 import 'package:naijabatternew/utilities/provider/product.dart';
-import 'package:naijabatternew/widgets/empty.dart';
 import 'package:naijabatternew/widgets/indicator_dot.dart';
 
 import '../views/accesibility_page.dart';
@@ -104,62 +103,50 @@ class _HomePageViewState extends ConsumerState<HomePageView> {
                   ),
                   Consumer(
                     builder: (context, ref, child) {
-                      final products = ref.read(barterProduct.future);
-
-                      return FutureBuilder(
-                        future: products,
-                        builder: (context, controller) {
-                          if (!controller.hasData) {
-                            return const Text('Loading...');
-                          }
-                          if (controller.data!.isEmpty) {
-                            return const EmptyCard();
-                          }
-                          return Container(
-                            height: 300,
-                            width: MediaQuery.of(context).size.width - 11,
-                            alignment: Alignment.centerLeft,
-                            child: ListView.builder(
-                              shrinkWrap: true,
-                              scrollDirection: Axis.horizontal,
-                              itemCount: controller.data!.length,
-                              itemBuilder: (context, index) => BarterScrollCard(
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) {
-                                        return ProductDescriptionView(
-                                          image: NetworkImage(
-                                            baseImage +
-                                                controller.data![index].image,
-                                          ),
-                                          productName:
-                                              controller.data![index].name,
-                                          location: controller
-                                              .data![index].location.state,
-                                          expectedExchange:
-                                              controller.data![index].exchange,
-                                          productDescription: controller
-                                              .data![index].description,
-                                        );
-                                      },
+                      final products = ref.watch(barterProduct);
+                      return products.when(
+                          data: (data) => Container(
+                                height: 300,
+                                width: MediaQuery.of(context).size.width - 11,
+                                alignment: Alignment.centerLeft,
+                                child: ListView.builder(
+                                  shrinkWrap: true,
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: data.length,
+                                  itemBuilder: (context, index) =>
+                                      BarterScrollCard(
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) {
+                                            return ProductDescriptionView(
+                                              image: NetworkImage(
+                                                baseImage + data[index].image,
+                                              ),
+                                              productName: data[index].name,
+                                              location:
+                                                  data[index].location.state,
+                                              expectedExchange:
+                                                  data[index].exchange,
+                                              productDescription:
+                                                  data[index].description,
+                                            );
+                                          },
+                                        ),
+                                      );
+                                    },
+                                    image: NetworkImage(
+                                      baseImage + data[index].image,
                                     ),
-                                  );
-                                },
-                                image: NetworkImage(
-                                  baseImage + controller.data![index].image,
+                                    productName: data[index].name,
+                                    location: data[index].location.state,
+                                    expectedExchange: data[index].exchange,
+                                  ),
                                 ),
-                                productName: controller.data![index].name,
-                                location:
-                                    controller.data![index].location.state,
-                                expectedExchange:
-                                    controller.data![index].exchange,
                               ),
-                            ),
-                          );
-                        },
-                      );
+                          error: (error, stackTrace) => Text(error.toString()),
+                          loading: () => const Text('Loading...'));
                     },
                   ),
                 ],
@@ -237,32 +224,6 @@ class _HomePageViewState extends ConsumerState<HomePageView> {
                 expectedExchange: "Hermes Bag",
               ),
             ),
-
-            // const SizedBox(
-            //   height: 11.0,
-            // ),
-            // Container(
-            //   width: double.infinity,
-            //   height: 42.0,
-            //   alignment: Alignment.center,
-            //   color: const Color(0xFF0857BF),
-            //   child: const Text(
-            //     'Sweet Deals',
-            //     style: TextStyle(
-            //       color: Colors.white,
-            //       fontSize: 16.0,
-            //       fontWeight: FontWeight.w600,
-            //       fontFamily: 'Nunito',
-            //     ),
-            //   ),
-            // ),
-            // const SizedBox(
-            //   height: 2.0,
-            // ),
-            // Container(
-            //   child: homepageStackProductsGrid(),
-            // ),
-
             const SizedBox(
               height: 20.0,
             ),
@@ -282,63 +243,51 @@ class _HomePageViewState extends ConsumerState<HomePageView> {
                   ),
                   Consumer(
                     builder: (context, ref, child) {
-                      final products = ref.watch(declutterProduct.future);
-
-                      return FutureBuilder(
-                        future: products,
-                        builder: (context, controller) {
-                          if (!controller.hasData) {
-                            return const Text('Loading...');
-                          }
-                          if (controller.data!.isEmpty) {
-                            return const EmptyCard();
-                          }
-                          return Container(
-                            height: 300,
-                            width: MediaQuery.of(context).size.width - 11,
-                            alignment: Alignment.centerLeft,
-                            child: ListView.builder(
-                              shrinkWrap: true,
-                              scrollDirection: Axis.horizontal,
-                              itemCount: controller.data!.length,
-                              itemBuilder: (context, index) =>
-                                  DeclutterScrollCard(
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) {
-                                        return ProductDescriptionView(
-                                          image: NetworkImage(
-                                            baseImage +
-                                                controller.data![index].image,
-                                          ),
-                                          productName:
-                                              controller.data![index].name,
-                                          location: controller
-                                              .data![index].location.state,
-                                          expectedExchange:
-                                              controller.data![index].exchange,
-                                          productDescription: controller
-                                              .data![index].description,
-                                        );
-                                      },
+                      final products = ref.watch(declutterProduct);
+                      return products.when(
+                          data: (data) => Container(
+                                height: 300,
+                                width: MediaQuery.of(context).size.width - 11,
+                                alignment: Alignment.centerLeft,
+                                child: ListView.builder(
+                                  shrinkWrap: true,
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: data.length,
+                                  itemBuilder: (context, index) =>
+                                      DeclutterScrollCard(
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) {
+                                            return ProductDescriptionView(
+                                              image: NetworkImage(
+                                                baseImage + data[index].image,
+                                              ),
+                                              productName: data[index].name,
+                                              location:
+                                                  data[index].location.state,
+                                              expectedExchange:
+                                                  data[index].exchange,
+                                              productDescription:
+                                                  data[index].description,
+                                            );
+                                          },
+                                        ),
+                                      );
+                                    },
+                                    image: NetworkImage(
+                                      baseImage + data[index].image,
                                     ),
-                                  );
-                                },
-                                image: NetworkImage(
-                                  baseImage + controller.data![index].image,
+                                    productName: data[index].name,
+                                    location: data[index].location.state,
+                                    price:
+                                        '₦${formattedPrice(data[index].price)}',
+                                  ),
                                 ),
-                                productName: controller.data![index].name,
-                                location:
-                                    controller.data![index].location.state,
-                                price:
-                                    '₦${formattedPrice(controller.data![index].price)}',
                               ),
-                            ),
-                          );
-                        },
-                      );
+                          error: (error, stackTrace) => Text(error.toString()),
+                          loading: () => const Text('Loading...'));
                     },
                   ),
                 ],
@@ -378,60 +327,49 @@ class _HomePageViewState extends ConsumerState<HomePageView> {
                   ),
                   Consumer(
                     builder: (context, ref, child) {
-                      final products = ref.watch(giftProduct.future);
-
-                      return FutureBuilder(
-                        future: products,
-                        builder: (context, controller) {
-                          if (!controller.hasData) {
-                            return const Text('Loading...');
-                          }
-                          if (controller.data!.isEmpty) {
-                            return const EmptyCard();
-                          }
-                          return Container(
-                            height: 300,
-                            width: MediaQuery.of(context).size.width - 11,
-                            alignment: Alignment.centerLeft,
-                            child: ListView.builder(
-                              shrinkWrap: true,
-                              scrollDirection: Axis.horizontal,
-                              itemCount: controller.data!.length,
-                              itemBuilder: (context, index) => GiftScrollCard(
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) {
-                                        return ProductDescriptionView(
-                                          image: NetworkImage(
-                                            baseImage +
-                                                controller.data![index].image,
-                                          ),
-                                          productName:
-                                              controller.data![index].name,
-                                          location: controller
-                                              .data![index].location.state,
-                                          expectedExchange:
-                                              controller.data![index].exchange,
-                                          productDescription: controller
-                                              .data![index].description,
-                                        );
-                                      },
+                      final products = ref.watch(giftProduct);
+                      return products.when(
+                          data: (data) => Container(
+                                height: 300,
+                                width: MediaQuery.of(context).size.width - 11,
+                                alignment: Alignment.centerLeft,
+                                child: ListView.builder(
+                                  shrinkWrap: true,
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: data.length,
+                                  itemBuilder: (context, index) =>
+                                      GiftScrollCard(
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) {
+                                            return ProductDescriptionView(
+                                              image: NetworkImage(
+                                                baseImage + data[index].image,
+                                              ),
+                                              productName: data[index].name,
+                                              location:
+                                                  data[index].location.state,
+                                              expectedExchange:
+                                                  data[index].exchange,
+                                              productDescription:
+                                                  data[index].description,
+                                            );
+                                          },
+                                        ),
+                                      );
+                                    },
+                                    image: NetworkImage(
+                                      baseImage + data[index].image,
                                     ),
-                                  );
-                                },
-                                image: NetworkImage(
-                                  baseImage + controller.data![index].image,
+                                    productName: data[index].name,
+                                    location: data[index].location.state,
+                                  ),
                                 ),
-                                productName: controller.data![index].name,
-                                location:
-                                    controller.data![index].location.state,
                               ),
-                            ),
-                          );
-                        },
-                      );
+                          error: (error, stackTrace) => Text(error.toString()),
+                          loading: () => const Text('Loading...'));
                     },
                   ),
                 ],
