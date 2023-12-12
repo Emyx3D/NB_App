@@ -65,28 +65,17 @@ checkAuth(context) async {
 isLoggedIn(context) async {
   bool isAuth = await isAuthorized();
 
-  if (isAuth == false) {
-    // deleteUser();
-
+  if (isAuth == true) {
     return Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(
         builder: (context) {
-          return const LoginView();
+          return const HomePage();
         },
       ),
       (route) => false,
     );
   }
-  return Navigator.pushAndRemoveUntil(
-    context,
-    MaterialPageRoute(
-      builder: (context) {
-        return const HomePage();
-      },
-    ),
-    (route) => false,
-  );
 }
 
 Future<bool> deleteUser() async {

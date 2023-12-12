@@ -104,7 +104,7 @@ class _HomePageViewState extends ConsumerState<HomePageView> {
                   ),
                   Consumer(
                     builder: (context, ref, child) {
-                      final products = ref.watch(barterProduct.future);
+                      final products = ref.read(barterProduct.future);
 
                       return FutureBuilder(
                         future: products,
