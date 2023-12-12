@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:naijabatternew/brain/constants.dart';
 import 'package:naijabatternew/utilities/helper/helper.dart';
-import 'package:naijabatternew/utilities/provider/product.dart';
+import 'package:naijabatternew/utilities/provider/product/product.dart';
+import 'package:naijabatternew/utilities/provider/promotion/promotion.dart';
 import 'package:naijabatternew/widgets/indicator_dot.dart';
 
 import '../views/accesibility_page.dart';
@@ -214,16 +215,30 @@ class _HomePageViewState extends ConsumerState<HomePageView> {
             ),
 
             const SizedBox12(),
+            Consumer(builder: (context, ref, child) {
+              final barterProductPromotionProvider =
+                  ref.watch(barterProductPromotion);
+              return barterProductPromotionProvider.when(
+                data: (data) {
+                  if (data == null) {
+                    return const SizedBox();
+                  }
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 21.0),
+                    child: BarterFlashSaleCard(
+                      promotionExpiresAtHm: data.promotionExpiresAtHm,
+                      image: NetworkImage(baseImage + data.image),
+                      productName: data.name,
+                      location: data.location.state,
+                      expectedExchange: data.exchange,
+                    ),
+                  );
+                },
+                error: (error, stackTrace) => Text(error.toString()),
+                loading: () => const Text('Loading...'),
+              );
+            }),
 
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 21.0),
-              child: BarterFlashSaleCard(
-                image: AssetImage('images/heels.jpg'),
-                productName: "Fridda de laba Gucci Pumps 6 inches",
-                location: "Lagos",
-                expectedExchange: "Hermes Bag",
-              ),
-            ),
             const SizedBox(
               height: 20.0,
             ),
@@ -296,18 +311,30 @@ class _HomePageViewState extends ConsumerState<HomePageView> {
 
             const AdvertContent(),
             const SizedBox12(),
-
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 21.0),
-              child: DeclutterFlashsalesCard(
-                image: AssetImage('images/lens.jpg'),
-                productName: "Canon Camera Lens",
-                location: "Port-Hacourt",
-                oldPrice: "₦185,000",
-                newPrice: "₦80,000",
-              ),
-            ),
-
+            Consumer(builder: (context, ref, child) {
+              final declutterProductPromotionProvider =
+                  ref.watch(declutterProductPromotion);
+              return declutterProductPromotionProvider.when(
+                data: (data) {
+                  if (data == null) {
+                    return const SizedBox();
+                  }
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 21.0),
+                    child: DeclutterFlashsalesCard(
+                      promotionExpiresAtHm: data.promotionExpiresAtHm,
+                      image: NetworkImage(baseImage + data.image),
+                      productName: data.name,
+                      location: data.location.state,
+                      oldPrice: data.price.toString(),
+                      newPrice: data.promotionPrice.toString(),
+                    ),
+                  );
+                },
+                error: (error, stackTrace) => Text(error.toString()),
+                loading: () => const Text('Loading...'),
+              );
+            }),
             const SizedBox(
               height: 20.0,
             ),
