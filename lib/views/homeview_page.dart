@@ -1,12 +1,10 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:naijabatternew/brain/constants.dart';
 import 'package:naijabatternew/utilities/helper/helper.dart';
 import 'package:naijabatternew/utilities/provider/product/product.dart';
 import 'package:naijabatternew/utilities/provider/promotion/promotion.dart';
-import 'package:naijabatternew/widgets/indicator_dot.dart';
+import 'package:naijabatternew/widgets/advert_content_slider.dart';
 
 import '../views/accesibility_page.dart';
 import '../views/more_product_description.dart';
@@ -28,48 +26,19 @@ class HomePageView extends ConsumerStatefulWidget {
 }
 
 class _HomePageViewState extends ConsumerState<HomePageView> {
-  final List<String> _images = [
-    "images/cokead.png",
-    "images/cokead.png",
-    "images/cokead.png",
-    "images/cokead.png",
-  ];
-
-  late PageController _pageController;
-
-  late Timer _timer;
-
-  int _currentIndex = 0;
-
   @override
   void initState() {
     super.initState();
-    _pageController = PageController(initialPage: _currentIndex);
-    _timer = Timer.periodic(const Duration(seconds: 10), (timer) {
-      if (_currentIndex < _images.length - 1) {
-        _currentIndex++;
-      } else {
-        _currentIndex = 0;
-      }
-      _pageController.animateToPage(
-        _currentIndex,
-        duration: const Duration(milliseconds: 350),
-        curve: Curves.easeOutCubic,
-      );
-    });
   }
 
   @override
   void dispose() {
-    _pageController.dispose();
-    _timer.cancel();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final themeIsLight = ref.watch(themeProvider.notifier).state;
-    var screenWidth = MediaQuery.of(context).size.width;
 
     final titleStyle = TextStyle(
       fontFamily: 'Nunito',
@@ -154,65 +123,7 @@ class _HomePageViewState extends ConsumerState<HomePageView> {
               ),
             ),
             // const SizedBox15(),
-            // const AdvertContent(),
-
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8.0),
-              child: Stack(
-                alignment: Alignment.bottomCenter,
-                children: [
-                  SizedBox(
-                    width: screenWidth,
-                    height: 60,
-                    child: PageView.builder(
-                      itemCount: _images.length,
-                      controller: _pageController,
-                      onPageChanged: (value) {
-                        setState(() {
-                          _currentIndex = value;
-                        });
-                      },
-                      itemBuilder: (context, index) => Image.asset(
-                        _images[index],
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: List.generate(
-                      _images.length,
-                      (index) => IndicatorDot(
-                        isActive: index == _currentIndex,
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    right: 10,
-                    top: 10,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 7.0,
-                        vertical: 4.0,
-                      ),
-                      decoration: BoxDecoration(
-                        color: const Color(0xCE0F29A9),
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      child: const Text(
-                        'AD',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 9.0,
-                          fontFamily: 'Nunito',
-                          fontWeight: FontWeight.w900,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            const AdvertContentsSlider(),
 
             const SizedBox12(),
             Consumer(builder: (context, ref, child) {

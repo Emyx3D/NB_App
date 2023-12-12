@@ -24,8 +24,6 @@ class BusinessProfileView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final themeIsLight = ref.watch(themeProvider.notifier).state;
-    final userProvider = ref.watch(user.notifier).state;
-    final userProductCountProvider = ref.watch(userProductCount.notifier).state;
 
     // bool isPremiumVisible = true;
 
@@ -65,70 +63,83 @@ class BusinessProfileView extends ConsumerWidget {
           const SizedBox(
             height: 4,
           ),
-          Stack(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(2.0),
-                decoration: BoxDecoration(
-                  color: Colors.transparent,
-                  shape: BoxShape.circle,
-                  border: Border.all(
-                    color: themeIsLight
-                        ? const Color(0xFF242760)
-                        : const Color(0xFF373972),
-                    width: 1.0,
-                  ),
-                ),
-                child: CircleAvatar(
-                  radius: 80.0,
-                  backgroundImage:
-                      NetworkImage(baseImage + userProvider.userObj().image),
-                ),
-              ),
-              Positioned(
-                bottom: 0,
-                right: 24,
-                child: Icon(
-                  Icons.photo_camera,
-                  color: themeIsLight
-                      ? const Color(0xFF0F28A9)
-                      : const Color(0xFF373972),
-                  size: 30,
-                ),
-                // FaIcon(
-                //   FontAwesomeIcons.camera,
-                // color: Color(0xFF0F28A9),
-                // size: 30,
-                // ),
-              ),
-            ],
-          ),
-          const SizedBox(
-            height: 5.0,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                userProvider.userObj().name,
-                style: TextStyle(
-                  fontSize: 15.0,
-                  fontFamily: 'Roboto',
-                  fontWeight: FontWeight.w300,
-                  color: themeIsLight
-                      ? const Color(0xFF000000)
-                      : ProjectColors.bigTxtWhite,
-                ),
-              ),
-              const SizedBox(
-                width: 3,
-              ),
-              const Icon(
-                Icons.verified_rounded,
-                size: 15,
-                color: Color(0xFF0F28A9),
-              ),
-            ],
+          Consumer(
+            builder: (context, ref, child) {
+              final userProvider = ref.watch(user);
+
+              return userProvider.when(
+                  data: (data) => Column(
+                        children: [
+                          Stack(
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.all(2.0),
+                                decoration: BoxDecoration(
+                                  color: Colors.transparent,
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                    color: themeIsLight
+                                        ? const Color(0xFF242760)
+                                        : const Color(0xFF373972),
+                                    width: 1.0,
+                                  ),
+                                ),
+                                child: CircleAvatar(
+                                  radius: 80.0,
+                                  backgroundImage: NetworkImage(
+                                      baseImage + data.userObj().image),
+                                ),
+                              ),
+                              Positioned(
+                                bottom: 0,
+                                right: 24,
+                                child: Icon(
+                                  Icons.photo_camera,
+                                  color: themeIsLight
+                                      ? const Color(0xFF0F28A9)
+                                      : const Color(0xFF373972),
+                                  size: 30,
+                                ),
+                                // FaIcon(
+                                //   FontAwesomeIcons.camera,
+                                // color: Color(0xFF0F28A9),
+                                // size: 30,
+                                // ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 5.0,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                data.userObj().name,
+                                style: TextStyle(
+                                  fontSize: 15.0,
+                                  fontFamily: 'Roboto',
+                                  fontWeight: FontWeight.w300,
+                                  color: themeIsLight
+                                      ? const Color(0xFF000000)
+                                      : ProjectColors.bigTxtWhite,
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 3,
+                              ),
+                              const Icon(
+                                Icons.verified_rounded,
+                                size: 15,
+                                color: Color(0xFF0F28A9),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                  error: (error, stackTrace) => Text(error.toString()),
+                  loading: () => const Text('Loading...'));
+            },
           ),
           const SizedBox12(),
           Text(
@@ -145,50 +156,49 @@ class BusinessProfileView extends ConsumerWidget {
           const SizedBox(
             height: 9.0,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              FutureBuilder(
-                  future: userProductCountProvider,
-                  builder: (context, controller) {
-                    return ProfileInfos(
+          Consumer(
+            builder: (context, ref, child) {
+              final userProductCountProvider = ref.watch(userProductCount);
+
+              return userProductCountProvider.when(
+                data: (data) => Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ProfileInfos(
                       title: 'Gift',
-                      total: controller.data?['gift'] ?? 0,
-                    );
-                  }),
-              Container(
-                margin: const EdgeInsets.symmetric(horizontal: 35.0),
-                width: 1.0,
-                height: 65.0, // Adjust the height as needed
-                color: themeIsLight
-                    ? Colors.black
-                    : ProjectColors.bigTxtWhite, // Set the color of the line
-              ),
-              FutureBuilder(
-                future: userProductCountProvider,
-                builder: (context, controller) {
-                  return ProfileInfos(
-                    title: 'Declutter',
-                    total: controller.data?['declutter'] ?? 0,
-                  );
-                },
-              ),
-              Container(
-                margin: const EdgeInsets.symmetric(horizontal: 35.0),
-                width: 1.0,
-                height: 65.0, // Adjust the height as needed
-                color: themeIsLight ? Colors.black : ProjectColors.bigTxtWhite,
-              ),
-              FutureBuilder(
-                future: userProductCountProvider,
-                builder: (context, controller) {
-                  return ProfileInfos(
-                    title: 'Barter',
-                    total: controller.data?['barter'] ?? 0,
-                  );
-                },
-              ),
-            ],
+                      total: data['gift'] ?? 0,
+                    ),
+                    Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 35.0),
+                      width: 1.0,
+                      height: 65.0, // Adjust the height as needed
+                      color: themeIsLight
+                          ? Colors.black
+                          : ProjectColors
+                              .bigTxtWhite, // Set the color of the line
+                    ),
+                    ProfileInfos(
+                      title: 'Declutter',
+                      total: data['declutter'] ?? 0,
+                    ),
+                    Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 35.0),
+                      width: 1.0,
+                      height: 65.0, // Adjust the height as needed
+                      color: themeIsLight
+                          ? Colors.black
+                          : ProjectColors.bigTxtWhite,
+                    ),
+                    ProfileInfos(
+                      title: 'Barter',
+                      total: data['barter'] ?? 0,
+                    )
+                  ],
+                ),
+                error: (error, stackTrace) => Text(error.toString()),
+                loading: () => const Text('Loading...'),
+              );
+            },
           ),
           const SizedBox(
             height: 13.0,
@@ -327,25 +337,21 @@ class BusinessProfileView extends ConsumerWidget {
           ),
           Consumer(
             builder: (context, ref, child) {
-              final products = ref.watch(userProduct.future);
-
-              return FutureBuilder(
-                future: products,
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData) {
-                    return const Text('Loading...');
-                  }
-                  if (snapshot.data!.isEmpty) {
-                    return const EmptyCard();
-                  }
-                  return Container(
-                    margin: const EdgeInsets.symmetric(
-                      horizontal: 30.0,
-                    ),
-                    child: profilepageStackProductsGrid(snapshot.data ?? []),
-                  );
-                },
-              );
+              final products = ref.watch(userProduct);
+              return products.when(
+                  data: (data) {
+                    if (data.isEmpty) {
+                      return const EmptyCard();
+                    }
+                    return Container(
+                      margin: const EdgeInsets.symmetric(
+                        horizontal: 30.0,
+                      ),
+                      child: profilepageStackProductsGrid(data),
+                    );
+                  },
+                  error: (error, stackTrace) => Text(error.toString()),
+                  loading: () => const Text('Loading...'));
             },
           )
         ],

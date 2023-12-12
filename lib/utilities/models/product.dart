@@ -52,4 +52,37 @@ class Product {
       location: Location.fromJson(json['location']),
     );
   }
+
+  int get theProductType {
+    if (productType == 'declutter') {
+      return 3;
+    }
+    if (productType == 'barter') {
+      return 2;
+    }
+    return 1;
+  }
+
+  String theTrade({bool inPromo = false}) {
+    if (theProductType == 3) {
+      if (inPromo) {
+        return '₦$promotionPrice';
+      }
+      return '₦$price';
+    }
+    if (theProductType == 2) {
+      return exchange;
+    }
+    return 'free';
+  }
+
+  String theTradeNarrative() {
+    if (theProductType == 3) {
+      return 'Price';
+    }
+    if (theProductType == 2) {
+      return 'Expected Exchange';
+    }
+    return 'Gift';
+  }
 }
