@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../views/accesibility_page.dart';
+
 import '../utilities/colors.dart';
+import '../views/accesibility_page.dart';
 
 class ProductCard extends ConsumerWidget {
   const ProductCard({
@@ -9,15 +10,17 @@ class ProductCard extends ConsumerWidget {
     required this.image,
     required this.productName,
     required this.productLocation,
-    required this.productType,
+    required this.trade,
     required this.eeisVisible,
+    required this.tradeNarrative,
   });
 
   final ImageProvider image;
   final String productName;
   final String productLocation;
-  final String productType;
+  final String trade;
   final bool eeisVisible;
+  final String tradeNarrative;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -111,7 +114,7 @@ class ProductCard extends ConsumerWidget {
               Visibility(
                 visible: eeisVisible,
                 child: Text(
-                  'Expected Exchange',
+                  tradeNarrative,
                   style: TextStyle(
                     fontSize: 6.0,
                     fontFamily: 'Nunito',
@@ -124,7 +127,7 @@ class ProductCard extends ConsumerWidget {
                 ),
               ),
               Text(
-                productType,
+                trade,
                 style: TextStyle(
                   fontSize: 9.0,
                   fontFamily: 'Nunito',
