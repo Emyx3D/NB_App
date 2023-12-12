@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:naijabatternew/utilities/provider/product.dart';
+import 'package:naijabatternew/utilities/provider/product/product.dart';
 import 'package:naijabatternew/widgets/empty.dart';
 import 'package:naijabatternew/widgets/fields_content.dart';
 import 'package:naijabatternew/widgets/profile_info.dart';

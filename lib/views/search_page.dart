@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:naijabatternew/utilities/provider/product.dart';
+import 'package:naijabatternew/utilities/provider/product/product.dart';
 import 'package:naijabatternew/widgets/empty.dart';
 
 import '../utilities/colors.dart';

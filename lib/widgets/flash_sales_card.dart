@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:naijabatternew/widgets/fields_content.dart';
-import '../views/accesibility_page.dart';
+
 import '../utilities/colors.dart';
+import '../views/accesibility_page.dart';
 
 class BarterFlashSaleCard extends ConsumerWidget {
   const BarterFlashSaleCard({
@@ -11,12 +12,14 @@ class BarterFlashSaleCard extends ConsumerWidget {
     required this.productName,
     required this.location,
     required this.expectedExchange,
+    required this.promotionExpiresAtHm,
   });
 
   final ImageProvider image;
   final String productName;
   final String location;
   final String expectedExchange;
+  final String promotionExpiresAtHm;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -54,7 +57,7 @@ class BarterFlashSaleCard extends ConsumerWidget {
                     borderRadius: BorderRadius.circular(5.0),
                   ),
                   child: Text(
-                    "7:30",
+                    promotionExpiresAtHm,
                     style: TextStyle(
                       fontSize: 12.0,
                       fontFamily: 'Nunito',
@@ -167,20 +170,21 @@ class BarterFlashSaleCard extends ConsumerWidget {
 }
 
 class DeclutterFlashsalesCard extends ConsumerWidget {
-  const DeclutterFlashsalesCard({
-    super.key,
-    required this.image,
-    required this.productName,
-    required this.location,
-    required this.oldPrice,
-    required this.newPrice,
-  });
+  const DeclutterFlashsalesCard(
+      {super.key,
+      required this.image,
+      required this.productName,
+      required this.location,
+      required this.oldPrice,
+      required this.newPrice,
+      required this.promotionExpiresAtHm});
 
   final ImageProvider image;
   final String productName;
   final String location;
   final String oldPrice;
   final String newPrice;
+  final String promotionExpiresAtHm;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -218,7 +222,7 @@ class DeclutterFlashsalesCard extends ConsumerWidget {
                     borderRadius: BorderRadius.circular(5.0),
                   ),
                   child: Text(
-                    "7:30",
+                    promotionExpiresAtHm,
                     style: TextStyle(
                       fontSize: 12.0,
                       fontFamily: 'Nunito',
