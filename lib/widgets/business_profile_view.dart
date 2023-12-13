@@ -10,7 +10,7 @@ import 'package:naijabatternew/widgets/profilepage_stack_products_grid.dart';
 
 import '../utilities/colors.dart';
 import '../views/accesibility_page.dart';
-import '../views/edit_business_profile.dart';
+import '../views/edit_profile_screen.dart';
 import '../views/promote_page.dart';
 import '../views/settings_view.dart';
 // import '../views/upgradenow_declutter_premium_view.dart';
