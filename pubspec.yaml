@@ -54,6 +54,7 @@ dependencies:
   dio: ^5.4.0
   intl:
   cached_network_image:
+  bottom_sheet: ^4.0.0
 
 
 dev_dependencies:

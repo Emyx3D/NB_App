@@ -6,6 +6,7 @@ import 'package:naijabatternew/utilities/colors.dart';
 import 'package:naijabatternew/utilities/themes/themes.dart';
 import 'package:naijabatternew/views/accesibility_page.dart';
 import 'package:naijabatternew/views/loading_page.dart';
+import 'package:naijabatternew/views/login_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 // final themeProvider = StateProvider<bool>((ref) => true);
