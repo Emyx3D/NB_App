@@ -6,6 +6,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:naijabatternew/utilities/colors.dart';
 import 'package:naijabatternew/utilities/helper/helper.dart';
 import 'package:naijabatternew/utilities/provider/category_and_location/category_and_location.dart';
+import 'package:naijabatternew/utilities/provider/product/product.dart';
+import 'package:naijabatternew/views/homepage_view.dart';
 import 'package:naijabatternew/widgets/drop_down_button_category.dart';
 import 'package:naijabatternew/widgets/drop_down_button_product_type.dart';
 
@@ -38,7 +40,7 @@ class _AddProductPageState extends ConsumerState<AddProductPage> {
   bool costisVisible = false;
   bool sending = false;
 
-  Future sendData() async {
+  Future sendData(WidgetRef ref) async {
     setState(() {
       sending = true;
     });
@@ -65,6 +67,16 @@ class _AddProductPageState extends ConsumerState<AddProductPage> {
     setState(() {
       sending = false;
     });
+
+    if (status) {
+      ref.read(userProduct);
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => const HomePage(),
+        ),
+      );
+      return;
+    }
   }
 
   void displayNone() {
@@ -412,7 +424,7 @@ class _AddProductPageState extends ConsumerState<AddProductPage> {
                             onPressed: () async {
                               if (_formKey.currentState!.validate()) {
                                 _formKey.currentState!.save();
-                                await sendData();
+                                await sendData(ref);
                               }
                             },
                             child: sending == true
