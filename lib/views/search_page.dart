@@ -2,19 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:naijabatternew/utilities/provider/product/product.dart';
 import 'package:naijabatternew/widgets/empty.dart';
+import 'package:bottom_sheet/bottom_sheet.dart';
 
 import '../utilities/colors.dart';
+import '../utilities/lists/search_history_list.dart';
 import '../views/accesibility_page.dart';
 import '../widgets/fields_content.dart';
 import '../widgets/pages_header.dart';
 import '../widgets/product_cards_grid.dart';
 import '../widgets/searchpage_constants.dart';
 
-class SearchPage extends ConsumerWidget {
+class SearchPage extends ConsumerStatefulWidget {
   const SearchPage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<SearchPage> createState() => _SearchPageState();
+}
+
+class _SearchPageState extends ConsumerState<SearchPage> {
+  @override
+  Widget build(BuildContext context) {
     final themeIsLight = ref.watch(themeProvider.notifier).state;
 
     final TextEditingController searchController = TextEditingController();
@@ -40,7 +47,7 @@ class SearchPage extends ConsumerWidget {
                           Expanded(
                             flex: 6,
                             child: SizedBox(
-                              width: 295.0,
+                              // width: 295.0,
                               child: TextFormField(
                                 onChanged: (value) {
                                   ref
@@ -93,18 +100,30 @@ class SearchPage extends ConsumerWidget {
                           ),
                           Expanded(
                             flex: 1,
-                            child: Icon(
-                              Icons.tune,
-                              color: themeIsLight
-                                  ? Colors.black
-                                  : ProjectColors.bigTxtWhite,
+                            child: GestureDetector(
+                              onTap: () {
+                                showFlexibleBottomSheet(
+                                  minHeight: 0,
+                                  initHeight: 0.5,
+                                  maxHeight: 0.5,
+                                  context: context,
+                                  builder: _searchFilterBottomSheet,
+                                  isExpand: false,
+                                );
+                              },
+                              child: Icon(
+                                Icons.tune,
+                                color: themeIsLight
+                                    ? Colors.black
+                                    : ProjectColors.bigTxtWhite,
+                              ),
                             ),
                           ),
                         ],
                       ),
                     ),
                     const SizedBox19(),
-                    const Padding(
+                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 20.0),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
@@ -115,33 +134,61 @@ class SearchPage extends ConsumerWidget {
                           SizedBox(
                             height: 6.0,
                           ),
-                          Align(
-                            alignment: Alignment.centerLeft,
-                            child: Wrap(
-                              spacing: 8.0,
-                              runSpacing: 10.0,
-                              children: [
-                                SearchTab(
-                                  text: 'Nike Shoes',
-                                ),
-                                SearchTab(
-                                  text: 'Bicycle',
-                                ),
-                                SearchTab(
-                                  text: 'Dell Laptop',
-                                ),
-                                SearchTab(
-                                  text: 'Umbrella',
-                                ),
-                                SearchTab(
-                                  text: 'Zealot Headphones',
-                                ),
-                                SearchTab(
-                                  text: 'Rubik\'s Cube',
-                                ),
-                              ],
-                            ),
-                          ),
+                          // Align(
+                          //   alignment: Alignment.centerLeft,
+                          //   child: Wrap(
+                          //     spacing: 8.0,
+                          //     runSpacing: 10.0,
+                          //     children: [
+                          //       SearchTab(
+                          //         text: 'Nike Shoes',
+                          //       ),
+                          //       SearchTab(
+                          //         text: 'Bicycle',
+                          //       ),
+                          //       SearchTab(
+                          //         text: 'Dell Laptop',
+                          //       ),
+                          //       SearchTab(
+                          //         text: 'Umbrella',
+                          //       ),
+                          //       SearchTab(
+                          //         text: 'Zealot Headphones',
+                          //       ),
+                          //       SearchTab(
+                          //         text: 'Rubik\'s Cube',
+                          //       ),
+                          //     ],
+                          //   ),
+                          // ),
+
+
+                          ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: 1,
+                        itemBuilder: (BuildContext context, int index) {
+                          List<SearchTab> searchTabsList = List.generate(
+                            searchHistoryList.length,
+                            (index) {
+                              return SearchTab(
+                                text: searchHistoryList[index],
+                                onPressed: () {
+                                  setState(() {
+                                    searchHistoryList
+                                        .remove(searchHistoryList[index]);
+                                  });
+                                },
+                              );
+                            },
+                          );
+
+                          return Wrap(
+                            spacing: 8.0,
+                            runSpacing: 10.0,
+                            children: searchTabsList,
+                          );
+                        },
+                      ),
                         ],
                       ),
                     ),
@@ -186,4 +233,22 @@ class SearchPage extends ConsumerWidget {
       ),
     );
   }
+}
+
+Widget _searchFilterBottomSheet(
+  BuildContext context,
+  ScrollController scrollController,
+  double bottomSheetOffset,
+) {
+  return Container(
+    padding: const EdgeInsets.symmetric(
+      horizontal: 20,
+      vertical: 10,
+    ),
+    child: const Column(
+      children: [
+        Text("Filter Search"),
+      ],
+    ),
+  );
 }
