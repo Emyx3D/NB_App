@@ -43,10 +43,11 @@ class Product {
       name: json['name'] ?? notAvailable,
       productType: json['product_type'] ?? 'barter',
       description: json['description'] ?? notAvailable,
-      images: json['images'] ??
-          [
-            'https://st3.depositphotos.com/23594922/31822/v/1600/depositphotos_318221368-stock-illustration-missing-picture-page-for-website.jpg'
-          ],
+      images: json['images'] == null || json['images'].isEmpty
+          ? [
+              'https://res.cloudinary.com/dwlrmjmai/image/upload/v1702455145/agp5ciu0ldb0qvrtdpd9.jpg'
+            ]
+          : json['images'],
       exchange: json['exchange'] ?? notAvailable,
       promotionExpiresAtHm: json['promotionExpiresAt'] == null
           ? notAvailable

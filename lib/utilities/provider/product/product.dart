@@ -49,26 +49,31 @@ final userProduct = FutureProvider<List<Product>>((ref) async {
 });
 
 final hotDealsProduct = FutureProvider<List<Product>>((ref) async {
-  final user = getUser();
-  int page = 1;
   int limit = 20;
+  final response = await dio.get('/promotion?limit=$limit',
+      options: Options(headers: headerFunc()));
+
+  if (response.statusCode != 200) {
+    return [];
+  }
+
   List<Product> data =
-      await baseProduct('user=${user?.id ?? "0"}', page, limit);
+      (response.data as List).map((e) => Product.fromJson(e)).toList();
   return data;
 });
 
-class SearchProductNotifier extends StateNotifier<List<Product>> {
-  SearchProductNotifier() : super([]);
+class SearchProductNotifier extends StateNotifier<Future<List<Product>>> {
+  SearchProductNotifier() : super(Future(() => []));
 
-  void search(String text) async {
+  Future search(String text) async {
     int page = 1;
     int limit = 20;
-    List<Product> data = await baseProduct('search=$text', page, limit);
+    Future<List<Product>> data = baseProduct('search=$text', page, limit);
     state = data;
   }
 }
 
 final searchProductNotify =
-    StateNotifierProvider<SearchProductNotifier, List<Product>>((ref) {
+    StateNotifierProvider<SearchProductNotifier, Future<List<Product>>>((ref) {
   return SearchProductNotifier();
 });
