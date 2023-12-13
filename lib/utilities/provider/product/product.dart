@@ -107,18 +107,25 @@ final giftProduct =
 });
 
 // search
-class SearchProductNotifier extends StateNotifier<Future<List<Product>>> {
-  SearchProductNotifier() : super(Future(() => []));
+final loadingSearch = StateProvider<bool>((ref) {
+  return false;
+});
 
+class SearchProductNotifier extends StateNotifier<List<Product>> {
+  SearchProductNotifier({required this.ref}) : super([]);
+  Ref ref;
   Future search(String text) async {
+    ref.watch(loadingSearch.notifier).state = true;
+
     int page = 1;
     int limit = 20;
-    Future<List<Product>> data = baseProduct('search=$text', page, limit);
+    List<Product> data = await baseProduct('search=$text', page, limit);
     state = data;
+    ref.watch(loadingSearch.notifier).state = false;
   }
 }
 
 final searchProductNotify =
-    StateNotifierProvider<SearchProductNotifier, Future<List<Product>>>((ref) {
-  return SearchProductNotifier();
+    StateNotifierProvider<SearchProductNotifier, List<Product>>((ref) {
+  return SearchProductNotifier(ref: ref);
 });

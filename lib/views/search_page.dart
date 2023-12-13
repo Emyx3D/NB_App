@@ -20,11 +20,12 @@ class SearchPage extends ConsumerStatefulWidget {
 }
 
 class _SearchPageState extends ConsumerState<SearchPage> {
+  final TextEditingController searchController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     final themeIsLight = ref.watch(themeProvider.notifier).state;
-
-    final TextEditingController searchController = TextEditingController();
+    final loadingSearchProvider = ref.watch(loadingSearch);
 
     return Scaffold(
       appBar: const PagesHeader(),
@@ -204,20 +205,19 @@ class _SearchPageState extends ConsumerState<SearchPage> {
                         const SizedBox(
                           height: 6.0,
                         ),
-                        FutureBuilder(
-                          future: products,
-                          builder: (context, snapshot) {
-                            if (!snapshot.hasData) {
+                        Builder(
+                          builder: (context) {
+                            if (loadingSearchProvider) {
                               return const Text('Loading...');
                             }
-                            if (snapshot.data!.isEmpty) {
+                            if (products.isEmpty) {
                               return const EmptyCard();
                             }
                             return Container(
                               alignment: Alignment.center,
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 15.0),
-                              child: productsGrid(snapshot.data ?? []),
+                              child: productsGrid(products ?? []),
                             );
                           },
                         ),
