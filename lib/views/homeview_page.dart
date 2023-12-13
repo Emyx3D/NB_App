@@ -91,7 +91,7 @@ class _HomePageViewState extends ConsumerState<HomePageView> {
                                           builder: (context) {
                                             return ProductDescriptionView(
                                               image: NetworkImage(
-                                                data[index].image,
+                                                data[index].images[0],
                                               ),
                                               productName: data[index].name,
                                               location:
@@ -106,7 +106,7 @@ class _HomePageViewState extends ConsumerState<HomePageView> {
                                       );
                                     },
                                     image: NetworkImage(
-                                      data[index].image,
+                                      data[index].images[0],
                                     ),
                                     productName: data[index].name,
                                     location: data[index].location.state,
@@ -137,7 +137,7 @@ class _HomePageViewState extends ConsumerState<HomePageView> {
                     padding: const EdgeInsets.symmetric(horizontal: 21.0),
                     child: BarterFlashSaleCard(
                       promotionExpiresAtHm: data.promotionExpiresAtHm,
-                      image: NetworkImage(data.image),
+                      image: NetworkImage(data.images[0]),
                       productName: data.name,
                       location: data.location.state,
                       expectedExchange: data.exchange,
@@ -187,7 +187,7 @@ class _HomePageViewState extends ConsumerState<HomePageView> {
                                           builder: (context) {
                                             return ProductDescriptionView(
                                               image: NetworkImage(
-                                                data[index].image,
+                                                data[index].images[0],
                                               ),
                                               productName: data[index].name,
                                               location:
@@ -202,7 +202,7 @@ class _HomePageViewState extends ConsumerState<HomePageView> {
                                       );
                                     },
                                     image: NetworkImage(
-                                      data[index].image,
+                                      data[index].images[0],
                                     ),
                                     productName: data[index].name,
                                     location: data[index].location.state,
@@ -233,7 +233,7 @@ class _HomePageViewState extends ConsumerState<HomePageView> {
                     padding: const EdgeInsets.symmetric(horizontal: 21.0),
                     child: DeclutterFlashsalesCard(
                       promotionExpiresAtHm: data.promotionExpiresAtHm,
-                      image: NetworkImage(data.image),
+                      image: NetworkImage(data.images[0]),
                       productName: data.name,
                       location: data.location.state,
                       oldPrice: data.price.toString(),
@@ -283,7 +283,7 @@ class _HomePageViewState extends ConsumerState<HomePageView> {
                                           builder: (context) {
                                             return ProductDescriptionView(
                                               image: NetworkImage(
-                                                data[index].image,
+                                                data[index].images[0],
                                               ),
                                               productName: data[index].name,
                                               location:
@@ -298,7 +298,7 @@ class _HomePageViewState extends ConsumerState<HomePageView> {
                                       );
                                     },
                                     image: NetworkImage(
-                                      data[index].image,
+                                      data[index].images[0],
                                     ),
                                     productName: data[index].name,
                                     location: data[index].location.state,

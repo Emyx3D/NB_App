@@ -21,14 +21,24 @@ Map<String, dynamic> headerFunc() {
   return res;
 }
 
-Future<bool> sendDataWithImage(Map<String, dynamic> data, XFile? file) async {
+Future<bool> sendDataWithImage(
+    Map<String, dynamic> data, List<XFile?>? files) async {
   try {
-    if (file != null) {
-      data['image'] = await MultipartFile.fromFile(
-        file.path,
-        filename: file.name,
-      );
+    if (files != null) {
+      List<MultipartFile> multipartFiles = [];
+      for (XFile? file in files) {
+        if (file != null) {
+          multipartFiles.add(
+            await MultipartFile.fromFile(
+              file.path,
+              filename: file.name,
+            ),
+          );
+        }
+      }
+      data['images'] = multipartFiles;
     }
+
     print('data: $data');
 
     FormData formData = FormData.fromMap(data);

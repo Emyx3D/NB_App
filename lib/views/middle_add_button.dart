@@ -63,7 +63,7 @@ class _AddProductPageState extends ConsumerState<AddProductPage> {
       data['description'] = descriptionValue;
     }
 
-    bool status = await sendDataWithImage(data, imageFile);
+    bool status = await sendDataWithImage(data, [imageFile]);
     setState(() {
       sending = false;
     });
