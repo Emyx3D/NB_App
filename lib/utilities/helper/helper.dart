@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:naijabatternew/utilities/helper/dio.dart';
+import 'package:naijabatternew/utilities/helper/snackbar.dart';
 import 'package:naijabatternew/utilities/models/user.dart';
 import 'package:naijabatternew/utilities/provider/auth/auth.dart';
 
@@ -20,14 +21,24 @@ Map<String, dynamic> headerFunc() {
   return res;
 }
 
-Future<bool> sendDataWithImage(Map<String, dynamic> data, XFile? file) async {
+Future<bool> sendDataWithImage(
+    Map<String, dynamic> data, List<XFile?>? files) async {
   try {
-    if (file != null) {
-      data['image'] = await MultipartFile.fromFile(
-        file.path,
-        filename: file.name,
-      );
+    if (files != null) {
+      List<MultipartFile> multipartFiles = [];
+      for (XFile? file in files) {
+        if (file != null) {
+          multipartFiles.add(
+            await MultipartFile.fromFile(
+              file.path,
+              filename: file.name,
+            ),
+          );
+        }
+      }
+      data['images'] = multipartFiles;
     }
+
     print('data: $data');
 
     FormData formData = FormData.fromMap(data);
@@ -36,6 +47,12 @@ Future<bool> sendDataWithImage(Map<String, dynamic> data, XFile? file) async {
         data: formData, options: Options(headers: headerFunc()));
 
     print('Response: ${response.data}');
+
+    if (response.statusCode.toString().startsWith('2')) {
+      successSnackbar("Product created");
+    } else {
+      failedSnackbar(response.data['error'] ?? 'Product failed to create');
+    }
     return response.statusCode.toString().startsWith('2');
   } catch (error) {
     print('Error: $error');

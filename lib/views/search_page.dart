@@ -1,8 +1,8 @@
+import 'package:bottom_sheet/bottom_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:naijabatternew/utilities/provider/product/product.dart';
 import 'package:naijabatternew/widgets/empty.dart';
-import 'package:bottom_sheet/bottom_sheet.dart';
 
 import '../utilities/colors.dart';
 import '../utilities/lists/search_history_list.dart';
@@ -20,11 +20,12 @@ class SearchPage extends ConsumerStatefulWidget {
 }
 
 class _SearchPageState extends ConsumerState<SearchPage> {
+  final TextEditingController searchController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     final themeIsLight = ref.watch(themeProvider.notifier).state;
-
-    final TextEditingController searchController = TextEditingController();
+    final loadingSearchProvider = ref.watch(loadingSearch);
 
     return Scaffold(
       appBar: const PagesHeader(),
@@ -123,15 +124,15 @@ class _SearchPageState extends ConsumerState<SearchPage> {
                       ),
                     ),
                     const SizedBox19(),
-                     Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 20.0),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          SearchTitle(
+                          const SearchTitle(
                             text: 'Search History',
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 6.0,
                           ),
                           // Align(
@@ -162,33 +163,32 @@ class _SearchPageState extends ConsumerState<SearchPage> {
                           //   ),
                           // ),
 
-
                           ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: 1,
-                        itemBuilder: (BuildContext context, int index) {
-                          List<SearchTab> searchTabsList = List.generate(
-                            searchHistoryList.length,
-                            (index) {
-                              return SearchTab(
-                                text: searchHistoryList[index],
-                                onPressed: () {
-                                  setState(() {
-                                    searchHistoryList
-                                        .remove(searchHistoryList[index]);
-                                  });
+                            shrinkWrap: true,
+                            itemCount: 1,
+                            itemBuilder: (BuildContext context, int index) {
+                              List<SearchTab> searchTabsList = List.generate(
+                                searchHistoryList.length,
+                                (index) {
+                                  return SearchTab(
+                                    text: searchHistoryList[index],
+                                    onPressed: () {
+                                      setState(() {
+                                        searchHistoryList
+                                            .remove(searchHistoryList[index]);
+                                      });
+                                    },
+                                  );
                                 },
                               );
-                            },
-                          );
 
-                          return Wrap(
-                            spacing: 8.0,
-                            runSpacing: 10.0,
-                            children: searchTabsList,
-                          );
-                        },
-                      ),
+                              return Wrap(
+                                spacing: 8.0,
+                                runSpacing: 10.0,
+                                children: searchTabsList,
+                              );
+                            },
+                          ),
                         ],
                       ),
                     ),
@@ -205,20 +205,19 @@ class _SearchPageState extends ConsumerState<SearchPage> {
                         const SizedBox(
                           height: 6.0,
                         ),
-                        FutureBuilder(
-                          future: Future(() => products),
-                          builder: (context, snapshot) {
-                            if (!snapshot.hasData) {
+                        Builder(
+                          builder: (context) {
+                            if (loadingSearchProvider) {
                               return const Text('Loading...');
                             }
-                            if (snapshot.data!.isEmpty) {
+                            if (products.isEmpty) {
                               return const EmptyCard();
                             }
                             return Container(
                               alignment: Alignment.center,
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 15.0),
-                              child: productsGrid(snapshot.data ?? []),
+                              child: productsGrid(products ?? []),
                             );
                           },
                         ),

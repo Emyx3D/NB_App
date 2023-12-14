@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:naijabatternew/utilities/provider/promotion/ad.dart';
@@ -15,9 +13,6 @@ class AdvertContentsSlider extends ConsumerStatefulWidget {
 
 class _AdvertContentsSliderState extends ConsumerState<AdvertContentsSlider> {
   late PageController _pageController;
-
-  late Timer _timer;
-
   int _currentIndex = 0;
 
   @override
@@ -27,25 +22,26 @@ class _AdvertContentsSliderState extends ConsumerState<AdvertContentsSlider> {
     _pageController = PageController(initialPage: _currentIndex);
   }
 
-  sliderThrough(List data) {
-    _timer = Timer.periodic(const Duration(seconds: 10), (timer) {
-      if (_currentIndex < data.length - 1) {
-        _currentIndex++;
-      } else {
-        _currentIndex = 0;
-      }
-      _pageController.animateToPage(
-        _currentIndex,
-        duration: const Duration(milliseconds: 350),
-        curve: Curves.easeOutCubic,
-      );
-    });
-  }
+  // sliderThrough(List data) {
+  //   late Timer timer;
+
+  //   timer = Timer.periodic(const Duration(seconds: 10), (timer) {
+  //     if (_currentIndex < data.length - 1) {
+  //       _currentIndex++;
+  //     } else {
+  //       _currentIndex = 0;
+  //     }
+  //     _pageController.animateToPage(
+  //       _currentIndex,
+  //       duration: const Duration(milliseconds: 350),
+  //       curve: Curves.easeOutCubic,
+  //     );
+  //   });
+  // }
 
   @override
   void dispose() {
     _pageController.dispose();
-    _timer.cancel();
     super.dispose();
   }
 
@@ -59,7 +55,7 @@ class _AdvertContentsSliderState extends ConsumerState<AdvertContentsSlider> {
 
         return adProvider.when(
           data: (data) {
-            sliderThrough(data);
+            // sliderThrough(data);
             if (data.isEmpty) {
               return const SizedBox();
             }
