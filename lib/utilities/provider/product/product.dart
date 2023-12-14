@@ -33,13 +33,6 @@ final hotDealsProduct = FutureProvider<List<Product>>((ref) async {
   return data;
 });
 
-final declutterProduct = FutureProvider<List<Product>>((ref) async {
-  int page = 1;
-  int limit = 20;
-  List<Product> data = await baseProduct('productType=declutter', page, limit);
-  return data;
-});
-
 final userProduct = FutureProvider<List<Product>>((ref) async {
   final user = getUser();
   int page = 1;
@@ -48,13 +41,57 @@ final userProduct = FutureProvider<List<Product>>((ref) async {
       await baseProduct('user=${user?.id ?? "0"}', page, limit);
   return data;
 });
-
-// final barterProduct = FutureProvider<List<Product>>((ref) async {
+// final declutterProduct = FutureProvider<List<Product>>((ref) async {
 //   int page = 1;
 //   int limit = 20;
-//   List<Product> data = await baseProduct('productType=barter', page, limit);
+//   List<Product> data = await baseProduct('productType=declutter', page, limit);
 //   return data;
 // });
+
+// declutter
+final loadingDeclutter = StateProvider<bool>((ref) {
+  return false;
+});
+
+class DeclutterProductNotifier extends StateNotifier<Future<List<Product>>> {
+  DeclutterProductNotifier({required this.ref})
+      : super(baseProduct('productType=declutter', 1, 2));
+
+  Ref ref;
+  int page = 2;
+  int limit = 2;
+
+  Future<void> fetchScrollListener(ScrollController scrollController) async {
+    if (scrollController.offset >= scrollController.position.maxScrollExtent &&
+        !scrollController.position.outOfRange) {
+      ref.watch(loadingDeclutter.notifier).state = true;
+      Future<List<Product>> data =
+          baseProduct('productType=declutter', page, limit);
+      page += 1;
+
+      final fornow = await Future.wait([state, data]);
+
+      state = Future(() => fornow.expand((list) => list).toList());
+      ref.watch(loadingDeclutter.notifier).state = false;
+
+      if (scrollController.offset >=
+              scrollController.position.maxScrollExtent &&
+          !scrollController.position.outOfRange) {
+        scrollController.animateTo(
+          scrollController.offset + 200,
+          duration: const Duration(milliseconds: 500),
+          curve: Curves.easeInOut,
+        );
+      }
+    }
+  }
+}
+
+final declutterProduct =
+    StateNotifierProvider<DeclutterProductNotifier, Future<List<Product>>>(
+        (ref) {
+  return DeclutterProductNotifier(ref: ref);
+});
 
 // barter
 final loadingBarter = StateProvider<bool>((ref) {
@@ -73,7 +110,8 @@ class BarterProductNotifier extends StateNotifier<Future<List<Product>>> {
     if (scrollController.offset >= scrollController.position.maxScrollExtent &&
         !scrollController.position.outOfRange) {
       ref.watch(loadingBarter.notifier).state = true;
-      Future<List<Product>> data = baseProduct('productType=barter', page, limit);
+      Future<List<Product>> data =
+          baseProduct('productType=barter', page, limit);
       page += 1;
 
       final fornow = await Future.wait([state, data]);
@@ -98,7 +136,6 @@ final barterProduct =
     StateNotifierProvider<BarterProductNotifier, Future<List<Product>>>((ref) {
   return BarterProductNotifier(ref: ref);
 });
-
 
 // gift
 final loadingGift = StateProvider<bool>((ref) {
