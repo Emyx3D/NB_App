@@ -34,21 +34,36 @@ class _HomePageViewState extends ConsumerState<HomePageView> {
 
   @override
   void dispose() {
-    scrollController.dispose();
-    scrollController.removeListener(() {});
+    scrollGiftController.dispose();
+    scrollGiftController.removeListener(() {});
     super.dispose();
   }
 
-  final scrollController = ScrollController();
+  final scrollGiftController = ScrollController();
+  final scrollBarterController = ScrollController();
+  final scrollDeclutterController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
     final themeIsLight = ref.watch(themeProvider.notifier).state;
+    // barter
+    final barterProductProvider = ref.watch(barterProduct);
+    final loadingBarterProvider = ref.watch(loadingBarter);
+    scrollBarterController.addListener(() => ref
+        .watch(barterProduct.notifier)
+        .fetchScrollListener(scrollBarterController));
+    // declutter
+    final declutterProductProvider = ref.watch(declutterProduct);
+    final loadingDeclutterProvider = ref.watch(loadingDeclutter);
+    scrollDeclutterController.addListener(() => ref
+        .watch(declutterProduct.notifier)
+        .fetchScrollListener(scrollDeclutterController));
+    // gift
     final giftProductProvider = ref.watch(giftProduct);
     final loadingGiftProvider = ref.watch(loadingGift);
-
-    scrollController.addListener(() =>
-        ref.watch(giftProduct.notifier).fetchScrollListener(scrollController));
+    scrollGiftController.addListener(() => ref
+        .watch(giftProduct.notifier)
+        .fetchScrollListener(scrollGiftController));
 
     final titleStyle = TextStyle(
       fontFamily: 'Nunito',
@@ -81,52 +96,74 @@ class _HomePageViewState extends ConsumerState<HomePageView> {
                       style: titleStyle,
                     ),
                   ),
-                  Consumer(
-                    builder: (context, ref, child) {
-                      final products = ref.watch(barterProduct);
-                      return products.when(
-                          data: (data) => Container(
-                                height: 300,
-                                width: MediaQuery.of(context).size.width - 11,
-                                alignment: Alignment.centerLeft,
-                                child: ListView.builder(
-                                  shrinkWrap: true,
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount: data.length,
-                                  itemBuilder: (context, index) =>
-                                      BarterScrollCard(
-                                    onPressed: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) {
-                                            return ProductDescriptionView(
-                                              image: NetworkImage(
-                                                data[index].images[0],
-                                              ),
-                                              productName: data[index].name,
-                                              location:
-                                                  data[index].location.state,
-                                              expectedExchange:
-                                                  data[index].exchange,
-                                              productDescription:
-                                                  data[index].description,
-                                            );
-                                          },
-                                        ),
-                                      );
-                                    },
-                                    image: NetworkImage(
-                                      data[index].images[0],
+                  FutureBuilder(
+                    future: barterProductProvider,
+                    builder: (context, snapshot) {
+                      if (!snapshot.hasData) {
+                        return const Text('Loading...');
+                      }
+                      if (snapshot.hasError) {
+                        return Text(snapshot.error.toString());
+                      }
+                      if (snapshot.data!.isEmpty) {
+                        return const EmptyCard();
+                      }
+                      return Container(
+                        height: 300,
+                        width: MediaQuery.of(context).size.width - 11,
+                        alignment: Alignment.centerLeft,
+                        child: ListView.builder(
+                            controller: scrollBarterController,
+                            shrinkWrap: true,
+                            scrollDirection: Axis.horizontal,
+                            itemCount: snapshot.data!.length + 1,
+                            itemBuilder: (context, index) {
+                              if (index == snapshot.data!.length) {
+                                if (loadingBarterProvider) {
+                                  return Center(
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(right: 10),
+                                      child: CircularProgressIndicator(
+                                        color: ProjectColors.errorColor,
+                                      ),
                                     ),
-                                    productName: data[index].name,
-                                    location: data[index].location.state,
-                                    expectedExchange: data[index].exchange,
-                                  ),
+                                  );
+                                }
+                                return const SizedBox();
+                              }
+                              return BarterScrollCard(
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) {
+                                        return ProductDescriptionView(
+                                          image: NetworkImage(
+                                            snapshot.data![index].images[0],
+                                          ),
+                                          productName:
+                                              snapshot.data![index].name,
+                                          location: snapshot
+                                              .data![index].location.state,
+                                          expectedExchange:
+                                              snapshot.data![index].exchange,
+                                          productDescription:
+                                              snapshot.data![index].description,
+                                        );
+                                      },
+                                    ),
+                                  );
+                                },
+                                image: NetworkImage(
+                                  snapshot.data![index].images[0],
                                 ),
-                              ),
-                          error: (error, stackTrace) => Text(error.toString()),
-                          loading: () => const Text('Loading...'));
+                                productName: snapshot.data![index].name,
+                                location: snapshot.data![index].location.state,
+                                expectedExchange:
+                                    snapshot.data![index].exchange,
+                              );
+                            }),
+                      );
                     },
                   ),
                 ],
@@ -136,6 +173,7 @@ class _HomePageViewState extends ConsumerState<HomePageView> {
             const AdvertContentsSlider(),
 
             const SizedBox12(),
+
             Consumer(builder: (context, ref, child) {
               final barterProductPromotionProvider =
                   ref.watch(barterProductPromotion);
@@ -177,53 +215,74 @@ class _HomePageViewState extends ConsumerState<HomePageView> {
                       style: titleStyle,
                     ),
                   ),
-                  Consumer(
-                    builder: (context, ref, child) {
-                      final products = ref.watch(declutterProduct);
-                      return products.when(
-                          data: (data) => Container(
-                                height: 300,
-                                width: MediaQuery.of(context).size.width - 11,
-                                alignment: Alignment.centerLeft,
-                                child: ListView.builder(
-                                  shrinkWrap: true,
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount: data.length,
-                                  itemBuilder: (context, index) =>
-                                      DeclutterScrollCard(
-                                    onPressed: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) {
-                                            return ProductDescriptionView(
-                                              image: NetworkImage(
-                                                data[index].images[0],
-                                              ),
-                                              productName: data[index].name,
-                                              location:
-                                                  data[index].location.state,
-                                              expectedExchange:
-                                                  data[index].exchange,
-                                              productDescription:
-                                                  data[index].description,
-                                            );
-                                          },
-                                        ),
-                                      );
-                                    },
-                                    image: NetworkImage(
-                                      data[index].images[0],
+                  FutureBuilder(
+                    future: declutterProductProvider,
+                    builder: (context, snapshot) {
+                      if (!snapshot.hasData) {
+                        return const Text('Loading...');
+                      }
+                      if (snapshot.hasError) {
+                        return Text(snapshot.error.toString());
+                      }
+                      if (snapshot.data!.isEmpty) {
+                        return const EmptyCard();
+                      }
+                      return Container(
+                        height: 300,
+                        width: MediaQuery.of(context).size.width - 11,
+                        alignment: Alignment.centerLeft,
+                        child: ListView.builder(
+                            controller: scrollDeclutterController,
+                            shrinkWrap: true,
+                            scrollDirection: Axis.horizontal,
+                            itemCount: snapshot.data!.length + 1,
+                            itemBuilder: (context, index) {
+                              if (index == snapshot.data!.length) {
+                                if (loadingDeclutterProvider) {
+                                  return Center(
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(right: 10),
+                                      child: CircularProgressIndicator(
+                                        color: ProjectColors.errorColor,
+                                      ),
                                     ),
-                                    productName: data[index].name,
-                                    location: data[index].location.state,
-                                    price:
-                                        '₦${formattedPrice(data[index].price)}',
-                                  ),
+                                  );
+                                }
+                                return const SizedBox();
+                              }
+                              return DeclutterScrollCard(
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) {
+                                        return ProductDescriptionView(
+                                          image: NetworkImage(
+                                            snapshot.data![index].images[0],
+                                          ),
+                                          productName:
+                                              snapshot.data![index].name,
+                                          location: snapshot
+                                              .data![index].location.state,
+                                          expectedExchange:
+                                              snapshot.data![index].exchange,
+                                          productDescription:
+                                              snapshot.data![index].description,
+                                        );
+                                      },
+                                    ),
+                                  );
+                                },
+                                image: NetworkImage(
+                                  snapshot.data![index].images[0],
                                 ),
-                              ),
-                          error: (error, stackTrace) => Text(error.toString()),
-                          loading: () => const Text('Loading...'));
+                                productName: snapshot.data![index].name,
+                                location: snapshot.data![index].location.state,
+                                price:
+                                    '₦${formattedPrice(snapshot.data![index].price)}',
+                              );
+                            }),
+                      );
                     },
                   ),
                 ],
@@ -290,7 +349,7 @@ class _HomePageViewState extends ConsumerState<HomePageView> {
                         width: MediaQuery.of(context).size.width - 11,
                         alignment: Alignment.centerLeft,
                         child: ListView.builder(
-                            controller: scrollController,
+                            controller: scrollGiftController,
                             shrinkWrap: true,
                             scrollDirection: Axis.horizontal,
                             itemCount: snapshot.data!.length + 1,
