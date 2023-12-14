@@ -19,19 +19,19 @@ Future<List<Product>> baseProduct(String paramStr, int page, int limit) async {
   return data;
 }
 
-final barterProduct = FutureProvider<List<Product>>((ref) async {
-  int page = 1;
+final hotDealsProduct = FutureProvider<List<Product>>((ref) async {
   int limit = 20;
-  List<Product> data = await baseProduct('productType=barter', page, limit);
+  final response = await dio.get('/promotion?limit=$limit',
+      options: Options(headers: headerFunc()));
+
+  if (response.statusCode != 200) {
+    return [];
+  }
+
+  List<Product> data =
+      (response.data as List).map((e) => Product.fromJson(e)).toList();
   return data;
 });
-
-// final giftProduct = FutureProvider<List<Product>>((ref) async {
-//   int page = 1;
-//   int limit = 20;
-//   List<Product> data = await baseProduct('productType=gift', page, limit);
-//   return data;
-// });
 
 final declutterProduct = FutureProvider<List<Product>>((ref) async {
   int page = 1;
@@ -49,19 +49,56 @@ final userProduct = FutureProvider<List<Product>>((ref) async {
   return data;
 });
 
-final hotDealsProduct = FutureProvider<List<Product>>((ref) async {
-  int limit = 20;
-  final response = await dio.get('/promotion?limit=$limit',
-      options: Options(headers: headerFunc()));
+// final barterProduct = FutureProvider<List<Product>>((ref) async {
+//   int page = 1;
+//   int limit = 20;
+//   List<Product> data = await baseProduct('productType=barter', page, limit);
+//   return data;
+// });
 
-  if (response.statusCode != 200) {
-    return [];
-  }
-
-  List<Product> data =
-      (response.data as List).map((e) => Product.fromJson(e)).toList();
-  return data;
+// barter
+final loadingBarter = StateProvider<bool>((ref) {
+  return false;
 });
+
+class BarterProductNotifier extends StateNotifier<Future<List<Product>>> {
+  BarterProductNotifier({required this.ref})
+      : super(baseProduct('productType=barter', 1, 2));
+
+  Ref ref;
+  int page = 2;
+  int limit = 2;
+
+  Future<void> fetchScrollListener(ScrollController scrollController) async {
+    if (scrollController.offset >= scrollController.position.maxScrollExtent &&
+        !scrollController.position.outOfRange) {
+      ref.watch(loadingBarter.notifier).state = true;
+      Future<List<Product>> data = baseProduct('productType=barter', page, limit);
+      page += 1;
+
+      final fornow = await Future.wait([state, data]);
+
+      state = Future(() => fornow.expand((list) => list).toList());
+      ref.watch(loadingBarter.notifier).state = false;
+
+      if (scrollController.offset >=
+              scrollController.position.maxScrollExtent &&
+          !scrollController.position.outOfRange) {
+        scrollController.animateTo(
+          scrollController.offset + 200,
+          duration: const Duration(milliseconds: 500),
+          curve: Curves.easeInOut,
+        );
+      }
+    }
+  }
+}
+
+final barterProduct =
+    StateNotifierProvider<BarterProductNotifier, Future<List<Product>>>((ref) {
+  return BarterProductNotifier(ref: ref);
+});
+
 
 // gift
 final loadingGift = StateProvider<bool>((ref) {
