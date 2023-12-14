@@ -8,7 +8,7 @@ class Product {
   final double promotionPrice;
   final String name;
   final String productType;
-  final String image;
+  final List images;
   final String exchange;
   final String description;
   final Category category;
@@ -21,7 +21,7 @@ class Product {
     required this.promotionPrice,
     required this.name,
     required this.productType,
-    required this.image,
+    required this.images,
     required this.description,
     required this.category,
     required this.exchange,
@@ -43,7 +43,11 @@ class Product {
       name: json['name'] ?? notAvailable,
       productType: json['product_type'] ?? 'barter',
       description: json['description'] ?? notAvailable,
-      image: json['image'] ?? '',
+      images: json['images'] == null || json['images'].isEmpty
+          ? [
+              'https://res.cloudinary.com/dwlrmjmai/image/upload/v1702455145/agp5ciu0ldb0qvrtdpd9.jpg'
+            ]
+          : json['images'],
       exchange: json['exchange'] ?? notAvailable,
       promotionExpiresAtHm: json['promotionExpiresAt'] == null
           ? notAvailable

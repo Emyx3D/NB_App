@@ -14,7 +14,7 @@ Widget productsGrid(List<Product> products) {
               margin: const EdgeInsets.only(left: 5, right: 5, bottom: 12),
               alignment: Alignment.center,
               child: ProductCard(
-                image: NetworkImage(item.image),
+                image: NetworkImage(item.images[0]),
                 productName: item.name,
                 productLocation: item.location.state,
                 trade: item.theTrade(inPromo: true),

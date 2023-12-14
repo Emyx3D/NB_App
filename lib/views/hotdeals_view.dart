@@ -48,7 +48,7 @@ class _HotDealsPageState extends ConsumerState<HotDealsPage> {
                               height: 250.0,
                               fit: BoxFit.cover,
                               alignment: Alignment.center,
-                              image: NetworkImage(firstData.image),
+                              image: NetworkImage(firstData.images[0]),
                             ),
                             Container(
                               alignment: Alignment.centerLeft,
