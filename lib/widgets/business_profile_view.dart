@@ -69,43 +69,23 @@ class BusinessProfileView extends ConsumerWidget {
               return userProvider.when(
                   data: (data) => Column(
                         children: [
-                          Stack(
-                            children: [
-                              Container(
-                                padding: const EdgeInsets.all(2.0),
-                                decoration: BoxDecoration(
-                                  color: Colors.transparent,
-                                  shape: BoxShape.circle,
-                                  border: Border.all(
-                                    color: themeIsLight
-                                        ? const Color(0xFF242760)
-                                        : const Color(0xFF373972),
-                                    width: 1.0,
-                                  ),
-                                ),
-                                child: CircleAvatar(
-                                  radius: 80.0,
-                                  backgroundImage:
-                                      NetworkImage(data.userObj().image),
-                                ),
+                          Container(
+                            padding: const EdgeInsets.all(2.0),
+                            decoration: BoxDecoration(
+                              color: Colors.transparent,
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                color: themeIsLight
+                                    ? const Color(0xFF242760)
+                                    : const Color(0xFF373972),
+                                width: 1.0,
                               ),
-                              Positioned(
-                                bottom: 0,
-                                right: 24,
-                                child: Icon(
-                                  Icons.photo_camera,
-                                  color: themeIsLight
-                                      ? const Color(0xFF0F28A9)
-                                      : const Color(0xFF373972),
-                                  size: 30,
-                                ),
-                                // FaIcon(
-                                //   FontAwesomeIcons.camera,
-                                // color: Color(0xFF0F28A9),
-                                // size: 30,
-                                // ),
-                              ),
-                            ],
+                            ),
+                            child: CircleAvatar(
+                              radius: 80.0,
+                              backgroundImage:
+                                  NetworkImage(data.userObj().image),
+                            ),
                           ),
                           const SizedBox(
                             height: 5.0,

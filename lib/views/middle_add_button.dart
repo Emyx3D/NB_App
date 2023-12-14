@@ -10,6 +10,7 @@ import 'package:naijabatternew/utilities/provider/product/product.dart';
 import 'package:naijabatternew/views/homepage_view.dart';
 import 'package:naijabatternew/widgets/drop_down_button_category.dart';
 import 'package:naijabatternew/widgets/drop_down_button_product_type.dart';
+import 'package:naijabatternew/widgets/pfp_image_picker_bottom_sheet.dart';
 
 import '../views/accesibility_page.dart';
 import '../views/edit_and_upload_products_page.dart';
@@ -102,11 +103,29 @@ class _AddProductPageState extends ConsumerState<AddProductPage> {
 
   ImagePicker imagePicker = ImagePicker();
   XFile? imageFile;
+  XFile? imageFile2;
+  XFile? imageFile3;
 
   void pickFromGallery() {
     imagePicker.pickImage(source: ImageSource.gallery).then((value) {
       setState(() {
         imageFile = value;
+      });
+    });
+  }
+
+  void pickFromGallery2() {
+    imagePicker.pickImage(source: ImageSource.gallery).then((value) {
+      setState(() {
+        imageFile2 = value;
+      });
+    });
+  }
+
+  void pickFromGallery3() {
+    imagePicker.pickImage(source: ImageSource.gallery).then((value) {
+      setState(() {
+        imageFile3 = value;
       });
     });
   }
@@ -119,6 +138,22 @@ class _AddProductPageState extends ConsumerState<AddProductPage> {
     });
   }
 
+  void pickFromCamera2() {
+    imagePicker.pickImage(source: ImageSource.camera).then((value) {
+      setState(() {
+        imageFile2 = value;
+      });
+    });
+  }
+
+  void pickFromCamera3() {
+    imagePicker.pickImage(source: ImageSource.camera).then((value) {
+      setState(() {
+        imageFile3 = value;
+      });
+    });
+  }
+
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -126,6 +161,8 @@ class _AddProductPageState extends ConsumerState<AddProductPage> {
     final themeIsLight = ref.watch(themeProvider.notifier).state;
     final locationProvider = ref.watch(location);
     final categoryProvider = ref.watch(category);
+    // var screenWidth = MediaQuery.of(context).size.width;
+    // var screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
       appBar: const PagesHeader(),
@@ -137,37 +174,155 @@ class _AddProductPageState extends ConsumerState<AddProductPage> {
               height: 25.0,
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 40.0),
+              padding: const EdgeInsets.symmetric(horizontal: 30.0),
               child: Column(
                 children: [
-                  GestureDetector(
-                    onTap: () {
-                      pickFromGallery();
-                    },
-                    child: Container(
-                      height: 197.0,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color: themeIsLight
-                            ? const Color(0x5CD1D1D6)
-                            : const Color(0x5C35353B),
-                        borderRadius: BorderRadius.circular(5.0),
-                      ),
-                      child: imageFile == null
-                          ? Center(
-                              child: Icon(
-                                Icons.add,
-                                size: 55.0,
-                                color: themeIsLight
-                                    ? const Color(0xFF6F7ECB)
-                                    : const Color(0xFF6C7396),
+                 
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Flexible(
+                              child: GestureDetector(
+                                onTap: () {
+                                  // pickFromGallery();
+                                  showModalBottomSheet(
+                                    context: context,
+                                    builder: (context) {
+                                      return PfpImagePickerBottomSheet(
+                                        pickFromCamera: pickFromCamera,
+                                        pickFromGallery: pickFromGallery,
+                                      );
+                                    },
+                                  );
+                                },
+                                child: Container(
+                                  height: 120,
+                                  width: double.infinity,
+                                  decoration: BoxDecoration(
+                                    color: themeIsLight
+                                        ? const Color(0x5CD1D1D6)
+                                        : const Color(0x5C35353B),
+                                    borderRadius: BorderRadius.circular(5.0),
+                                  ),
+                                  child: imageFile == null
+                                      ? Center(
+                                          child: Icon(
+                                            Icons.add,
+                                            // size: 55.0,
+                                            size: 40,
+                                            color: themeIsLight
+                                                ? const Color(0xFF6F7ECB)
+                                                : const Color(0xFF6C7396),
+                                          ),
+                                        )
+                                      : ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(5.0),
+                                          child: Image.file(
+                                            File(imageFile!.path),
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                ),
                               ),
-                            )
-                          : Image.file(
-                              File(imageFile!.path),
-                              fit: BoxFit.cover,
                             ),
-                    ),
+                            const SizedBox(height: 10),
+                            Flexible(
+                              child: GestureDetector(
+                                onTap: () {
+                                  // pickFromGallery();
+                                  showModalBottomSheet(
+                                    context: context,
+                                    builder: (context) {
+                                      return PfpImagePickerBottomSheet(
+                                        pickFromCamera: pickFromCamera2,
+                                        pickFromGallery: pickFromGallery2,
+                                      );
+                                    },
+                                  );
+                                },
+                                child: Container(
+                                  height: 120,
+                                  width: double.infinity,
+                                  decoration: BoxDecoration(
+                                    color: themeIsLight
+                                        ? const Color(0x5CD1D1D6)
+                                        : const Color(0x5C35353B),
+                                    borderRadius: BorderRadius.circular(5.0),
+                                  ),
+                                  child: imageFile2 == null
+                                      ? Center(
+                                          child: Icon(
+                                            Icons.add,
+                                            // size: 55.0,
+                                            size: 40,
+                                            color: themeIsLight
+                                                ? const Color(0xFF6F7ECB)
+                                                : const Color(0xFF6C7396),
+                                          ),
+                                        )
+                                      : ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(5.0),
+                                          child: Image.file(
+                                            File(imageFile2!.path),
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: () {
+                            // pickFromGallery();
+                            showModalBottomSheet(
+                              context: context,
+                              builder: (context) {
+                                return PfpImagePickerBottomSheet(
+                                  pickFromCamera: pickFromCamera3,
+                                  pickFromGallery: pickFromGallery3,
+                                );
+                              },
+                            );
+                          },
+                          child: Container(
+                            height: 250.0,
+                            // width: double.maxFinite,
+                            decoration: BoxDecoration(
+                              color: themeIsLight
+                                  ? const Color(0x5CD1D1D6)
+                                  : const Color(0x5C35353B),
+                              borderRadius: BorderRadius.circular(5.0),
+                            ),
+                            child: imageFile3 == null
+                                ? Center(
+                                    child: Icon(
+                                      Icons.add,
+                                      size: 55.0,
+                                      color: themeIsLight
+                                          ? const Color(0xFF6F7ECB)
+                                          : const Color(0xFF6C7396),
+                                    ),
+                                  )
+                                : ClipRRect(
+                                    borderRadius: BorderRadius.circular(5.0),
+                                    child: Image.file(
+                                      File(imageFile3!.path),
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                   const SizedBox19(),
                   Form(

@@ -1,7 +1,13 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
+import 'package:naijabatternew/utilities/fonts.dart';
 import 'package:naijabatternew/utilities/provider/auth/auth.dart';
 import 'package:naijabatternew/utilities/provider/user/user.dart';
+import 'package:naijabatternew/widgets/pfp_image_picker_bottom_sheet.dart';
 import 'package:naijabatternew/widgets/previous_page_icon.dart';
 
 import '../utilities/colors.dart';
@@ -19,14 +25,45 @@ class EditBusinessProfilePage extends ConsumerStatefulWidget {
 
 class _EditBusinessProfilePageState
     extends ConsumerState<EditBusinessProfilePage> {
+  String dateOfBirth = getUserOrNa().dob;
+
   final TextEditingController userNameController =
       TextEditingController(text: getUserOrNa().name);
   final TextEditingController locationController =
       TextEditingController(text: getUserOrNa().location);
-  final TextEditingController dobController =
-      TextEditingController(text: getUserOrNa().dob);
+  // final TextEditingController dobController =
+  //     TextEditingController(text: getUserOrNa().dob);
   final TextEditingController emailController =
       TextEditingController(text: getUserOrNa().email);
+
+  ImagePicker imagePicker = ImagePicker();
+  XFile? imageFile;
+
+  String pfpImage = getUserOrNa().image;
+
+  void pickFromGallery() {
+    imagePicker.pickImage(source: ImageSource.gallery).then((value) {
+      setState(() {
+        imageFile = value;
+      });
+    });
+  }
+
+  void pickFromCamera() {
+    imagePicker.pickImage(source: ImageSource.camera).then((value) {
+      setState(() {
+        imageFile = value;
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    userNameController.dispose();
+    locationController.dispose();
+    emailController.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -86,6 +123,8 @@ class _EditBusinessProfilePageState
               Stack(
                 children: [
                   Container(
+                    width: 160,
+                    height: 160,
                     padding: const EdgeInsets.all(2.0),
                     decoration: BoxDecoration(
                       color: Colors.transparent,
@@ -97,20 +136,49 @@ class _EditBusinessProfilePageState
                         width: 1.0,
                       ),
                     ),
-                    child: CircleAvatar(
-                      radius: 80.0,
-                      backgroundImage: NetworkImage(getUserOrNa().image),
-                    ),
+                    // child: CircleAvatar(
+                    //   radius: 80.0,
+                    // backgroundImage: NetworkImage(imageFile == null ? getUserOrNa().image : imageFile!.path,),
+                    // backgroundImage: imageFile == null ? Image.network(getUserOrNa().image) : Image.file(File(imageFile!.path)),
+                    // ),
+                    child: imageFile == null
+                        ? ClipRRect(
+                            borderRadius: BorderRadius.circular(150),
+                            child: Image.network(
+                              getUserOrNa().image,
+                              fit: BoxFit.cover,
+                            ),
+                          )
+                        : ClipRRect(
+                            borderRadius: BorderRadius.circular(150),
+                            child: Image.file(
+                              File(imageFile!.path),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
                   ),
                   Positioned(
                     bottom: 0,
                     right: 24,
-                    child: Icon(
-                      Icons.photo_camera,
-                      color: themeIsLight
-                          ? const Color(0xFF0F28A9)
-                          : const Color(0xFF373972),
-                      size: 30,
+                    child: GestureDetector(
+                      onTap: () {
+                        showModalBottomSheet(
+                          context: context,
+                          builder: (context) {
+                            return PfpImagePickerBottomSheet(
+                              pickFromCamera: pickFromCamera,
+                              pickFromGallery: pickFromGallery,
+                            );
+                          },
+                        );
+                      },
+                      child: Icon(
+                        Icons.photo_camera,
+                        color: themeIsLight
+                            ? const Color(0xFF0F28A9)
+                            : const Color(0xFF373972),
+                        size: 30,
+                      ),
                     ),
                   ),
                 ],
@@ -188,10 +256,72 @@ class _EditBusinessProfilePageState
                 controller: locationController,
               ),
               const SizedBox19(),
-              EditProfileInfoColumn(
-                title: "DOB:",
-                userInfoValue: getUserOrNa().dob, //"12/06/2002"
-                controller: dobController,
+              // EditProfileInfoColumn(
+              //   title: "DOB:",
+              //   userInfoValue: getUserOrNa().dob, //"12/06/2002"
+              //   controller: dobController,
+              //   onTextFieldPressed: () {
+              // showDatePicker(
+              //   context: context,
+              //   initialDate: DateTime.tryParse(getUserOrNa().dob),
+              //   firstDate: DateTime(1980),
+              //   lastDate: DateTime(2100),
+              // );
+              //   },
+              // ),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 30.0, right: 30.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "DOB",
+                        style: TextStyle(
+                          fontSize: 16.0,
+                          fontFamily: 'Roboto',
+                          fontWeight: FontWeight.w300,
+                          color: themeIsLight
+                              ? Colors.black
+                              : ProjectColors.bigTxtWhite,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 5.0,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          showDatePicker(
+                            context: context,
+                            initialDate: DateTime.tryParse(getUserOrNa().dob),
+                            firstDate: DateTime(1980),
+                            lastDate: DateTime.now(),
+                          ).then((selectedDate) {
+                            if (selectedDate == null) {
+                              return;
+                            }
+                            setState(() {
+                              dateOfBirth =
+                                  DateFormat('yyyy-MM-dd').format(selectedDate);
+                            });
+                          });
+                        },
+                        child: Container(
+                          width: double.infinity,
+                          padding: const EdgeInsets.symmetric(vertical: 10),
+                          decoration: const BoxDecoration(
+                            border: Border(bottom: BorderSide()),
+                          ),
+                          child: Text(
+                            dateOfBirth,
+                            style: const TextStyle(fontSize: 16),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
               const SizedBox19(),
               EditProfileInfoColumn(
@@ -208,17 +338,21 @@ class _EditBusinessProfilePageState
   }
 }
 
+
+
 class EditProfileInfoColumn extends ConsumerWidget {
   const EditProfileInfoColumn({
     super.key,
     required this.title,
     required this.userInfoValue,
     required this.controller,
+    this.onTextFieldPressed,
   });
 
   final String title;
   final String userInfoValue;
   final TextEditingController controller;
+  final void Function()? onTextFieldPressed;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -260,9 +394,17 @@ class EditProfileInfoColumn extends ConsumerWidget {
             //     ),
             //   ),
             // ),
-            SizedBox(
-              child: TextField(
-                controller: controller,
+            GestureDetector(
+              onTap: onTextFieldPressed,
+              child: SizedBox(
+                child: TextField(
+                  controller: controller,
+                  decoration: const InputDecoration(
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(),
+                    ),
+                  ),
+                ),
               ),
             ),
           ],
