@@ -92,7 +92,7 @@ class _HomePageViewState extends ConsumerState<HomePageView> {
                   Align(
                     alignment: AlignmentDirectional.centerStart,
                     child: Text(
-                      'Declutter',
+                      'Barter',
                       style: titleStyle,
                     ),
                   ),
@@ -216,7 +216,7 @@ class _HomePageViewState extends ConsumerState<HomePageView> {
                     ),
                   ),
                   FutureBuilder(
-                    future: barterProductProvider,
+                    future: declutterProductProvider,
                     builder: (context, snapshot) {
                       if (!snapshot.hasData) {
                         return const Text('Loading...');
@@ -232,13 +232,13 @@ class _HomePageViewState extends ConsumerState<HomePageView> {
                         width: MediaQuery.of(context).size.width - 11,
                         alignment: Alignment.centerLeft,
                         child: ListView.builder(
-                            controller: scrollBarterController,
+                            controller: scrollDeclutterController,
                             shrinkWrap: true,
                             scrollDirection: Axis.horizontal,
                             itemCount: snapshot.data!.length + 1,
                             itemBuilder: (context, index) {
                               if (index == snapshot.data!.length) {
-                                if (loadingBarterProvider) {
+                                if (loadingDeclutterProvider) {
                                   return Center(
                                     child: Padding(
                                       padding: const EdgeInsets.only(right: 10),
