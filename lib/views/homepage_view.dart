@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:naijabatternew/utilities/provider/other/bookmark.dart';
 
 import '../utilities/colors.dart';
 import '../views/accesibility_page.dart';

@@ -4,6 +4,7 @@ import 'package:naijabatternew/utilities/models/location.dart';
 
 class Product {
   final String id;
+  final String userId;
   final double price;
   final double promotionPrice;
   final String name;
@@ -17,6 +18,7 @@ class Product {
 
   Product({
     required this.id,
+    required this.userId,
     required this.price,
     required this.promotionPrice,
     required this.name,
@@ -33,6 +35,7 @@ class Product {
     json ??= {};
     return Product(
       id: json['_id'] ?? '',
+      userId: json['user'] ?? '',
       price:
           json['price'] == null ? 0.0 : double.parse(json['price'].toString()),
       promotionPrice: json['promotionPrice'] == null

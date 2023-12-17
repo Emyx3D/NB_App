@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:naijabatternew/utilities/models/product.dart';
+import 'package:naijabatternew/utilities/provider/auth/auth.dart';
 import 'package:naijabatternew/widgets/previous_page_icon.dart';
 
 import '../utilities/colors.dart';
@@ -149,81 +150,86 @@ class ProductDescriptionView extends ConsumerWidget {
                         alignment: Alignment.center,
                         height: 49.0,
                         decoration: BoxDecoration(
-                          color: themeIsLight
-                              ? const Color(0xFF0F28A9)
-                              : ProjectColors.darkThemeBlue,
+                          color: (themeIsLight
+                                  ? const Color(0xFF0F28A9)
+                                  : ProjectColors.darkThemeBlue)
+                              .withOpacity(
+                                  product.userId == getUserOrNa().id ? 0.5 : 1),
                           borderRadius: BorderRadius.circular(5.0),
                         ),
-                        child: TextButton(
-                          onPressed: () {
-                            Future.delayed(Duration.zero, () {
-                              showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return AlertDialog(
-                                      backgroundColor: const Color(0xFFDEECFF),
-                                      icon: GestureDetector(
-                                        onTap: () {
-                                          Navigator.pop(context);
-                                        },
-                                        child: const Align(
-                                          alignment: Alignment.centerRight,
-                                          child: Icon(
-                                            Icons.close,
-                                            size: 22.0,
-                                            color: Color(0xFF0F28A9),
-                                          ),
-                                        ),
-                                      ),
-                                      iconPadding: const EdgeInsets.only(
-                                        bottom: 15.0,
-                                        right: 16.0,
-                                        top: 16.0,
-                                      ),
-                                      // title: const Text(
-                                      //   'Notice',
-                                      //   textAlign: TextAlign.left,
-                                      //   style: TextStyle(
-                                      //     color: Color(0xFF0F28A9),
-                                      //     fontSize: 15.0,
-                                      //     fontFamily: "Roboto",
-                                      //   ),
-                                      // ),
-                                      content: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          const Padding(
-                                            padding: EdgeInsets.symmetric(
-                                                horizontal: 40.0),
-                                            child: Text(
-                                              "Select an exchange item from your barter or upload a barter to proceed",
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                fontSize: 13.0,
-                                                fontFamily: 'Inter',
-                                                fontWeight: FontWeight.w300,
-                                                color: Color(0xFF000000),
+                        child: product.userId == getUserOrNa().id
+                            ? TextButton(
+                                onPressed: null,
+                                child: Text(
+                                  "Your Product",
+                                  style: TextStyle(
+                                    fontSize: 20.0,
+                                    fontFamily: 'Roboto',
+                                    fontWeight: FontWeight.w600,
+                                    color: themeIsLight
+                                        ? Colors.white
+                                        : ProjectColors.bigTxtWhite,
+                                  ),
+                                ),
+                              )
+                            : TextButton(
+                                onPressed: () {
+                                  Future.delayed(Duration.zero, () {
+                                    showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            backgroundColor:
+                                                const Color(0xFFDEECFF),
+                                            icon: GestureDetector(
+                                              onTap: () {
+                                                Navigator.pop(context);
+                                              },
+                                              child: const Align(
+                                                alignment:
+                                                    Alignment.centerRight,
+                                                child: Icon(
+                                                  Icons.close,
+                                                  size: 22.0,
+                                                  color: Color(0xFF0F28A9),
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                          const SizedBox28(),
-                                          Center(
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
+                                            iconPadding: const EdgeInsets.only(
+                                              bottom: 15.0,
+                                              right: 16.0,
+                                              top: 16.0,
+                                            ),
+                                            // title: const Text(
+                                            //   'Notice',
+                                            //   textAlign: TextAlign.left,
+                                            //   style: TextStyle(
+                                            //     color: Color(0xFF0F28A9),
+                                            //     fontSize: 15.0,
+                                            //     fontFamily: "Roboto",
+                                            //   ),
+                                            // ),
+                                            content: Column(
+                                              mainAxisSize: MainAxisSize.min,
                                               children: [
-                                                GestureDetector(
-                                                  onTap: () {
-                                                    Navigator.pop(context);
-                                                    Navigator.push(context,
-                                                        MaterialPageRoute(
-                                                            builder: (context) {
-                                                      return const ListedItemsforMessaging();
-                                                    }));
-                                                  },
-                                                  child: const Column(
+                                                const Padding(
+                                                  padding: EdgeInsets.symmetric(
+                                                      horizontal: 40.0),
+                                                  child: Text(
+                                                    "Select an exchange item from your barter or upload a barter to proceed",
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                      fontSize: 13.0,
+                                                      fontFamily: 'Inter',
+                                                      fontWeight:
+                                                          FontWeight.w300,
+                                                      color: Color(0xFF000000),
+                                                    ),
+                                                  ),
+                                                ),
+                                                const SizedBox28(),
+                                                Center(
+                                                  child: Row(
                                                     mainAxisAlignment:
                                                         MainAxisAlignment
                                                             .center,
@@ -231,132 +237,158 @@ class ProductDescriptionView extends ConsumerWidget {
                                                         CrossAxisAlignment
                                                             .center,
                                                     children: [
-                                                      SizedBox(
-                                                        width: 114.0,
-                                                        height: 141.0,
-                                                        child: Card(
-                                                          child: Image(
-                                                            image: AssetImage(
-                                                                "images/select_barter_illustration.png"),
+                                                      GestureDetector(
+                                                        onTap: () {
+                                                          Navigator.pop(
+                                                              context);
+                                                          Navigator.push(
+                                                              context,
+                                                              MaterialPageRoute(
+                                                                  builder:
+                                                                      (context) {
+                                                            return const ListedItemsforMessaging();
+                                                          }));
+                                                        },
+                                                        child: const Column(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .center,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .center,
+                                                          children: [
+                                                            SizedBox(
+                                                              width: 114.0,
+                                                              height: 141.0,
+                                                              child: Card(
+                                                                child: Image(
+                                                                  image: AssetImage(
+                                                                      "images/select_barter_illustration.png"),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            SizedBox(
+                                                              height: 7.0,
+                                                            ),
+                                                            Text(
+                                                              "Select Barter",
+                                                              style: TextStyle(
+                                                                fontSize: 12.0,
+                                                                fontFamily:
+                                                                    'Roboto',
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500,
+                                                                color: Color(
+                                                                    0xFF000000),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      const SizedBox(
+                                                        width: 21.0,
+                                                      ),
+                                                      const Column(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          SizedBox(
+                                                            width: 114.0,
+                                                            height: 141.0,
+                                                            child: Card(
+                                                              child: Image(
+                                                                image: AssetImage(
+                                                                    "images/upload_barter_illustration.png"),
+                                                              ),
+                                                            ),
                                                           ),
-                                                        ),
-                                                      ),
-                                                      SizedBox(
-                                                        height: 7.0,
-                                                      ),
-                                                      Text(
-                                                        "Select Barter",
-                                                        style: TextStyle(
-                                                          fontSize: 12.0,
-                                                          fontFamily: 'Roboto',
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                          color:
-                                                              Color(0xFF000000),
-                                                        ),
+                                                          SizedBox(
+                                                            height: 7.0,
+                                                          ),
+                                                          Text(
+                                                            "Upload Barter",
+                                                            style: TextStyle(
+                                                              fontSize: 12.0,
+                                                              fontFamily:
+                                                                  'Roboto',
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500,
+                                                              color: Color(
+                                                                  0xFF000000),
+                                                            ),
+                                                          ),
+                                                        ],
                                                       ),
                                                     ],
                                                   ),
                                                 ),
-                                                const SizedBox(
-                                                  width: 21.0,
-                                                ),
-                                                const Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.center,
-                                                  children: [
-                                                    SizedBox(
-                                                      width: 114.0,
-                                                      height: 141.0,
-                                                      child: Card(
-                                                        child: Image(
-                                                          image: AssetImage(
-                                                              "images/upload_barter_illustration.png"),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    SizedBox(
-                                                      height: 7.0,
-                                                    ),
-                                                    Text(
-                                                      "Upload Barter",
-                                                      style: TextStyle(
-                                                        fontSize: 12.0,
-                                                        fontFamily: 'Roboto',
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                        color:
-                                                            Color(0xFF000000),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
+                                                const SizedBox26(),
                                               ],
                                             ),
-                                          ),
-                                          const SizedBox26(),
-                                        ],
-                                      ),
-                                      // actions: <Widget>[
-                                      //   TextButton(
-                                      //     onPressed: () =>
-                                      //         Navigator.pop(context, 'Cancel'),
-                                      //     child: const Text(
-                                      //       'Cancel',
-                                      //       style: TextStyle(
-                                      //         color: Color(0xFF0F28A9),
-                                      //       ),
-                                      //     ),
-                                      //   ),
-                                      //   TextButton(
-                                      //     onPressed: () {
-                                      //       Navigator.of(context).pop();
-                                      //       // Navigator.push(context,
-                                      //       //     MaterialPageRoute(builder: (context) {
-                                      //       //   return const PromotionSuccessPage();
-                                      //       // }));
-                                      //     },
-                                      //     child: const Text(
-                                      //       'Sure',
-                                      //       style: TextStyle(
-                                      //         color: Color(0xFF0F28A9),
-                                      //       ),
-                                      //     ),
-                                      //   ),
-                                      // ],
-                                    );
+                                            // actions: <Widget>[
+                                            //   TextButton(
+                                            //     onPressed: () =>
+                                            //         Navigator.pop(context, 'Cancel'),
+                                            //     child: const Text(
+                                            //       'Cancel',
+                                            //       style: TextStyle(
+                                            //         color: Color(0xFF0F28A9),
+                                            //       ),
+                                            //     ),
+                                            //   ),
+                                            //   TextButton(
+                                            //     onPressed: () {
+                                            //       Navigator.of(context).pop();
+                                            //       // Navigator.push(context,
+                                            //       //     MaterialPageRoute(builder: (context) {
+                                            //       //   return const PromotionSuccessPage();
+                                            //       // }));
+                                            //     },
+                                            //     child: const Text(
+                                            //       'Sure',
+                                            //       style: TextStyle(
+                                            //         color: Color(0xFF0F28A9),
+                                            //       ),
+                                            //     ),
+                                            //   ),
+                                            // ],
+                                          );
+                                        });
                                   });
-                            });
-                          },
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                "Message",
-                                style: TextStyle(
-                                  fontSize: 20.0,
-                                  fontFamily: 'Roboto',
-                                  fontWeight: FontWeight.w600,
-                                  color: themeIsLight
-                                      ? Colors.white
-                                      : ProjectColors.bigTxtWhite,
+                                },
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      "Message",
+                                      style: TextStyle(
+                                        fontSize: 20.0,
+                                        fontFamily: 'Roboto',
+                                        fontWeight: FontWeight.w600,
+                                        color: themeIsLight
+                                            ? Colors.white
+                                            : ProjectColors.bigTxtWhite,
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      width: 18.0,
+                                    ),
+                                    Icon(
+                                      Icons.send_rounded,
+                                      size: 20.0,
+                                      color: themeIsLight
+                                          ? Colors.white
+                                          : ProjectColors.bigTxtWhite,
+                                    ),
+                                  ],
                                 ),
                               ),
-                              const SizedBox(
-                                width: 18.0,
-                              ),
-                              Icon(
-                                Icons.send_rounded,
-                                size: 20.0,
-                                color: themeIsLight
-                                    ? Colors.white
-                                    : ProjectColors.bigTxtWhite,
-                              ),
-                            ],
-                          ),
-                        ),
                       ),
                     ),
                     // const SizedBox(
