@@ -7,6 +7,7 @@ import 'package:naijabatternew/utilities/provider/product/product.dart';
 import 'package:naijabatternew/utilities/provider/promotion/promotion.dart';
 import 'package:naijabatternew/widgets/advert_content_slider.dart';
 import 'package:naijabatternew/widgets/empty.dart';
+import 'package:naijabatternew/widgets/sales_card.dart';
 
 import '../views/accesibility_page.dart';
 import '../views/more_product_description.dart';
@@ -14,7 +15,6 @@ import '../widgets/advert_content.dart';
 import '../widgets/barter_scroll_card.dart';
 import '../widgets/declutter_scroll_card.dart';
 import '../widgets/fields_content.dart';
-import '../widgets/flash_sales_card.dart';
 import '../widgets/gift_scroll_card.dart';
 import '../widgets/pages_header.dart';
 
@@ -202,13 +202,7 @@ class _HomePageViewState extends ConsumerState<HomePageView> {
                     },
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 21.0),
-                      child: BarterFlashSaleCard(
-                        promotionExpiresAtHm: data.promotionExpiresAtHm,
-                        image: NetworkImage(data.images[0]),
-                        productName: data.name,
-                        location: data.location.state,
-                        expectedExchange: data.exchange,
-                      ),
+                      child: SalesCard(product: data),
                     ),
                   );
                 },
@@ -329,13 +323,8 @@ class _HomePageViewState extends ConsumerState<HomePageView> {
                     },
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 21.0),
-                      child: DeclutterFlashsalesCard(
-                        promotionExpiresAtHm: data.promotionExpiresAtHm,
-                        image: NetworkImage(data.images[0]),
-                        productName: data.name,
-                        location: data.location.state,
-                        oldPrice: data.price.toString(),
-                        newPrice: data.promotionPrice.toString(),
+                      child: SalesCard(
+                        product: data,
                       ),
                     ),
                   );
