@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:naijabatternew/widgets/fields_content.dart';
-import '../views/accesibility_page.dart';
+
 import '../utilities/colors.dart';
+import '../views/accesibility_page.dart';
 
 class GiftScrollCard extends ConsumerStatefulWidget {
   const GiftScrollCard({
@@ -11,6 +12,8 @@ class GiftScrollCard extends ConsumerStatefulWidget {
     required this.productName,
     required this.location,
     required this.onPressed,
+    required this.onBookmark,
+    this.bookmarked = false,
   });
 
   final ImageProvider image;
@@ -18,20 +21,14 @@ class GiftScrollCard extends ConsumerStatefulWidget {
   final String location;
   // final String price;
   final void Function() onPressed;
+  final bool bookmarked;
+  final void Function()? onBookmark;
 
   @override
   ConsumerState<GiftScrollCard> createState() => _GiftScrollCardState();
 }
 
 class _GiftScrollCardState extends ConsumerState<GiftScrollCard> {
-  bool isIconChanged = false;
-
-  void toggleIcon() {
-    setState(() {
-      isIconChanged = !isIconChanged;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     final themeIsLight = ref.watch(themeProvider.notifier).state;
@@ -143,13 +140,9 @@ class _GiftScrollCardState extends ConsumerState<GiftScrollCard> {
                           ),
                           const SizedBox10(),
                           GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                toggleIcon();
-                              });
-                            },
+                            onTap: widget.onBookmark,
                             child: Icon(
-                              isIconChanged
+                              widget.bookmarked
                                   ? Icons.bookmark_rounded
                                   : Icons.bookmark_border_rounded,
                               size: 20.0,

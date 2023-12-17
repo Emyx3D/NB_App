@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
-import 'package:naijabatternew/utilities/fonts.dart';
+import 'package:naijabatternew/brain/constants.dart';
+import 'package:naijabatternew/utilities/helper/helper.dart';
 import 'package:naijabatternew/utilities/provider/auth/auth.dart';
 import 'package:naijabatternew/utilities/provider/user/user.dart';
+import 'package:naijabatternew/views/homepage_view.dart';
 import 'package:naijabatternew/widgets/pfp_image_picker_bottom_sheet.dart';
 import 'package:naijabatternew/widgets/previous_page_icon.dart';
 
@@ -29,15 +31,17 @@ class _EditBusinessProfilePageState
 
   final TextEditingController userNameController =
       TextEditingController(text: getUserOrNa().name);
-  final TextEditingController locationController =
-      TextEditingController(text: getUserOrNa().location);
+  final TextEditingController locationController = TextEditingController(
+      text:
+          getUserOrNa().location == notAvailable ? '' : getUserOrNa().location);
   // final TextEditingController dobController =
   //     TextEditingController(text: getUserOrNa().dob);
-  final TextEditingController emailController =
-      TextEditingController(text: getUserOrNa().email);
+  final TextEditingController phoneController = TextEditingController(
+      text: getUserOrNa().phone == notAvailable ? '' : getUserOrNa().phone);
 
   ImagePicker imagePicker = ImagePicker();
   XFile? imageFile;
+  bool sending = false;
 
   String pfpImage = getUserOrNa().image;
 
@@ -57,12 +61,41 @@ class _EditBusinessProfilePageState
     });
   }
 
+  Future sendData(WidgetRef ref, context) async {
+    setState(() {
+      sending = true;
+    });
+    Map<String, dynamic> data = {
+      'name': userNameController.text,
+      'location': locationController.text,
+      'phone': phoneController.text,
+      'dob': dateOfBirth,
+    };
+
+    bool status = await sendDataWithImage('/user-edit', data, [imageFile],
+        justFirst: true, imageName: 'image', method: 'PATCH');
+    setState(() {
+      sending = false;
+    });
+
+    if (status) {
+      ref.read(userNotifier.notifier).getUser();
+
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) => const HomePage(currentIndex: 4),
+        ),
+      );
+      return;
+    }
+  }
+
   @override
   void dispose() {
     super.dispose();
     userNameController.dispose();
     locationController.dispose();
-    emailController.dispose();
+    phoneController.dispose();
   }
 
   @override
@@ -98,9 +131,11 @@ class _EditBusinessProfilePageState
               Padding(
                 padding: const EdgeInsets.only(right: 10.0, top: 0.0),
                 child: TextButton(
-                  onPressed: () {},
+                  onPressed: () async {
+                    await sendData(ref, context);
+                  },
                   child: Text(
-                    'SAVE',
+                    sending ? "SAVING..." : 'SAVE',
                     style: TextStyle(
                       fontSize: 14,
                       fontFamily: "Roboto",
@@ -236,7 +271,7 @@ class _EditBusinessProfilePageState
                         )
                       ],
                     ),
-                    error: (error, stackTrace) => Text(error.toString()),
+                    error: (error, stackTrace) => Text('Error occured'),
                     loading: () => const Text('Loading...'),
                   );
                 },
@@ -246,13 +281,13 @@ class _EditBusinessProfilePageState
               ),
               EditProfileInfoColumn(
                 title: "Name:",
-                userInfoValue: getUserOrNa().name,
+                userInfoValue: '',
                 controller: userNameController,
               ),
               const SizedBox19(),
               EditProfileInfoColumn(
                 title: "Location:",
-                userInfoValue: getUserOrNa().location,
+                userInfoValue: '',
                 controller: locationController,
               ),
               const SizedBox19(),
@@ -325,9 +360,9 @@ class _EditBusinessProfilePageState
               ),
               const SizedBox19(),
               EditProfileInfoColumn(
-                title: "E-mail:",
-                userInfoValue: getUserOrNa().email,
-                controller: emailController,
+                title: "Phone:",
+                userInfoValue: '',
+                controller: phoneController,
               ),
               const SizedBox28(),
             ],
@@ -337,8 +372,6 @@ class _EditBusinessProfilePageState
     );
   }
 }
-
-
 
 class EditProfileInfoColumn extends ConsumerWidget {
   const EditProfileInfoColumn({

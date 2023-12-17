@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:naijabatternew/utilities/provider/product/product.dart';
+import 'package:naijabatternew/widgets/empty.dart';
+
+import '../utilities/colors.dart';
+import '../views/accesibility_page.dart';
 import '../widgets/fields_content.dart';
 import '../widgets/fixed_previouspage_icon.dart';
 import '../widgets/promotepage_products_grid.dart';
-import '../views/accesibility_page.dart';
-import '../utilities/colors.dart';
 
 class ListedItemsforPromotePage extends ConsumerStatefulWidget {
   const ListedItemsforPromotePage({super.key, required this.pageName});
@@ -21,18 +24,12 @@ class _ListedItemsforPromotePageState
   late bool themeIsLight;
 
   @override
-  void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
-    super.didChangeDependencies();
-
-    themeIsLight = ref.watch(themeProvider.notifier).state;
-  }
-
-  @override
   void initState() {
     super.initState();
 
     Future.delayed(Duration.zero, () {
+      themeIsLight = ref.watch(themeProvider.notifier).state;
+
       showDialog(
           context: context,
           builder: (BuildContext context) {
@@ -150,6 +147,9 @@ class _ListedItemsforPromotePageState
   @override
   Widget build(BuildContext context) {
     // final themeIsLight = ref.watch(themeProvider.notifier).state;
+    final products = ref.watch(userProduct);
+    final loadingUserProductProvider = ref.watch(loadingUserProduct);
+    themeIsLight = ref.watch(themeProvider.notifier).state;
 
     return SafeArea(
       child: Scaffold(
@@ -189,10 +189,51 @@ class _ListedItemsforPromotePageState
                 ),
               ),
               const SizedBox12(),
-              Container(
-                alignment: Alignment.center,
-                padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                child: promoteProductsGrid(),
+              FutureBuilder(
+                future: products,
+                builder: (BuildContext context, AsyncSnapshot snapshot) {
+                  if (!snapshot.hasData) {
+                    return Center(
+                      child: CircularProgressIndicator(
+                        color: ProjectColors.errorColor,
+                      ),
+                    );
+                  }
+                  if (snapshot.data.isEmpty) {
+                    return const EmptyCard();
+                  }
+                  return Column(
+                    children: [
+                      Container(
+                        alignment: Alignment.center,
+                        padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                        child: promoteProductsGrid(snapshot.data, context),
+                      ),
+                      const SizedBox10(),
+                      loadingUserProductProvider
+                          ? const SizedBox()
+                          : InkWell(
+                              onTap: () =>
+                                  ref.read(userProduct.notifier).fetchMore(),
+                              child: const Text('more'),
+                            ),
+                      const SizedBox10(),
+                      loadingUserProductProvider
+                          ? Center(
+                              child: Padding(
+                                padding: const EdgeInsets.only(right: 10),
+                                child: CircularProgressIndicator(
+                                  color: ProjectColors.errorColor,
+                                ),
+                              ),
+                            )
+                          : const SizedBox(),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                    ],
+                  );
+                },
               ),
             ],
           ),

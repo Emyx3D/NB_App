@@ -22,7 +22,12 @@ Map<String, dynamic> headerFunc() {
 }
 
 Future<bool> sendDataWithImage(
-    Map<String, dynamic> data, List<XFile?>? files) async {
+    url, Map<String, dynamic> data, List<XFile?>? files,
+    {String imageName = 'image',
+    bool justFirst = false,
+    String method = 'POST',
+    successMsg = 'Successful',
+    errorAltMsg = 'Failed'}) async {
   try {
     if (files != null) {
       List<MultipartFile> multipartFiles = [];
@@ -36,22 +41,42 @@ Future<bool> sendDataWithImage(
           );
         }
       }
-      data['images'] = multipartFiles;
+      if (justFirst) {
+        data[imageName] = multipartFiles.firstOrNull;
+      } else {
+        data[imageName] = multipartFiles;
+      }
     }
 
     print('data: $data');
 
     FormData formData = FormData.fromMap(data);
 
-    Response response = await dio.post('/product',
-        data: formData, options: Options(headers: headerFunc()));
+    Response response;
+
+    switch (method.toUpperCase()) {
+      case "POST":
+        response = await dio.post(url,
+            data: formData, options: Options(headers: headerFunc()));
+        break;
+      case "PATCH":
+        response = await dio.patch(url,
+            data: formData, options: Options(headers: headerFunc()));
+        break;
+      case "PUT":
+        response = await dio.put(url);
+        break;
+      default:
+        response = await dio.post(url,
+            data: formData, options: Options(headers: headerFunc()));
+    }
 
     print('Response: ${response.data}');
 
     if (response.statusCode.toString().startsWith('2')) {
-      successSnackbar("Product created");
+      successSnackbar(successMsg);
     } else {
-      failedSnackbar(response.data['error'] ?? 'Product failed to create');
+      failedSnackbar(response.data['error'] ?? errorAltMsg);
     }
     return response.statusCode.toString().startsWith('2');
   } catch (error) {

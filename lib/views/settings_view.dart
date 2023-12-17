@@ -296,33 +296,92 @@ class SettingsPage extends ConsumerWidget {
                   ),
                 ),
               ),
-              Container(
-                padding: const EdgeInsets.symmetric(vertical: 10),
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  "Add acount",
-                  style: TextStyle(
-                    fontSize: 14.0,
-                    fontFamily: 'Roboto',
-                    fontWeight: FontWeight.w400,
-                    color: themeIsLight
-                        ? const Color(0xFF000000)
-                        : ProjectColors.bigTxtWhite,
-                  ),
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.symmetric(vertical: 10),
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  "Delete account",
-                  style: TextStyle(
-                    fontSize: 14.0,
-                    fontFamily: 'Roboto',
-                    fontWeight: FontWeight.w400,
-                    color: themeIsLight
-                        ? const Color(0xFFE81515)
-                        : const Color(0xFF962A2A),
+              // Container(
+              //   padding: const EdgeInsets.symmetric(vertical: 10),
+              //   alignment: Alignment.centerLeft,
+              //   child: Text(
+              //     "Add acount",
+              //     style: TextStyle(
+              //       fontSize: 14.0,
+              //       fontFamily: 'Roboto',
+              //       fontWeight: FontWeight.w400,
+              //       color: themeIsLight
+              //           ? const Color(0xFF000000)
+              //           : ProjectColors.bigTxtWhite,
+              //     ),
+              //   ),
+              // ),
+              InkWell(
+                onTap: () {
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          // contentPadding: const EdgeInsets.all(5),
+                          title: const Text(
+                            'Are you sure you want to delete your account?',
+                            textAlign: TextAlign.left,
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 15.0,
+                              fontFamily: "Roboto",
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+
+                          actionsPadding: const EdgeInsets.symmetric(
+                            vertical: 10,
+                            horizontal: 15,
+                          ),
+                          actions: <Widget>[
+                            TextButton(
+                              onPressed: () => Navigator.pop(context, 'Cancel'),
+                              child: const Text(
+                                'Cancel',
+                                style: TextStyle(
+                                  color: Color(0xFF0F28A9),
+                                  fontFamily: robotoFontName,
+                                ),
+                              ),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                deleteMyAccount().then((value) {
+                                  Navigator.of(context).pop();
+                                  Navigator.pushAndRemoveUntil(
+                                    context,
+                                    MaterialPageRoute(builder: (context) {
+                                      return const LoginView();
+                                    }),
+                                    (route) => false,
+                                  );
+                                });
+                              },
+                              child: const Text(
+                                'Delete my account',
+                                style: TextStyle(
+                                  color: Color(0xFFE81515),
+                                  fontFamily: robotoFontName,
+                                ),
+                              ),
+                            ),
+                          ],
+                        );
+                      });
+                },
+                child: Container(
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    "Delete account",
+                    style: TextStyle(
+                      fontSize: 14.0,
+                      fontFamily: 'Roboto',
+                      fontWeight: FontWeight.w400,
+                      color: themeIsLight
+                          ? const Color(0xFFE81515)
+                          : const Color(0xFF962A2A),
+                    ),
                   ),
                 ),
               ),
