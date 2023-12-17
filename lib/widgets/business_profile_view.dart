@@ -175,7 +175,7 @@ class _BusinessProfileViewState extends ConsumerState<BusinessProfileView> {
                     )
                   ],
                 ),
-                error: (error, stackTrace) => Text('Error occured'),
+                error: (error, stackTrace) => const Text('Error occured'),
                 loading: () => const Text('Loading...'),
               );
             },
@@ -334,7 +334,7 @@ class _BusinessProfileViewState extends ConsumerState<BusinessProfileView> {
                     margin: const EdgeInsets.symmetric(
                       horizontal: 30.0,
                     ),
-                    child: profilepageStackProductsGrid(snapshot.data),
+                    child: profilepageStackProductsGrid(snapshot.data, context),
                   ),
                   const SizedBox10(),
                   loadingUserProductProvider

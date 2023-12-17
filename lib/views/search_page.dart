@@ -253,7 +253,7 @@ class _SearchPageState extends ConsumerState<SearchPage> {
                               alignment: Alignment.center,
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 15.0),
-                              child: productsGrid(products ?? []),
+                              child: productsGrid(products ?? [], context),
                             );
                           },
                         ),
