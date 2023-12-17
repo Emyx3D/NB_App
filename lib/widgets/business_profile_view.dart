@@ -27,20 +27,6 @@ class BusinessProfileView extends ConsumerStatefulWidget {
 
 class _BusinessProfileViewState extends ConsumerState<BusinessProfileView> {
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    scrollUserProductController.dispose();
-    scrollUserProductController.removeListener(() {});
-    super.dispose();
-  }
-
-  final scrollUserProductController = ScrollController();
-
-  @override
   Widget build(BuildContext context) {
     final themeIsLight = ref.watch(themeProvider.notifier).state;
     final userProvider = ref.watch(userNotifier);
@@ -344,14 +330,11 @@ class _BusinessProfileViewState extends ConsumerState<BusinessProfileView> {
               }
               return Column(
                 children: [
-                  SingleChildScrollView(
-                    controller: scrollUserProductController,
-                    child: Container(
-                      margin: const EdgeInsets.symmetric(
-                        horizontal: 30.0,
-                      ),
-                      child: profilepageStackProductsGrid(snapshot.data),
+                  Container(
+                    margin: const EdgeInsets.symmetric(
+                      horizontal: 30.0,
                     ),
+                    child: profilepageStackProductsGrid(snapshot.data),
                   ),
                   const SizedBox10(),
                   loadingUserProductProvider

@@ -20,30 +20,60 @@ Future<List<Product>> baseProduct(String paramStr, int page, int limit) async {
   return data;
 }
 
-final hotDealsProduct = FutureProvider<List<Product>>((ref) async {
-  int limit = 20;
-  final response = await dio.get('/promotion?limit=$limit',
-      options: Options(headers: headerFunc()));
-
-  if (response.statusCode != 200) {
-    return [];
-  }
-
-  List<Product> data =
-      (response.data as List).map((e) => Product.fromJson(e)).toList();
-  return data;
-});
-
-// final userProduct = FutureProvider<List<Product>>((ref) async {
-//   final user = getUser();
-//   int page = 1;
+// final hotDealsProduct = FutureProvider<List<Product>>((ref) async {
 //   int limit = 20;
+//   final response = await dio.get('/promotion?limit=$limit',
+//       options: Options(headers: headerFunc()));
+
+//   if (response.statusCode != 200) {
+//     return [];
+//   }
+
 //   List<Product> data =
-//       await baseProduct('user=${user?.id ?? "0"}', page, limit);
+//       (response.data as List).map((e) => Product.fromJson(e)).toList();
 //   return data;
 // });
 
-// declutter
+// hotDealsProduct
+final loadingHotDealsProduct = StateProvider<bool>((ref) {
+  return false;
+});
+
+class HotDealsNotifier extends StateNotifier<Future<List<Product>>> {
+  HotDealsNotifier({required this.ref})
+      : super(baseProduct('isPromoted=true', 1, 2));
+
+  Ref ref;
+  int page = 2;
+  int limit = 2;
+
+  Future<void> fetchMore() async {
+    ref.watch(loadingHotDealsProduct.notifier).state = true;
+    Future<List<Product>> data = baseProduct('isPromoted=true', page, limit);
+    page += 1;
+
+    final fornow = await Future.wait([state, data]);
+
+    state = Future(() => fornow.expand((list) => list).toList());
+    ref.watch(loadingHotDealsProduct.notifier).state = false;
+  }
+
+  Future<void> refetch() async {
+    ref.watch(loadingHotDealsProduct.notifier).state = true;
+    Future<List<Product>> data =
+        baseProduct('isPromoted=true', page - 1, limit);
+
+    state = data;
+    ref.watch(loadingHotDealsProduct.notifier).state = false;
+  }
+}
+
+final hotDealsProduct =
+    StateNotifierProvider<HotDealsNotifier, Future<List<Product>>>((ref) {
+  return HotDealsNotifier(ref: ref);
+});
+
+// userProduct
 final loadingUserProduct = StateProvider<bool>((ref) {
   return false;
 });
