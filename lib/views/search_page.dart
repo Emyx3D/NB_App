@@ -1,8 +1,12 @@
 import 'package:bottom_sheet/bottom_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:naijabatternew/utilities/fonts.dart';
+import 'package:naijabatternew/utilities/lists/location_list.dart';
 import 'package:naijabatternew/utilities/provider/product/product.dart';
+import 'package:naijabatternew/views/search_filter_screen.dart';
 import 'package:naijabatternew/widgets/empty.dart';
+import 'package:naijabatternew/widgets/filter_search_tabs.dart';
 
 import '../utilities/colors.dart';
 import '../utilities/lists/search_history_list.dart';
@@ -11,6 +15,13 @@ import '../widgets/fields_content.dart';
 import '../widgets/pages_header.dart';
 import '../widgets/product_cards_grid.dart';
 import '../widgets/searchpage_constants.dart';
+
+
+// const bool searchFilterTabProviderState = false;
+
+// final searchFilterTabProvider = StateProvider<bool>((ref) => searchFilterTabProviderState);
+
+
 
 class SearchPage extends ConsumerStatefulWidget {
   const SearchPage({super.key});
@@ -21,6 +32,66 @@ class SearchPage extends ConsumerStatefulWidget {
 
 class _SearchPageState extends ConsumerState<SearchPage> {
   final TextEditingController searchController = TextEditingController();
+
+  // Widget _searchFilterBottomSheet(
+  //   BuildContext context,
+  //   ScrollController scrollController,
+  //   double bottomSheetOffset,
+  // ) {
+  //   return Container(
+  //     padding: const EdgeInsets.symmetric(
+  //       horizontal: 20,
+  //       vertical: 10,
+  //     ),
+  //     child: Column(
+  //       crossAxisAlignment: CrossAxisAlignment.start,
+  //       mainAxisSize: MainAxisSize.min,
+  //       children: [
+  //         const Text(
+  //           "Filter Search",
+  //           style: TextStyle(
+  //             fontFamily: robotoFontName,
+  //             fontSize: 15,
+  //             fontWeight: FontWeight.w600,
+  //           ),
+  //         ),
+  //         const Text("Filter by Location:"),
+  //         Expanded(
+  //           child: GridView.builder(
+  //             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+  //               crossAxisCount: 1,
+  //             ),
+  //             shrinkWrap: true,
+  //             itemCount: 1,
+  //             scrollDirection: Axis.horizontal,
+  //             itemBuilder: (BuildContext context, int index) {
+  //               List<FilterSearchTab> filterLocationList = List.generate(
+  //                 locationList.length,
+  //                 (index) {
+  //                   return FilterSearchTab(
+  //                     text: locationList[index],
+  //                   );
+  //                 },
+  //               );
+
+  //               return Wrap(
+  //                 spacing: 8.0,
+  //                 runSpacing: 10.0,
+  //                 children: filterLocationList,
+  //               );
+  //             },
+  //           ),
+  //         ),
+  //         const Text(
+  //           "data",
+  //           style: TextStyle(fontSize: 50),
+  //         )
+  //       ],
+  //     ),
+  //   );
+  // }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -103,14 +174,19 @@ class _SearchPageState extends ConsumerState<SearchPage> {
                             flex: 1,
                             child: GestureDetector(
                               onTap: () {
-                                showFlexibleBottomSheet(
-                                  minHeight: 0,
-                                  initHeight: 0.5,
-                                  maxHeight: 0.5,
-                                  context: context,
-                                  builder: _searchFilterBottomSheet,
-                                  isExpand: false,
-                                );
+                                // showFlexibleBottomSheet(
+                                //   minHeight: 0,
+                                //   initHeight: 0.5,
+                                //   maxHeight: 0.5,
+                                //   context: context,
+                                //   builder: _searchFilterBottomSheet,
+                                //   isExpand: false,
+                                // );
+
+                                Navigator.push(context,
+                                    MaterialPageRoute(builder: (context) {
+                                  return const SearchFilterScreen();
+                                },),);
                               },
                               child: Icon(
                                 Icons.tune,
@@ -232,22 +308,4 @@ class _SearchPageState extends ConsumerState<SearchPage> {
       ),
     );
   }
-}
-
-Widget _searchFilterBottomSheet(
-  BuildContext context,
-  ScrollController scrollController,
-  double bottomSheetOffset,
-) {
-  return Container(
-    padding: const EdgeInsets.symmetric(
-      horizontal: 20,
-      vertical: 10,
-    ),
-    child: const Column(
-      children: [
-        Text("Filter Search"),
-      ],
-    ),
-  );
 }
