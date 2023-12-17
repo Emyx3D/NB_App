@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:naijabatternew/utilities/provider/other/searchHistory.dart';
@@ -190,7 +192,23 @@ class _SearchPageState extends ConsumerState<SearchPage> {
                                 searchHistoryProvider.length,
                                 (index) {
                                   return SearchTab(
-                                    text: searchHistoryProvider[index],
+                                    onPressActive: () {
+                                      setState(() {
+                                        searchController.text =
+                                            searchHistoryProvider[index];
+                                      });
+                                    },
+                                    text: searchHistoryProvider[index]
+                                            .substring(
+                                                0,
+                                                min(
+                                                    searchHistoryProvider[index]
+                                                        .length,
+                                                    10)) +
+                                        (searchHistoryProvider[index].length >
+                                                10
+                                            ? '...'
+                                            : ''),
                                     onPressed: () {
                                       ref
                                           .read(searchHistory.notifier)

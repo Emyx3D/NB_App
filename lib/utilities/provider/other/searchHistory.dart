@@ -7,9 +7,7 @@ List<String> convertDynamicToList(dynamic data) {
   List<String> result = [];
 
   if (data is List) {
-    // Check if the dynamic data is a List
     for (var item in data) {
-      // Check if each item in the list is a String
       if (item is String) {
         result.add(item);
       }
@@ -24,11 +22,9 @@ List<String> searchHistoryObject() {
   if (searchHistory == null) {
     return [];
   }
-  print('history $searchHistory');
 
   final jsonData = jsonDecode(searchHistory);
 
-  print('passed the point $jsonData');
   return convertDynamicToList(jsonData);
 }
 
