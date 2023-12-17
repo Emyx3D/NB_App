@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:naijabatternew/utilities/colors.dart';
+import 'package:naijabatternew/utilities/provider/product/product.dart';
+import 'package:naijabatternew/widgets/empty.dart';
+
 import '../widgets/fields_content.dart';
 import '../widgets/fixed_previouspage_icon.dart';
 import '../widgets/messaging_products_grid.dart';
@@ -97,13 +102,21 @@ class ListIsNull extends StatelessWidget {
   }
 }
 
-class ListIsNotNull extends StatelessWidget {
+class ListIsNotNull extends ConsumerStatefulWidget {
   const ListIsNotNull({
     super.key,
   });
 
   @override
+  ConsumerState<ListIsNotNull> createState() => _ListIsNotNullState();
+}
+
+class _ListIsNotNullState extends ConsumerState<ListIsNotNull> {
+  @override
   Widget build(BuildContext context) {
+    final products = ref.watch(userProduct);
+    final loadingUserProductProvider = ref.watch(loadingUserProduct);
+
     return Column(
       children: [
         const SizedBox(
@@ -133,10 +146,50 @@ class ListIsNotNull extends StatelessWidget {
           ),
         ),
         const SizedBox12(),
-        Container(
-          alignment: Alignment.center,
-          padding: const EdgeInsets.symmetric(horizontal: 15.0),
-          child: messagingProductsGrid(),
+        FutureBuilder(
+          future: products,
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            if (!snapshot.hasData) {
+              return Center(
+                child: CircularProgressIndicator(
+                  color: ProjectColors.errorColor,
+                ),
+              );
+            }
+            if (snapshot.data.isEmpty) {
+              return const EmptyCard();
+            }
+            return Column(
+              children: [
+                Container(
+                  alignment: Alignment.center,
+                  padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                  child: messagingProductsGrid(snapshot.data, context),
+                ),
+                const SizedBox10(),
+                loadingUserProductProvider
+                    ? const SizedBox()
+                    : InkWell(
+                        onTap: () => ref.read(userProduct.notifier).fetchMore(),
+                        child: const Text('more'),
+                      ),
+                const SizedBox10(),
+                loadingUserProductProvider
+                    ? Center(
+                        child: Padding(
+                          padding: const EdgeInsets.only(right: 10),
+                          child: CircularProgressIndicator(
+                            color: ProjectColors.errorColor,
+                          ),
+                        ),
+                      )
+                    : const SizedBox(),
+                const SizedBox(
+                  height: 20,
+                ),
+              ],
+            );
+          },
         ),
       ],
     );
