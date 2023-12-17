@@ -1,132 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../widgets/fields_content.dart';
+import 'package:naijabatternew/utilities/models/product.dart';
 import 'package:naijabatternew/widgets/previous_page_icon.dart';
-import '../views/accesibility_page.dart';
+
 import '../utilities/colors.dart';
+import '../views/accesibility_page.dart';
 import '../views/listeditems_messaging_page.dart';
+import '../widgets/fields_content.dart';
 
 class ProductDescriptionView extends ConsumerWidget {
-  const ProductDescriptionView(
-      {super.key,
-      required this.image,
-      required this.productName,
-      required this.location,
-      this.expectedExchange,
-      required this.productDescription,
-      this.price});
+  const ProductDescriptionView({super.key, required this.product});
 
-  final ImageProvider image;
-  final String productName;
-  final String location;
-  final String? expectedExchange;
-  final String? price;
-  final String productDescription;
+  final Product product;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final themeIsLight = ref.watch(themeProvider.notifier).state;
-
-    // String title;
-    Widget showWidget() {
-      late Widget returnedWidget;
-      if (expectedExchange != null) {
-        returnedWidget = Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "Expected Exchange",
-              style: TextStyle(
-                fontSize: 12.0,
-                fontFamily: 'Roboto',
-                fontWeight: FontWeight.w400,
-                color: themeIsLight
-                    ? const Color(0xFF000000)
-                    : ProjectColors.bigTxtWhite,
-              ),
-            ),
-            const SizedBox(
-              height: 2.0,
-            ),
-            Text(
-              expectedExchange.toString(),
-              style: TextStyle(
-                fontSize: 14.0,
-                fontFamily: 'Roboto',
-                fontWeight: FontWeight.w500,
-                color: themeIsLight
-                    ? const Color(0xFF000000)
-                    : ProjectColors.bigTxtWhite,
-              ),
-            ),
-          ],
-        );
-      } else if (price != null) {
-        returnedWidget = Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "Price",
-              style: TextStyle(
-                fontSize: 12.0,
-                fontFamily: 'Roboto',
-                fontWeight: FontWeight.w400,
-                color: themeIsLight
-                    ? const Color(0xFF000000)
-                    : ProjectColors.bigTxtWhite,
-              ),
-            ),
-            const SizedBox(
-              height: 2.0,
-            ),
-            Text(
-              price.toString(),
-              style: TextStyle(
-                fontSize: 14.0,
-                fontFamily: 'Roboto',
-                fontWeight: FontWeight.w500,
-                color: themeIsLight
-                    ? const Color(0xFF000000)
-                    : ProjectColors.bigTxtWhite,
-              ),
-            ),
-          ],
-        );
-      } else if (price == null && expectedExchange == null) {
-        returnedWidget = Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "Price",
-              style: TextStyle(
-                fontSize: 12.0,
-                fontFamily: 'Roboto',
-                fontWeight: FontWeight.w400,
-                color: themeIsLight
-                    ? const Color(0xFF000000)
-                    : ProjectColors.bigTxtWhite,
-              ),
-            ),
-            const SizedBox(
-              height: 2.0,
-            ),
-            Text(
-              "Free",
-              style: TextStyle(
-                fontSize: 14.0,
-                fontFamily: 'Roboto',
-                fontWeight: FontWeight.w500,
-                color: themeIsLight
-                    ? const Color(0xFF000000)
-                    : ProjectColors.bigTxtWhite,
-              ),
-            ),
-          ],
-        );
-      }
-
-      return returnedWidget;
-    }
 
     return SafeArea(
       child: Scaffold(
@@ -155,7 +44,7 @@ class ProductDescriptionView extends ConsumerWidget {
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(5.0),
                         child: Image(
-                          image: image,
+                          image: NetworkImage(product.images[0]),
                           width: double.infinity,
                           height: 220.0,
                           fit: BoxFit.cover,
@@ -165,7 +54,7 @@ class ProductDescriptionView extends ConsumerWidget {
                     ),
                     const SizedBox15(),
                     Text(
-                      productName,
+                      product.name,
                       style: TextStyle(
                         fontSize: 16.0,
                         fontFamily: 'Roboto',
@@ -179,7 +68,7 @@ class ProductDescriptionView extends ConsumerWidget {
                       height: 8.0,
                     ),
                     Text(
-                      "$location, Nigeria",
+                      "${product.location.state}, Nigeria",
                       style: TextStyle(
                         fontSize: 12.0,
                         fontFamily: 'Roboto',
@@ -207,7 +96,7 @@ class ProductDescriptionView extends ConsumerWidget {
                       height: 8.0,
                     ),
                     Text(
-                      productDescription,
+                      product.description,
                       style: TextStyle(
                         fontSize: 12.0,
                         fontFamily: 'Roboto',
@@ -221,7 +110,36 @@ class ProductDescriptionView extends ConsumerWidget {
                       height: 8.0,
                     ),
                     Container(
-                      child: showWidget(),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            product.theTradeNarrative(),
+                            style: TextStyle(
+                              fontSize: 12.0,
+                              fontFamily: 'Roboto',
+                              fontWeight: FontWeight.w400,
+                              color: themeIsLight
+                                  ? const Color(0xFF000000)
+                                  : ProjectColors.bigTxtWhite,
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 2.0,
+                          ),
+                          Text(
+                            product.theTrade(),
+                            style: TextStyle(
+                              fontSize: 14.0,
+                              fontFamily: 'Roboto',
+                              fontWeight: FontWeight.w500,
+                              color: themeIsLight
+                                  ? const Color(0xFF000000)
+                                  : ProjectColors.bigTxtWhite,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                     const SizedBox(
                       height: 51.0,

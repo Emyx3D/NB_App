@@ -5,6 +5,7 @@ import 'package:naijabatternew/utilities/helper/dio.dart';
 import 'package:naijabatternew/utilities/helper/helper.dart';
 import 'package:naijabatternew/utilities/models/product.dart';
 import 'package:naijabatternew/utilities/models/user.dart';
+import 'package:naijabatternew/utilities/provider/other/search.dart';
 import 'package:naijabatternew/utilities/provider/user/user.dart';
 
 Future<List<Product>> baseProduct(String paramStr, int page, int limit) async {
@@ -19,20 +20,6 @@ Future<List<Product>> baseProduct(String paramStr, int page, int limit) async {
       (response.data as List).map((e) => Product.fromJson(e)).toList();
   return data;
 }
-
-// final hotDealsProduct = FutureProvider<List<Product>>((ref) async {
-//   int limit = 20;
-//   final response = await dio.get('/promotion?limit=$limit',
-//       options: Options(headers: headerFunc()));
-
-//   if (response.statusCode != 200) {
-//     return [];
-//   }
-
-//   List<Product> data =
-//       (response.data as List).map((e) => Product.fromJson(e)).toList();
-//   return data;
-// });
 
 // hotDealsProduct
 final loadingHotDealsProduct = StateProvider<bool>((ref) {
@@ -50,12 +37,14 @@ class HotDealsNotifier extends StateNotifier<Future<List<Product>>> {
   Future<void> fetchMore() async {
     ref.watch(loadingHotDealsProduct.notifier).state = true;
     Future<List<Product>> data = baseProduct('isPromoted=true', page, limit);
-    page += 1;
 
     final fornow = await Future.wait([state, data]);
 
     state = Future(() => fornow.expand((list) => list).toList());
     ref.watch(loadingHotDealsProduct.notifier).state = false;
+    if ((await data).isNotEmpty) {
+      page += 1;
+    }
   }
 
   Future<void> refetch() async {
@@ -90,12 +79,14 @@ class UserProductNotifier extends StateNotifier<Future<List<Product>>> {
   Future<void> fetchMore() async {
     ref.watch(loadingUserProduct.notifier).state = true;
     Future<List<Product>> data = baseProduct('user=${user.id}', page, limit);
-    page += 1;
 
     final fornow = await Future.wait([state, data]);
 
     state = Future(() => fornow.expand((list) => list).toList());
     ref.watch(loadingUserProduct.notifier).state = false;
+    if ((await data).isNotEmpty) {
+      page += 1;
+    }
   }
 
   Future<void> refetch() async {
@@ -133,12 +124,14 @@ class DeclutterProductNotifier extends StateNotifier<Future<List<Product>>> {
       ref.watch(loadingDeclutter.notifier).state = true;
       Future<List<Product>> data =
           baseProduct('productType=declutter', page, limit);
-      page += 1;
 
       final fornow = await Future.wait([state, data]);
 
       state = Future(() => fornow.expand((list) => list).toList());
       ref.watch(loadingDeclutter.notifier).state = false;
+      if ((await data).isNotEmpty) {
+        page += 1;
+      }
 
       if (scrollController.offset >=
               scrollController.position.maxScrollExtent &&
@@ -178,13 +171,14 @@ class BarterProductNotifier extends StateNotifier<Future<List<Product>>> {
       ref.watch(loadingBarter.notifier).state = true;
       Future<List<Product>> data =
           baseProduct('productType=barter', page, limit);
-      page += 1;
 
       final fornow = await Future.wait([state, data]);
 
       state = Future(() => fornow.expand((list) => list).toList());
       ref.watch(loadingBarter.notifier).state = false;
-
+      if ((await data).isNotEmpty) {
+        page += 1;
+      }
       if (scrollController.offset >=
               scrollController.position.maxScrollExtent &&
           !scrollController.position.outOfRange) {
@@ -221,13 +215,14 @@ class GiftProductNotifier extends StateNotifier<Future<List<Product>>> {
         !scrollController.position.outOfRange) {
       ref.watch(loadingGift.notifier).state = true;
       Future<List<Product>> data = baseProduct('productType=gift', page, limit);
-      page += 1;
 
       final fornow = await Future.wait([state, data]);
 
       state = Future(() => fornow.expand((list) => list).toList());
       ref.watch(loadingGift.notifier).state = false;
-
+      if ((await data).isNotEmpty) {
+        page += 1;
+      }
       if (scrollController.offset >=
               scrollController.position.maxScrollExtent &&
           !scrollController.position.outOfRange) {
@@ -256,10 +251,18 @@ class SearchProductNotifier extends StateNotifier<List<Product>> {
   Ref ref;
   Future search(String text) async {
     ref.watch(loadingSearch.notifier).state = true;
+    var searchLocationProvider = ref.watch(searchLocation);
+    var searchCategoryProvider = ref.watch(searchCategory);
+
+    String locationStr =
+        searchLocationProvider.map((e) => 'location=$e').toList().join('&');
+    String categoryStr =
+        searchCategoryProvider.map((e) => 'category=$e').toList().join('&');
 
     int page = 1;
     int limit = 20;
-    List<Product> data = await baseProduct('search=$text', page, limit);
+    List<Product> data = await baseProduct(
+        'search=$text&$locationStr&$categoryStr', page, limit);
     state = data;
     ref.watch(loadingSearch.notifier).state = false;
   }

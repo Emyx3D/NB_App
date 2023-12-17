@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:naijabatternew/utilities/colors.dart';
 import 'package:naijabatternew/utilities/helper/helper.dart';
+import 'package:naijabatternew/utilities/provider/other/bookmark.dart';
 import 'package:naijabatternew/utilities/provider/product/product.dart';
 import 'package:naijabatternew/utilities/provider/promotion/promotion.dart';
 import 'package:naijabatternew/widgets/advert_content_slider.dart';
@@ -52,6 +53,8 @@ class _HomePageViewState extends ConsumerState<HomePageView> {
   @override
   Widget build(BuildContext context) {
     final themeIsLight = ref.watch(themeProvider.notifier).state;
+    final bookmarkProvider = ref.watch(bookmark);
+
     // barter
     final barterProductProvider = ref.watch(barterProduct);
     final loadingBarterProvider = ref.watch(loadingBarter);
@@ -109,7 +112,7 @@ class _HomePageViewState extends ConsumerState<HomePageView> {
                         return const Text('Loading...');
                       }
                       if (snapshot.hasError) {
-                        return Text(snapshot.error.toString());
+                        return const Text('Error occured');
                       }
                       if (snapshot.data!.isEmpty) {
                         return const EmptyCard();
@@ -138,23 +141,19 @@ class _HomePageViewState extends ConsumerState<HomePageView> {
                                 return const SizedBox();
                               }
                               return BarterScrollCard(
+                                bookmarked: bookmarkProvider[
+                                        snapshot.data![index].id] ==
+                                    snapshot.data![index].id,
+                                onBookmark: () => ref
+                                    .read(bookmark.notifier)
+                                    .toggleItem(snapshot.data![index].id),
                                 onPressed: () {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) {
                                         return ProductDescriptionView(
-                                          image: NetworkImage(
-                                            snapshot.data![index].images[0],
-                                          ),
-                                          productName:
-                                              snapshot.data![index].name,
-                                          location: snapshot
-                                              .data![index].location.state,
-                                          expectedExchange:
-                                              snapshot.data![index].exchange,
-                                          productDescription:
-                                              snapshot.data![index].description,
+                                          product: snapshot.data![index],
                                         );
                                       },
                                     ),
@@ -188,18 +187,32 @@ class _HomePageViewState extends ConsumerState<HomePageView> {
                   if (data == null) {
                     return const SizedBox();
                   }
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 21.0),
-                    child: BarterFlashSaleCard(
-                      promotionExpiresAtHm: data.promotionExpiresAtHm,
-                      image: NetworkImage(data.images[0]),
-                      productName: data.name,
-                      location: data.location.state,
-                      expectedExchange: data.exchange,
+                  return InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return ProductDescriptionView(
+                              product: data,
+                            );
+                          },
+                        ),
+                      );
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 21.0),
+                      child: BarterFlashSaleCard(
+                        promotionExpiresAtHm: data.promotionExpiresAtHm,
+                        image: NetworkImage(data.images[0]),
+                        productName: data.name,
+                        location: data.location.state,
+                        expectedExchange: data.exchange,
+                      ),
                     ),
                   );
                 },
-                error: (error, stackTrace) => Text(error.toString()),
+                error: (error, stackTrace) => const Text('Error occured'),
                 loading: () => const Text('Loading...'),
               );
             }),
@@ -228,7 +241,7 @@ class _HomePageViewState extends ConsumerState<HomePageView> {
                         return const Text('Loading...');
                       }
                       if (snapshot.hasError) {
-                        return Text(snapshot.error.toString());
+                        return const Text('Error occured');
                       }
                       if (snapshot.data!.isEmpty) {
                         return const EmptyCard();
@@ -257,23 +270,19 @@ class _HomePageViewState extends ConsumerState<HomePageView> {
                                 return const SizedBox();
                               }
                               return DeclutterScrollCard(
+                                bookmarked: bookmarkProvider[
+                                        snapshot.data![index].id] ==
+                                    snapshot.data![index].id,
+                                onBookmark: () => ref
+                                    .read(bookmark.notifier)
+                                    .toggleItem(snapshot.data![index].id),
                                 onPressed: () {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) {
                                         return ProductDescriptionView(
-                                          image: NetworkImage(
-                                            snapshot.data![index].images[0],
-                                          ),
-                                          productName:
-                                              snapshot.data![index].name,
-                                          location: snapshot
-                                              .data![index].location.state,
-                                          expectedExchange:
-                                              snapshot.data![index].exchange,
-                                          productDescription:
-                                              snapshot.data![index].description,
+                                          product: snapshot.data![index],
                                         );
                                       },
                                     ),
@@ -305,19 +314,33 @@ class _HomePageViewState extends ConsumerState<HomePageView> {
                   if (data == null) {
                     return const SizedBox();
                   }
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 21.0),
-                    child: DeclutterFlashsalesCard(
-                      promotionExpiresAtHm: data.promotionExpiresAtHm,
-                      image: NetworkImage(data.images[0]),
-                      productName: data.name,
-                      location: data.location.state,
-                      oldPrice: data.price.toString(),
-                      newPrice: data.promotionPrice.toString(),
+                  return InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return ProductDescriptionView(
+                              product: data,
+                            );
+                          },
+                        ),
+                      );
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 21.0),
+                      child: DeclutterFlashsalesCard(
+                        promotionExpiresAtHm: data.promotionExpiresAtHm,
+                        image: NetworkImage(data.images[0]),
+                        productName: data.name,
+                        location: data.location.state,
+                        oldPrice: data.price.toString(),
+                        newPrice: data.promotionPrice.toString(),
+                      ),
                     ),
                   );
                 },
-                error: (error, stackTrace) => Text(error.toString()),
+                error: (error, stackTrace) => const Text('Error occured'),
                 loading: () => const Text('Loading...'),
               );
             }),
@@ -345,7 +368,7 @@ class _HomePageViewState extends ConsumerState<HomePageView> {
                         return const Text('Loading...');
                       }
                       if (snapshot.hasError) {
-                        return Text(snapshot.error.toString());
+                        return const Text('Error occured');
                       }
                       if (snapshot.data!.isEmpty) {
                         return const EmptyCard();
@@ -374,23 +397,19 @@ class _HomePageViewState extends ConsumerState<HomePageView> {
                                 return const SizedBox();
                               }
                               return GiftScrollCard(
+                                bookmarked: bookmarkProvider[
+                                        snapshot.data![index].id] ==
+                                    snapshot.data![index].id,
+                                onBookmark: () => ref
+                                    .read(bookmark.notifier)
+                                    .toggleItem(snapshot.data![index].id),
                                 onPressed: () {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) {
                                         return ProductDescriptionView(
-                                          image: NetworkImage(
-                                            snapshot.data![index].images[0],
-                                          ),
-                                          productName:
-                                              snapshot.data![index].name,
-                                          location: snapshot
-                                              .data![index].location.state,
-                                          expectedExchange:
-                                              snapshot.data![index].exchange,
-                                          productDescription:
-                                              snapshot.data![index].description,
+                                          product: snapshot.data![index],
                                         );
                                       },
                                     ),

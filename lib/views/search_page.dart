@@ -1,27 +1,22 @@
-import 'package:bottom_sheet/bottom_sheet.dart';
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:naijabatternew/utilities/fonts.dart';
-import 'package:naijabatternew/utilities/lists/location_list.dart';
+import 'package:naijabatternew/utilities/provider/other/searchHistory.dart';
 import 'package:naijabatternew/utilities/provider/product/product.dart';
 import 'package:naijabatternew/views/search_filter_screen.dart';
 import 'package:naijabatternew/widgets/empty.dart';
-import 'package:naijabatternew/widgets/filter_search_tabs.dart';
 
 import '../utilities/colors.dart';
-import '../utilities/lists/search_history_list.dart';
 import '../views/accesibility_page.dart';
 import '../widgets/fields_content.dart';
 import '../widgets/pages_header.dart';
 import '../widgets/product_cards_grid.dart';
 import '../widgets/searchpage_constants.dart';
 
-
 // const bool searchFilterTabProviderState = false;
 
 // final searchFilterTabProvider = StateProvider<bool>((ref) => searchFilterTabProviderState);
-
-
 
 class SearchPage extends ConsumerStatefulWidget {
   const SearchPage({super.key});
@@ -33,70 +28,11 @@ class SearchPage extends ConsumerStatefulWidget {
 class _SearchPageState extends ConsumerState<SearchPage> {
   final TextEditingController searchController = TextEditingController();
 
-  // Widget _searchFilterBottomSheet(
-  //   BuildContext context,
-  //   ScrollController scrollController,
-  //   double bottomSheetOffset,
-  // ) {
-  //   return Container(
-  //     padding: const EdgeInsets.symmetric(
-  //       horizontal: 20,
-  //       vertical: 10,
-  //     ),
-  //     child: Column(
-  //       crossAxisAlignment: CrossAxisAlignment.start,
-  //       mainAxisSize: MainAxisSize.min,
-  //       children: [
-  //         const Text(
-  //           "Filter Search",
-  //           style: TextStyle(
-  //             fontFamily: robotoFontName,
-  //             fontSize: 15,
-  //             fontWeight: FontWeight.w600,
-  //           ),
-  //         ),
-  //         const Text("Filter by Location:"),
-  //         Expanded(
-  //           child: GridView.builder(
-  //             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-  //               crossAxisCount: 1,
-  //             ),
-  //             shrinkWrap: true,
-  //             itemCount: 1,
-  //             scrollDirection: Axis.horizontal,
-  //             itemBuilder: (BuildContext context, int index) {
-  //               List<FilterSearchTab> filterLocationList = List.generate(
-  //                 locationList.length,
-  //                 (index) {
-  //                   return FilterSearchTab(
-  //                     text: locationList[index],
-  //                   );
-  //                 },
-  //               );
-
-  //               return Wrap(
-  //                 spacing: 8.0,
-  //                 runSpacing: 10.0,
-  //                 children: filterLocationList,
-  //               );
-  //             },
-  //           ),
-  //         ),
-  //         const Text(
-  //           "data",
-  //           style: TextStyle(fontSize: 50),
-  //         )
-  //       ],
-  //     ),
-  //   );
-  // }
-
-
-
   @override
   Widget build(BuildContext context) {
     final themeIsLight = ref.watch(themeProvider.notifier).state;
     final loadingSearchProvider = ref.watch(loadingSearch);
+    var searchHistoryProvider = ref.watch(searchHistory);
 
     return Scaffold(
       appBar: const PagesHeader(),
@@ -121,10 +57,13 @@ class _SearchPageState extends ConsumerState<SearchPage> {
                             child: SizedBox(
                               // width: 295.0,
                               child: TextFormField(
-                                onChanged: (value) {
+                                onFieldSubmitted: (value) {
                                   ref
                                       .read(searchProductNotify.notifier)
                                       .search(value);
+                                  ref
+                                      .read(searchHistory.notifier)
+                                      .setItem(value);
                                 },
                                 controller: searchController,
                                 onTapOutside: (event) {
@@ -183,10 +122,16 @@ class _SearchPageState extends ConsumerState<SearchPage> {
                                 //   isExpand: false,
                                 // );
 
-                                Navigator.push(context,
-                                    MaterialPageRoute(builder: (context) {
-                                  return const SearchFilterScreen();
-                                },),);
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) {
+                                      return SearchFilterScreen(
+                                        searchTerm: searchController.text,
+                                      );
+                                    },
+                                  ),
+                                );
                               },
                               child: Icon(
                                 Icons.tune,
@@ -244,15 +189,30 @@ class _SearchPageState extends ConsumerState<SearchPage> {
                             itemCount: 1,
                             itemBuilder: (BuildContext context, int index) {
                               List<SearchTab> searchTabsList = List.generate(
-                                searchHistoryList.length,
+                                searchHistoryProvider.length,
                                 (index) {
                                   return SearchTab(
-                                    text: searchHistoryList[index],
-                                    onPressed: () {
+                                    onPressActive: () {
                                       setState(() {
-                                        searchHistoryList
-                                            .remove(searchHistoryList[index]);
+                                        searchController.text =
+                                            searchHistoryProvider[index];
                                       });
+                                    },
+                                    text: searchHistoryProvider[index]
+                                            .substring(
+                                                0,
+                                                min(
+                                                    searchHistoryProvider[index]
+                                                        .length,
+                                                    10)) +
+                                        (searchHistoryProvider[index].length >
+                                                10
+                                            ? '...'
+                                            : ''),
+                                    onPressed: () {
+                                      ref
+                                          .read(searchHistory.notifier)
+                                          .remove(searchHistoryProvider[index]);
                                     },
                                   );
                                 },
@@ -293,7 +253,7 @@ class _SearchPageState extends ConsumerState<SearchPage> {
                               alignment: Alignment.center,
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 15.0),
-                              child: productsGrid(products ?? []),
+                              child: productsGrid(products ?? [], context),
                             );
                           },
                         ),
