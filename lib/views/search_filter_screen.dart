@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:naijabatternew/utilities/colors.dart';
 import 'package:naijabatternew/utilities/fonts.dart';
-import 'package:naijabatternew/utilities/lists/category_list.dart';
 import 'package:naijabatternew/utilities/lists/location_list.dart';
 import 'package:naijabatternew/utilities/lists/search_keywords_list.dart';
+import 'package:naijabatternew/utilities/provider/category_and_location/category_and_location.dart';
 import 'package:naijabatternew/views/accesibility_page.dart';
 import 'package:naijabatternew/widgets/fields_content.dart';
 import 'package:naijabatternew/widgets/filter_search_tabs.dart';
@@ -23,6 +23,8 @@ class _SearchFilterScreenState extends ConsumerState<SearchFilterScreen> {
   @override
   Widget build(BuildContext context) {
     final themeIsLight = ref.watch(themeProvider.notifier).state;
+    final categoryProvider = ref.watch(category);
+    final locationProvider = ref.watch(location);
     // var screenHeight = MediaQuery.of(context).size.height;
 
     List<FilterSearchTab> locationsList = List.generate(
@@ -34,14 +36,14 @@ class _SearchFilterScreenState extends ConsumerState<SearchFilterScreen> {
       },
     );
 
-    List<FilterSearchTab> productCategoriesList = List.generate(
-      categoryList.length,
-      (index) {
-        return FilterSearchTab(
-          text: categoryList[index],
-        );
-      },
-    );
+    // List<FilterSearchTab> data.ma = List.generate(
+    //   categoryList.length,
+    //   (index) {
+    //     return FilterSearchTab(
+    //       text: categoryList[index],
+    //     );
+    //   },
+    // );
 
     // List<InlineSpan> searchKeywords = List.generate(
     //   searchKeywordsList.length,
@@ -104,10 +106,25 @@ class _SearchFilterScreenState extends ConsumerState<SearchFilterScreen> {
           ),
           const SizedBox10(),
 
-          Wrap(
-            spacing: 8.0,
-            runSpacing: 10.0,
-            children: locationsList,
+          locationProvider.when(
+            data: (data) => Wrap(
+              spacing: 8.0,
+              runSpacing: 10.0,
+              children: List.generate(
+                data.length,
+                (index) {
+                  return FilterSearchTab(
+                    text: data[index].state,
+                  );
+                },
+              ),
+            ),
+            error: (error, stackTrace) => const Text('Error occured'),
+            loading: () => Center(
+              child: CircularProgressIndicator(
+                color: ProjectColors.errorColor,
+              ),
+            ),
           ),
 
           const SizedBox28(),
@@ -139,10 +156,25 @@ class _SearchFilterScreenState extends ConsumerState<SearchFilterScreen> {
           //   },
           // ),
 
-          Wrap(
-            spacing: 8.0,
-            runSpacing: 10.0,
-            children: productCategoriesList,
+          categoryProvider.when(
+            data: (data) => Wrap(
+              spacing: 8.0,
+              runSpacing: 10.0,
+              children: List.generate(
+                data.length,
+                (index) {
+                  return FilterSearchTab(
+                    text: data[index].name,
+                  );
+                },
+              ),
+            ),
+            error: (error, stackTrace) => const Text('Error occured'),
+            loading: () => Center(
+              child: CircularProgressIndicator(
+                color: ProjectColors.errorColor,
+              ),
+            ),
           ),
         ],
       ),

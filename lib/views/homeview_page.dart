@@ -109,7 +109,7 @@ class _HomePageViewState extends ConsumerState<HomePageView> {
                         return const Text('Loading...');
                       }
                       if (snapshot.hasError) {
-                        return Text(snapshot.error.toString());
+                        return const Text('Error occured');
                       }
                       if (snapshot.data!.isEmpty) {
                         return const EmptyCard();
@@ -199,7 +199,7 @@ class _HomePageViewState extends ConsumerState<HomePageView> {
                     ),
                   );
                 },
-                error: (error, stackTrace) => Text(error.toString()),
+                error: (error, stackTrace) => const Text('Error occured'),
                 loading: () => const Text('Loading...'),
               );
             }),
@@ -228,7 +228,7 @@ class _HomePageViewState extends ConsumerState<HomePageView> {
                         return const Text('Loading...');
                       }
                       if (snapshot.hasError) {
-                        return Text(snapshot.error.toString());
+                        return const Text('Error occured');
                       }
                       if (snapshot.data!.isEmpty) {
                         return const EmptyCard();
@@ -317,7 +317,7 @@ class _HomePageViewState extends ConsumerState<HomePageView> {
                     ),
                   );
                 },
-                error: (error, stackTrace) => Text(error.toString()),
+                error: (error, stackTrace) => const Text('Error occured'),
                 loading: () => const Text('Loading...'),
               );
             }),
@@ -345,7 +345,7 @@ class _HomePageViewState extends ConsumerState<HomePageView> {
                         return const Text('Loading...');
                       }
                       if (snapshot.hasError) {
-                        return Text(snapshot.error.toString());
+                        return const Text('Error occured');
                       }
                       if (snapshot.data!.isEmpty) {
                         return const EmptyCard();

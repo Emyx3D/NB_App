@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:naijabatternew/utilities/provider/auth/auth.dart';
+import 'package:naijabatternew/utilities/provider/category_and_location/category_and_location.dart';
+import 'package:naijabatternew/utilities/provider/product/product.dart';
+import 'package:naijabatternew/utilities/provider/user/user.dart';
 
-class LoadingPage extends StatefulWidget {
+class LoadingPage extends ConsumerStatefulWidget {
   const LoadingPage({super.key});
 
   @override
-  State<LoadingPage> createState() => _LoadingPageState();
+  ConsumerState<LoadingPage> createState() => _LoadingPageState();
 }
 
-class _LoadingPageState extends State<LoadingPage> {
+class _LoadingPageState extends ConsumerState<LoadingPage> {
   @override
   void initState() {
     isLoggedIn(context);
@@ -23,6 +27,15 @@ class _LoadingPageState extends State<LoadingPage> {
 
   @override
   Widget build(BuildContext context) {
+    ref.watch(userProduct);
+    ref.watch(barterProduct);
+    ref.watch(giftProduct);
+    ref.watch(declutterProduct);
+    ref.watch(hotDealsProduct);
+    ref.watch(userProductCount);
+    ref.watch(location);
+    ref.watch(category);
+
     return const Scaffold(
       body: Center(
         child: SpinKitWave(

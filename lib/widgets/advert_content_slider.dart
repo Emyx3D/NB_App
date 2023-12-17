@@ -118,7 +118,7 @@ class _AdvertContentsSliderState extends ConsumerState<AdvertContentsSlider> {
               ),
             );
           },
-          error: (error, stackTrace) => Text(error.toString()),
+          error: (error, stackTrace) => Text('Error occured'),
           loading: () => const Text('Loading...'),
         );
       },

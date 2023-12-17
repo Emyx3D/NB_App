@@ -271,7 +271,7 @@ class _EditBusinessProfilePageState
                         )
                       ],
                     ),
-                    error: (error, stackTrace) => Text(error.toString()),
+                    error: (error, stackTrace) => Text('Error occured'),
                     loading: () => const Text('Loading...'),
                   );
                 },
