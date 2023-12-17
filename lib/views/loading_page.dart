@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:naijabatternew/utilities/provider/auth/auth.dart';
 import 'package:naijabatternew/utilities/provider/category_and_location/category_and_location.dart';
+import 'package:naijabatternew/utilities/provider/other/searchHistory.dart';
 import 'package:naijabatternew/utilities/provider/product/product.dart';
 import 'package:naijabatternew/utilities/provider/user/user.dart';
 
@@ -27,10 +28,11 @@ class _LoadingPageState extends ConsumerState<LoadingPage> {
 
   @override
   Widget build(BuildContext context) {
-    ref.watch(userProduct);
     ref.watch(barterProduct);
     ref.watch(giftProduct);
     ref.watch(declutterProduct);
+    ref.watch(userProduct);
+    ref.watch(searchHistory);
     ref.watch(hotDealsProduct);
     ref.watch(userProductCount);
     ref.watch(location);

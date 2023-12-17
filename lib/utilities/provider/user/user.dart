@@ -27,7 +27,6 @@ final userProductCount = FutureProvider((ref) async {
 });
 
 // new user way
-
 User userObject() {
   String? user = prefs.getString('user');
   if (user == null) {

@@ -259,10 +259,6 @@ class SearchProductNotifier extends StateNotifier<List<Product>> {
     String categoryStr =
         searchCategoryProvider.map((e) => 'category=$e').toList().join('&');
 
-    print(locationStr);
-    print(categoryStr);
-    print('search=$text&$locationStr&$categoryStr');
-
     int page = 1;
     int limit = 20;
     List<Product> data = await baseProduct(
