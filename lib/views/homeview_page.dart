@@ -153,17 +153,7 @@ class _HomePageViewState extends ConsumerState<HomePageView> {
                                     MaterialPageRoute(
                                       builder: (context) {
                                         return ProductDescriptionView(
-                                          image: NetworkImage(
-                                            snapshot.data![index].images[0],
-                                          ),
-                                          productName:
-                                              snapshot.data![index].name,
-                                          location: snapshot
-                                              .data![index].location.state,
-                                          expectedExchange:
-                                              snapshot.data![index].exchange,
-                                          productDescription:
-                                              snapshot.data![index].description,
+                                          product: snapshot.data![index],
                                         );
                                       },
                                     ),
@@ -197,14 +187,28 @@ class _HomePageViewState extends ConsumerState<HomePageView> {
                   if (data == null) {
                     return const SizedBox();
                   }
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 21.0),
-                    child: BarterFlashSaleCard(
-                      promotionExpiresAtHm: data.promotionExpiresAtHm,
-                      image: NetworkImage(data.images[0]),
-                      productName: data.name,
-                      location: data.location.state,
-                      expectedExchange: data.exchange,
+                  return InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return ProductDescriptionView(
+                              product: data,
+                            );
+                          },
+                        ),
+                      );
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 21.0),
+                      child: BarterFlashSaleCard(
+                        promotionExpiresAtHm: data.promotionExpiresAtHm,
+                        image: NetworkImage(data.images[0]),
+                        productName: data.name,
+                        location: data.location.state,
+                        expectedExchange: data.exchange,
+                      ),
                     ),
                   );
                 },
@@ -278,17 +282,7 @@ class _HomePageViewState extends ConsumerState<HomePageView> {
                                     MaterialPageRoute(
                                       builder: (context) {
                                         return ProductDescriptionView(
-                                          image: NetworkImage(
-                                            snapshot.data![index].images[0],
-                                          ),
-                                          productName:
-                                              snapshot.data![index].name,
-                                          location: snapshot
-                                              .data![index].location.state,
-                                          expectedExchange:
-                                              snapshot.data![index].exchange,
-                                          productDescription:
-                                              snapshot.data![index].description,
+                                          product: snapshot.data![index],
                                         );
                                       },
                                     ),
@@ -320,15 +314,29 @@ class _HomePageViewState extends ConsumerState<HomePageView> {
                   if (data == null) {
                     return const SizedBox();
                   }
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 21.0),
-                    child: DeclutterFlashsalesCard(
-                      promotionExpiresAtHm: data.promotionExpiresAtHm,
-                      image: NetworkImage(data.images[0]),
-                      productName: data.name,
-                      location: data.location.state,
-                      oldPrice: data.price.toString(),
-                      newPrice: data.promotionPrice.toString(),
+                  return InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return ProductDescriptionView(
+                              product: data,
+                            );
+                          },
+                        ),
+                      );
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 21.0),
+                      child: DeclutterFlashsalesCard(
+                        promotionExpiresAtHm: data.promotionExpiresAtHm,
+                        image: NetworkImage(data.images[0]),
+                        productName: data.name,
+                        location: data.location.state,
+                        oldPrice: data.price.toString(),
+                        newPrice: data.promotionPrice.toString(),
+                      ),
                     ),
                   );
                 },
@@ -401,17 +409,7 @@ class _HomePageViewState extends ConsumerState<HomePageView> {
                                     MaterialPageRoute(
                                       builder: (context) {
                                         return ProductDescriptionView(
-                                          image: NetworkImage(
-                                            snapshot.data![index].images[0],
-                                          ),
-                                          productName:
-                                              snapshot.data![index].name,
-                                          location: snapshot
-                                              .data![index].location.state,
-                                          expectedExchange:
-                                              snapshot.data![index].exchange,
-                                          productDescription:
-                                              snapshot.data![index].description,
+                                          product: snapshot.data![index],
                                         );
                                       },
                                     ),

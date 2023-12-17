@@ -23,5 +23,6 @@ final barterProductPromotion = FutureProvider((ref) async {
 
 final declutterProductPromotion = FutureProvider((ref) async {
   Product? data = await baseProductPromotion('productType=declutter');
+  print(data);
   return data;
 });
