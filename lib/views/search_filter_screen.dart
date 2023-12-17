@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:naijabatternew/utilities/colors.dart';
 import 'package:naijabatternew/utilities/fonts.dart';
-import 'package:naijabatternew/utilities/lists/location_list.dart';
-import 'package:naijabatternew/utilities/lists/search_keywords_list.dart';
 import 'package:naijabatternew/utilities/provider/category_and_location/category_and_location.dart';
+import 'package:naijabatternew/utilities/provider/other/search.dart';
+import 'package:naijabatternew/utilities/provider/product/product.dart';
 import 'package:naijabatternew/views/accesibility_page.dart';
 import 'package:naijabatternew/widgets/fields_content.dart';
 import 'package:naijabatternew/widgets/filter_search_tabs.dart';
@@ -13,7 +13,8 @@ import 'package:naijabatternew/widgets/previous_page_icon.dart';
 import '../widgets/searchpage_constants.dart';
 
 class SearchFilterScreen extends ConsumerStatefulWidget {
-  const SearchFilterScreen({super.key});
+  final String searchTerm;
+  const SearchFilterScreen({super.key, required this.searchTerm});
 
   @override
   ConsumerState<SearchFilterScreen> createState() => _SearchFilterScreenState();
@@ -25,16 +26,18 @@ class _SearchFilterScreenState extends ConsumerState<SearchFilterScreen> {
     final themeIsLight = ref.watch(themeProvider.notifier).state;
     final categoryProvider = ref.watch(category);
     final locationProvider = ref.watch(location);
-    // var screenHeight = MediaQuery.of(context).size.height;
 
-    List<FilterSearchTab> locationsList = List.generate(
-      locationList.length,
-      (index) {
-        return FilterSearchTab(
-          text: locationList[index],
-        );
-      },
-    );
+    final searchCategoryProvider = ref.watch(searchCategory);
+    final searchLocationProvider = ref.watch(searchLocation);
+
+    // List<FilterSearchTab> locationsList = List.generate(
+    //   locationList.length,
+    //   (index) {
+    //     return FilterSearchTab(
+    //       text: locationList[index],
+    //     );
+    //   },
+    // );
 
     // List<FilterSearchTab> data.ma = List.generate(
     //   categoryList.length,
@@ -114,6 +117,13 @@ class _SearchFilterScreenState extends ConsumerState<SearchFilterScreen> {
                 data.length,
                 (index) {
                   return FilterSearchTab(
+                    tabIsSelected:
+                        searchLocationProvider.contains(data[index].id),
+                    onTap: () {
+                      ref
+                          .read(searchLocation.notifier)
+                          .toggleItem(data[index].id);
+                    },
                     text: data[index].state,
                   );
                 },
@@ -164,6 +174,13 @@ class _SearchFilterScreenState extends ConsumerState<SearchFilterScreen> {
                 data.length,
                 (index) {
                   return FilterSearchTab(
+                    tabIsSelected:
+                        searchCategoryProvider.contains(data[index].id),
+                    onTap: () {
+                      ref
+                          .read(searchCategory.notifier)
+                          .toggleItem(data[index].id);
+                    },
                     text: data[index].name,
                   );
                 },
@@ -188,10 +205,8 @@ class _SearchFilterScreenState extends ConsumerState<SearchFilterScreen> {
               height: 50,
               child: OutlinedButton(
                 onPressed: () {
-                  setState(() {
-                    searchKeywordsList.clear();
-                    print(searchKeywordsList);
-                  });
+                  ref.read(searchCategory.notifier).clear();
+                  ref.read(searchLocation.notifier).clear();
                 },
                 style: ButtonStyle(
                   shape: MaterialStateProperty.all(
@@ -221,7 +236,15 @@ class _SearchFilterScreenState extends ConsumerState<SearchFilterScreen> {
               child: SizedBox(
                 height: 50,
                 child: TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    if (widget.searchTerm != '') {
+                      ref
+                          .read(searchProductNotify.notifier)
+                          .search(widget.searchTerm);
+                    }
+
+                    Navigator.pop(context);
+                  },
                   style: ButtonStyle(
                     backgroundColor:
                         MaterialStateProperty.all(ProjectColors.darkThemeBlue),
@@ -232,7 +255,7 @@ class _SearchFilterScreenState extends ConsumerState<SearchFilterScreen> {
                     ),
                   ),
                   child: const Text(
-                    "SAVE",
+                    "APPLY",
                     style: TextStyle(
                       color: Colors.white,
                       fontFamily: robotoFontName,

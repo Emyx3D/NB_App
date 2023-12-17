@@ -1,12 +1,8 @@
-import 'package:bottom_sheet/bottom_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:naijabatternew/utilities/fonts.dart';
-import 'package:naijabatternew/utilities/lists/location_list.dart';
 import 'package:naijabatternew/utilities/provider/product/product.dart';
 import 'package:naijabatternew/views/search_filter_screen.dart';
 import 'package:naijabatternew/widgets/empty.dart';
-import 'package:naijabatternew/widgets/filter_search_tabs.dart';
 
 import '../utilities/colors.dart';
 import '../utilities/lists/search_history_list.dart';
@@ -16,12 +12,9 @@ import '../widgets/pages_header.dart';
 import '../widgets/product_cards_grid.dart';
 import '../widgets/searchpage_constants.dart';
 
-
 // const bool searchFilterTabProviderState = false;
 
 // final searchFilterTabProvider = StateProvider<bool>((ref) => searchFilterTabProviderState);
-
-
 
 class SearchPage extends ConsumerStatefulWidget {
   const SearchPage({super.key});
@@ -90,8 +83,6 @@ class _SearchPageState extends ConsumerState<SearchPage> {
   //     ),
   //   );
   // }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -183,10 +174,16 @@ class _SearchPageState extends ConsumerState<SearchPage> {
                                 //   isExpand: false,
                                 // );
 
-                                Navigator.push(context,
-                                    MaterialPageRoute(builder: (context) {
-                                  return const SearchFilterScreen();
-                                },),);
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) {
+                                      return SearchFilterScreen(
+                                        searchTerm: searchController.text,
+                                      );
+                                    },
+                                  ),
+                                );
                               },
                               child: Icon(
                                 Icons.tune,

@@ -5,6 +5,7 @@ import 'package:naijabatternew/utilities/helper/dio.dart';
 import 'package:naijabatternew/utilities/helper/helper.dart';
 import 'package:naijabatternew/utilities/models/product.dart';
 import 'package:naijabatternew/utilities/models/user.dart';
+import 'package:naijabatternew/utilities/provider/other/search.dart';
 import 'package:naijabatternew/utilities/provider/user/user.dart';
 
 Future<List<Product>> baseProduct(String paramStr, int page, int limit) async {
@@ -250,10 +251,22 @@ class SearchProductNotifier extends StateNotifier<List<Product>> {
   Ref ref;
   Future search(String text) async {
     ref.watch(loadingSearch.notifier).state = true;
+    var searchLocationProvider = ref.watch(searchLocation);
+    var searchCategoryProvider = ref.watch(searchCategory);
+
+    String locationStr =
+        searchLocationProvider.map((e) => 'location=$e').toList().join('&');
+    String categoryStr =
+        searchCategoryProvider.map((e) => 'category=$e').toList().join('&');
+
+    print(locationStr);
+    print(categoryStr);
+    print('search=$text&$locationStr&$categoryStr');
 
     int page = 1;
     int limit = 20;
-    List<Product> data = await baseProduct('search=$text', page, limit);
+    List<Product> data = await baseProduct(
+        'search=$text&$locationStr&$categoryStr', page, limit);
     state = data;
     ref.watch(loadingSearch.notifier).state = false;
   }
