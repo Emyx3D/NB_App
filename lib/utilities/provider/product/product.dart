@@ -50,35 +50,22 @@ final loadingUserProduct = StateProvider<bool>((ref) {
 
 class UserProductNotifier extends StateNotifier<Future<List<Product>>> {
   UserProductNotifier({required this.ref, required this.user})
-      : super(baseProduct('user=${user.id}', 1, 20));
+      : super(baseProduct('user=${user.id}', 1, 3));
 
   Ref ref;
   User user;
   int page = 2;
-  int limit = 20;
+  int limit = 3;
 
-  Future<void> fetchScrollListener(ScrollController scrollController) async {
-    if (scrollController.offset >= scrollController.position.maxScrollExtent &&
-        !scrollController.position.outOfRange) {
-      ref.watch(loadingUserProduct.notifier).state = true;
-      Future<List<Product>> data = baseProduct('user=${user.id}', page, limit);
-      page += 1;
+  Future<void> fetchMore() async {
+    ref.watch(loadingUserProduct.notifier).state = true;
+    Future<List<Product>> data = baseProduct('user=${user.id}', page, limit);
+    page += 1;
 
-      final fornow = await Future.wait([state, data]);
+    final fornow = await Future.wait([state, data]);
 
-      state = Future(() => fornow.expand((list) => list).toList());
-      ref.watch(loadingUserProduct.notifier).state = false;
-
-      if (scrollController.offset >=
-              scrollController.position.maxScrollExtent &&
-          !scrollController.position.outOfRange) {
-        scrollController.animateTo(
-          scrollController.offset + 200,
-          duration: const Duration(milliseconds: 500),
-          curve: Curves.easeInOut,
-        );
-      }
-    }
+    state = Future(() => fornow.expand((list) => list).toList());
+    ref.watch(loadingUserProduct.notifier).state = false;
   }
 
   Future<void> refetch() async {

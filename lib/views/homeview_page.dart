@@ -36,6 +36,12 @@ class _HomePageViewState extends ConsumerState<HomePageView> {
   void dispose() {
     scrollGiftController.dispose();
     scrollGiftController.removeListener(() {});
+
+    scrollBarterController.dispose();
+    scrollBarterController.removeListener(() {});
+
+    scrollDeclutterController.dispose();
+    scrollDeclutterController.removeListener(() {});
     super.dispose();
   }
 

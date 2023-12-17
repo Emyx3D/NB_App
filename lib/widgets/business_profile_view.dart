@@ -15,16 +15,37 @@ import '../views/promote_page.dart';
 import '../views/settings_view.dart';
 // import '../views/upgradenow_declutter_premium_view.dart';
 
-class BusinessProfileView extends ConsumerWidget {
+class BusinessProfileView extends ConsumerStatefulWidget {
   const BusinessProfileView({
     super.key,
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<BusinessProfileView> createState() =>
+      _BusinessProfileViewState();
+}
+
+class _BusinessProfileViewState extends ConsumerState<BusinessProfileView> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    scrollUserProductController.dispose();
+    scrollUserProductController.removeListener(() {});
+    super.dispose();
+  }
+
+  final scrollUserProductController = ScrollController();
+
+  @override
+  Widget build(BuildContext context) {
     final themeIsLight = ref.watch(themeProvider.notifier).state;
     final userProvider = ref.watch(userNotifier);
     final products = ref.watch(userProduct);
+    final loadingUserProductProvider = ref.watch(loadingUserProduct);
 
     // bool isPremiumVisible = true;
 
@@ -321,11 +342,40 @@ class BusinessProfileView extends ConsumerWidget {
               if (snapshot.data.isEmpty) {
                 return const EmptyCard();
               }
-              return Container(
-                margin: const EdgeInsets.symmetric(
-                  horizontal: 30.0,
-                ),
-                child: profilepageStackProductsGrid(snapshot.data),
+              return Column(
+                children: [
+                  SingleChildScrollView(
+                    controller: scrollUserProductController,
+                    child: Container(
+                      margin: const EdgeInsets.symmetric(
+                        horizontal: 30.0,
+                      ),
+                      child: profilepageStackProductsGrid(snapshot.data),
+                    ),
+                  ),
+                  const SizedBox10(),
+                  loadingUserProductProvider
+                      ? const SizedBox()
+                      : InkWell(
+                          onTap: () =>
+                              ref.read(userProduct.notifier).fetchMore(),
+                          child: const Text('more'),
+                        ),
+                  const SizedBox10(),
+                  loadingUserProductProvider
+                      ? Center(
+                          child: Padding(
+                            padding: const EdgeInsets.only(right: 10),
+                            child: CircularProgressIndicator(
+                              color: ProjectColors.errorColor,
+                            ),
+                          ),
+                        )
+                      : const SizedBox(),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                ],
               );
             },
           ),
