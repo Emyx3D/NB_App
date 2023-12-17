@@ -20,20 +20,6 @@ Future<List<Product>> baseProduct(String paramStr, int page, int limit) async {
   return data;
 }
 
-// final hotDealsProduct = FutureProvider<List<Product>>((ref) async {
-//   int limit = 20;
-//   final response = await dio.get('/promotion?limit=$limit',
-//       options: Options(headers: headerFunc()));
-
-//   if (response.statusCode != 200) {
-//     return [];
-//   }
-
-//   List<Product> data =
-//       (response.data as List).map((e) => Product.fromJson(e)).toList();
-//   return data;
-// });
-
 // hotDealsProduct
 final loadingHotDealsProduct = StateProvider<bool>((ref) {
   return false;
@@ -50,12 +36,14 @@ class HotDealsNotifier extends StateNotifier<Future<List<Product>>> {
   Future<void> fetchMore() async {
     ref.watch(loadingHotDealsProduct.notifier).state = true;
     Future<List<Product>> data = baseProduct('isPromoted=true', page, limit);
-    page += 1;
 
     final fornow = await Future.wait([state, data]);
 
     state = Future(() => fornow.expand((list) => list).toList());
     ref.watch(loadingHotDealsProduct.notifier).state = false;
+    if ((await data).isNotEmpty) {
+      page += 1;
+    }
   }
 
   Future<void> refetch() async {
@@ -90,12 +78,14 @@ class UserProductNotifier extends StateNotifier<Future<List<Product>>> {
   Future<void> fetchMore() async {
     ref.watch(loadingUserProduct.notifier).state = true;
     Future<List<Product>> data = baseProduct('user=${user.id}', page, limit);
-    page += 1;
 
     final fornow = await Future.wait([state, data]);
 
     state = Future(() => fornow.expand((list) => list).toList());
     ref.watch(loadingUserProduct.notifier).state = false;
+    if ((await data).isNotEmpty) {
+      page += 1;
+    }
   }
 
   Future<void> refetch() async {
@@ -133,12 +123,14 @@ class DeclutterProductNotifier extends StateNotifier<Future<List<Product>>> {
       ref.watch(loadingDeclutter.notifier).state = true;
       Future<List<Product>> data =
           baseProduct('productType=declutter', page, limit);
-      page += 1;
 
       final fornow = await Future.wait([state, data]);
 
       state = Future(() => fornow.expand((list) => list).toList());
       ref.watch(loadingDeclutter.notifier).state = false;
+      if ((await data).isNotEmpty) {
+        page += 1;
+      }
 
       if (scrollController.offset >=
               scrollController.position.maxScrollExtent &&
@@ -178,13 +170,14 @@ class BarterProductNotifier extends StateNotifier<Future<List<Product>>> {
       ref.watch(loadingBarter.notifier).state = true;
       Future<List<Product>> data =
           baseProduct('productType=barter', page, limit);
-      page += 1;
 
       final fornow = await Future.wait([state, data]);
 
       state = Future(() => fornow.expand((list) => list).toList());
       ref.watch(loadingBarter.notifier).state = false;
-
+      if ((await data).isNotEmpty) {
+        page += 1;
+      }
       if (scrollController.offset >=
               scrollController.position.maxScrollExtent &&
           !scrollController.position.outOfRange) {
@@ -221,13 +214,14 @@ class GiftProductNotifier extends StateNotifier<Future<List<Product>>> {
         !scrollController.position.outOfRange) {
       ref.watch(loadingGift.notifier).state = true;
       Future<List<Product>> data = baseProduct('productType=gift', page, limit);
-      page += 1;
 
       final fornow = await Future.wait([state, data]);
 
       state = Future(() => fornow.expand((list) => list).toList());
       ref.watch(loadingGift.notifier).state = false;
-
+      if ((await data).isNotEmpty) {
+        page += 1;
+      }
       if (scrollController.offset >=
               scrollController.position.maxScrollExtent &&
           !scrollController.position.outOfRange) {
