@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../widgets/fields_content.dart';
-import '../views/accesibility_page.dart';
+
 import '../utilities/colors.dart';
+import '../views/accesibility_page.dart';
 import '../views/homeview_page.dart';
 import '../views/hotdeals_view.dart';
 import '../views/middle_add_button.dart';
 import '../views/profilepage_view.dart';
 import '../views/search_page.dart';
+import '../widgets/fields_content.dart';
 
 class HomePage extends ConsumerStatefulWidget {
-  const HomePage({super.key});
+  final int currentIndex;
+
+  const HomePage({super.key, this.currentIndex = 0});
 
   @override
   ConsumerState<HomePage> createState() => _HomePageState();
@@ -27,6 +30,7 @@ class _HomePageState extends ConsumerState<HomePage> {
   @override
   void initState() {
     super.initState();
+    _currentIndex = widget.currentIndex;
     _pageController = PageController(initialPage: _currentIndex);
   }
 

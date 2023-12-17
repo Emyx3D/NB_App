@@ -15,14 +15,23 @@ import '../views/promote_page.dart';
 import '../views/settings_view.dart';
 // import '../views/upgradenow_declutter_premium_view.dart';
 
-class BusinessProfileView extends ConsumerWidget {
+class BusinessProfileView extends ConsumerStatefulWidget {
   const BusinessProfileView({
     super.key,
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<BusinessProfileView> createState() =>
+      _BusinessProfileViewState();
+}
+
+class _BusinessProfileViewState extends ConsumerState<BusinessProfileView> {
+  @override
+  Widget build(BuildContext context) {
     final themeIsLight = ref.watch(themeProvider.notifier).state;
+    final userProvider = ref.watch(userNotifier);
+    final products = ref.watch(userProduct);
+    final loadingUserProductProvider = ref.watch(loadingUserProduct);
 
     // bool isPremiumVisible = true;
 
@@ -62,63 +71,55 @@ class BusinessProfileView extends ConsumerWidget {
           const SizedBox(
             height: 4,
           ),
-          Consumer(
-            builder: (context, ref, child) {
-              final userProvider = ref.watch(user);
-
-              return userProvider.when(
-                  data: (data) => Column(
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.all(2.0),
-                            decoration: BoxDecoration(
-                              color: Colors.transparent,
-                              shape: BoxShape.circle,
-                              border: Border.all(
-                                color: themeIsLight
-                                    ? const Color(0xFF242760)
-                                    : const Color(0xFF373972),
-                                width: 1.0,
-                              ),
-                            ),
-                            child: CircleAvatar(
-                              radius: 80.0,
-                              backgroundImage:
-                                  NetworkImage(data.userObj().image),
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 5.0,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                data.userObj().name,
-                                style: TextStyle(
-                                  fontSize: 15.0,
-                                  fontFamily: 'Roboto',
-                                  fontWeight: FontWeight.w300,
-                                  color: themeIsLight
-                                      ? const Color(0xFF000000)
-                                      : ProjectColors.bigTxtWhite,
-                                ),
-                              ),
-                              const SizedBox(
-                                width: 3,
-                              ),
-                              const Icon(
-                                Icons.verified_rounded,
-                                size: 15,
-                                color: Color(0xFF0F28A9),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                  error: (error, stackTrace) => Text(error.toString()),
-                  loading: () => const Text('Loading...'));
-            },
+          Column(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(2.0),
+                decoration: BoxDecoration(
+                  color: Colors.transparent,
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: themeIsLight
+                        ? const Color(0xFF242760)
+                        : const Color(0xFF373972),
+                    width: 1.0,
+                  ),
+                ),
+                child: CircleAvatar(
+                  radius: 80.0,
+                  backgroundImage: NetworkImage(userProvider.image),
+                ),
+              ),
+              const SizedBox(
+                height: 5.0,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    userProvider.name,
+                    style: TextStyle(
+                      fontSize: 15.0,
+                      fontFamily: 'Roboto',
+                      fontWeight: FontWeight.w300,
+                      color: themeIsLight
+                          ? const Color(0xFF000000)
+                          : ProjectColors.bigTxtWhite,
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 3,
+                  ),
+                  Icon(
+                    Icons.verified_rounded,
+                    size: 15,
+                    color: userProvider.isBusinessApproved
+                        ? const Color(0xFF0F28A9).withOpacity(0.5)
+                        : const Color(0xFF0F28A9),
+                  ),
+                ],
+              ),
+            ],
           ),
           const SizedBox12(),
           Text(
@@ -314,25 +315,53 @@ class BusinessProfileView extends ConsumerWidget {
           const SizedBox(
             height: 17.0,
           ),
-          Consumer(
-            builder: (context, ref, child) {
-              final products = ref.watch(userProduct);
-              return products.when(
-                  data: (data) {
-                    if (data.isEmpty) {
-                      return const EmptyCard();
-                    }
-                    return Container(
-                      margin: const EdgeInsets.symmetric(
-                        horizontal: 30.0,
-                      ),
-                      child: profilepageStackProductsGrid(data),
-                    );
-                  },
-                  error: (error, stackTrace) => Text(error.toString()),
-                  loading: () => const Text('Loading...'));
+          FutureBuilder(
+            future: products,
+            builder: (BuildContext context, AsyncSnapshot snapshot) {
+              if (!snapshot.hasData) {
+                return Center(
+                  child: CircularProgressIndicator(
+                    color: ProjectColors.errorColor,
+                  ),
+                );
+              }
+              if (snapshot.data.isEmpty) {
+                return const EmptyCard();
+              }
+              return Column(
+                children: [
+                  Container(
+                    margin: const EdgeInsets.symmetric(
+                      horizontal: 30.0,
+                    ),
+                    child: profilepageStackProductsGrid(snapshot.data),
+                  ),
+                  const SizedBox10(),
+                  loadingUserProductProvider
+                      ? const SizedBox()
+                      : InkWell(
+                          onTap: () =>
+                              ref.read(userProduct.notifier).fetchMore(),
+                          child: const Text('more'),
+                        ),
+                  const SizedBox10(),
+                  loadingUserProductProvider
+                      ? Center(
+                          child: Padding(
+                            padding: const EdgeInsets.only(right: 10),
+                            child: CircularProgressIndicator(
+                              color: ProjectColors.errorColor,
+                            ),
+                          ),
+                        )
+                      : const SizedBox(),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                ],
+              );
             },
-          )
+          ),
         ],
       ),
     );

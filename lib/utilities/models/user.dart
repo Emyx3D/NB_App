@@ -4,6 +4,7 @@ import 'package:naijabatternew/brain/constants.dart';
 class User {
   final String id;
   final String email;
+  final String phone;
   final String name;
   final String username;
   final String image;
@@ -16,6 +17,7 @@ class User {
   User({
     required this.id,
     required this.email,
+    required this.phone,
     required this.name,
     required this.username,
     required this.image,
@@ -31,6 +33,7 @@ class User {
     return User(
       id: json['_id'] ?? '',
       email: json['email'] ?? notAvailable,
+      phone: json['phone'] ?? notAvailable,
       name: json['name'] ?? notAvailable,
       username: json['username'] ?? notAvailable,
       isBusiness: json['is_business'] ?? false,
@@ -40,7 +43,7 @@ class User {
       location: json['location'] ?? notAvailable,
       dob: json['dob'] != null
           ? DateFormat('yyyy-MM-dd').format(DateTime.parse(json['dob']))
-          : notAvailable,
+          : '',
     );
   }
 }
