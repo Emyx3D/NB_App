@@ -24,6 +24,8 @@ class BusinessProfileView extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final themeIsLight = ref.watch(themeProvider.notifier).state;
     final userProvider = ref.watch(userNotifier);
+    final products = ref.watch(userProduct);
+
     // bool isPremiumVisible = true;
 
     return Padding(
@@ -101,10 +103,12 @@ class BusinessProfileView extends ConsumerWidget {
                   const SizedBox(
                     width: 3,
                   ),
-                  const Icon(
+                  Icon(
                     Icons.verified_rounded,
                     size: 15,
-                    color: Color(0xFF0F28A9),
+                    color: userProvider.isBusinessApproved
+                        ? const Color(0xFF0F28A9).withOpacity(0.5)
+                        : const Color(0xFF0F28A9),
                   ),
                 ],
               ),
@@ -304,25 +308,27 @@ class BusinessProfileView extends ConsumerWidget {
           const SizedBox(
             height: 17.0,
           ),
-          Consumer(
-            builder: (context, ref, child) {
-              final products = ref.watch(userProduct);
-              return products.when(
-                  data: (data) {
-                    if (data.isEmpty) {
-                      return const EmptyCard();
-                    }
-                    return Container(
-                      margin: const EdgeInsets.symmetric(
-                        horizontal: 30.0,
-                      ),
-                      child: profilepageStackProductsGrid(data),
-                    );
-                  },
-                  error: (error, stackTrace) => Text(error.toString()),
-                  loading: () => const Text('Loading...'));
+          FutureBuilder(
+            future: products,
+            builder: (BuildContext context, AsyncSnapshot snapshot) {
+              if (!snapshot.hasData) {
+                return Center(
+                  child: CircularProgressIndicator(
+                    color: ProjectColors.errorColor,
+                  ),
+                );
+              }
+              if (snapshot.data.isEmpty) {
+                return const EmptyCard();
+              }
+              return Container(
+                margin: const EdgeInsets.symmetric(
+                  horizontal: 30.0,
+                ),
+                child: profilepageStackProductsGrid(snapshot.data),
+              );
             },
-          )
+          ),
         ],
       ),
     );

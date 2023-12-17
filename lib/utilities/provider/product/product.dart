@@ -4,7 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:naijabatternew/utilities/helper/dio.dart';
 import 'package:naijabatternew/utilities/helper/helper.dart';
 import 'package:naijabatternew/utilities/models/product.dart';
-import 'package:naijabatternew/utilities/provider/auth/auth.dart';
+import 'package:naijabatternew/utilities/models/user.dart';
+import 'package:naijabatternew/utilities/provider/user/user.dart';
 
 Future<List<Product>> baseProduct(String paramStr, int page, int limit) async {
   final response = await dio.get('/product?$paramStr&page=$page&limit=$limit',
@@ -33,20 +34,68 @@ final hotDealsProduct = FutureProvider<List<Product>>((ref) async {
   return data;
 });
 
-final userProduct = FutureProvider<List<Product>>((ref) async {
-  final user = getUser();
-  int page = 1;
-  int limit = 20;
-  List<Product> data =
-      await baseProduct('user=${user?.id ?? "0"}', page, limit);
-  return data;
-});
-// final declutterProduct = FutureProvider<List<Product>>((ref) async {
+// final userProduct = FutureProvider<List<Product>>((ref) async {
+//   final user = getUser();
 //   int page = 1;
 //   int limit = 20;
-//   List<Product> data = await baseProduct('productType=declutter', page, limit);
+//   List<Product> data =
+//       await baseProduct('user=${user?.id ?? "0"}', page, limit);
 //   return data;
 // });
+
+// declutter
+final loadingUserProduct = StateProvider<bool>((ref) {
+  return false;
+});
+
+class UserProductNotifier extends StateNotifier<Future<List<Product>>> {
+  UserProductNotifier({required this.ref, required this.user})
+      : super(baseProduct('user=${user.id}', 1, 20));
+
+  Ref ref;
+  User user;
+  int page = 2;
+  int limit = 20;
+
+  Future<void> fetchScrollListener(ScrollController scrollController) async {
+    if (scrollController.offset >= scrollController.position.maxScrollExtent &&
+        !scrollController.position.outOfRange) {
+      ref.watch(loadingUserProduct.notifier).state = true;
+      Future<List<Product>> data = baseProduct('user=${user.id}', page, limit);
+      page += 1;
+
+      final fornow = await Future.wait([state, data]);
+
+      state = Future(() => fornow.expand((list) => list).toList());
+      ref.watch(loadingUserProduct.notifier).state = false;
+
+      if (scrollController.offset >=
+              scrollController.position.maxScrollExtent &&
+          !scrollController.position.outOfRange) {
+        scrollController.animateTo(
+          scrollController.offset + 200,
+          duration: const Duration(milliseconds: 500),
+          curve: Curves.easeInOut,
+        );
+      }
+    }
+  }
+
+  Future<void> refetch() async {
+    ref.watch(loadingUserProduct.notifier).state = true;
+    Future<List<Product>> data =
+        baseProduct('user=${user.id}', page - 1, limit);
+
+    state = data;
+    ref.watch(loadingUserProduct.notifier).state = false;
+  }
+}
+
+final userProduct =
+    StateNotifierProvider<UserProductNotifier, Future<List<Product>>>((ref) {
+  User user = ref.watch(userNotifier);
+  return UserProductNotifier(ref: ref, user: user);
+});
 
 // declutter
 final loadingDeclutter = StateProvider<bool>((ref) {

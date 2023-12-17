@@ -13,7 +13,6 @@ import 'package:naijabatternew/widgets/drop_down_button_product_type.dart';
 import 'package:naijabatternew/widgets/pfp_image_picker_bottom_sheet.dart';
 
 import '../views/accesibility_page.dart';
-import '../views/edit_and_upload_products_page.dart';
 import '../widgets/add_product_field.dart';
 import '../widgets/drop_down_button_location.dart';
 import '../widgets/fields_content.dart';
@@ -41,7 +40,7 @@ class _AddProductPageState extends ConsumerState<AddProductPage> {
   bool costisVisible = false;
   bool sending = false;
 
-  Future sendData(WidgetRef ref) async {
+  Future sendData(WidgetRef ref, context) async {
     setState(() {
       sending = true;
     });
@@ -72,10 +71,10 @@ class _AddProductPageState extends ConsumerState<AddProductPage> {
     });
 
     if (status) {
-      ref.read(userProduct);
-      Navigator.of(context).push(
+      ref.read(userProduct.notifier).refetch();
+      Navigator.of(context).pushReplacement(
         MaterialPageRoute(
-          builder: (context) => const HomePage(),
+          builder: (context) => const HomePage(currentIndex: 4),
         ),
       );
       return;
@@ -580,14 +579,14 @@ class _AddProductPageState extends ConsumerState<AddProductPage> {
                             onPressed: () async {
                               if (_formKey.currentState!.validate()) {
                                 _formKey.currentState!.save();
-                                await sendData(ref);
+                                await sendData(ref, context);
                               }
                             },
                             child: sending == true
                                 ? CircularProgressIndicator(
                                     color: ProjectColors.whiteColor)
                                 : Text(
-                                    'Preview',
+                                    'Save',
                                     style: TextStyle(
                                       fontSize: 19.0,
                                       fontFamily: 'Roboto',
@@ -608,25 +607,25 @@ class _AddProductPageState extends ConsumerState<AddProductPage> {
                 ],
               ),
             ),
-            GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  PageRouteBuilder(
-                    pageBuilder: (context, animation, secondaryAnimation) =>
-                        const EditAndUploadProductsPage(),
-                    transitionsBuilder:
-                        (context, animation, secondaryAnimation, child) {
-                      return child;
-                    },
-                  ),
-                );
-              },
-              child: const Text(
-                'MOVE TO UPLOAD PAGE',
-                style: TextStyle(color: Colors.amber),
-              ),
-            )
+            // GestureDetector(
+            //   onTap: () {
+            //     Navigator.push(
+            //       context,
+            //       PageRouteBuilder(
+            //         pageBuilder: (context, animation, secondaryAnimation) =>
+            //             const EditAndUploadProductsPage(),
+            //         transitionsBuilder:
+            //             (context, animation, secondaryAnimation, child) {
+            //           return child;
+            //         },
+            //       ),
+            //     );
+            //   },
+            //   child: const Text(
+            //     'MOVE TO UPLOAD PAGE',
+            //     style: TextStyle(color: Colors.amber),
+            //   ),
+            // )
           ],
         ),
       ),
