@@ -64,7 +64,9 @@ class _AddProductPageState extends ConsumerState<AddProductPage> {
       data['description'] = descriptionValue;
     }
 
-    bool status = await sendDataWithImage(data, [imageFile]);
+    bool status = await sendDataWithImage(
+        '/product', data, [imageFile, imageFile2, imageFile3],
+        imageName: 'images', successMsg: 'Product created');
     setState(() {
       sending = false;
     });
@@ -177,7 +179,6 @@ class _AddProductPageState extends ConsumerState<AddProductPage> {
               padding: const EdgeInsets.symmetric(horizontal: 30.0),
               child: Column(
                 children: [
-                 
                   Row(
                     children: [
                       Expanded(

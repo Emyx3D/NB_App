@@ -23,7 +23,7 @@ class BusinessProfileView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final themeIsLight = ref.watch(themeProvider.notifier).state;
-
+    final userProvider = ref.watch(userNotifier);
     // bool isPremiumVisible = true;
 
     return Padding(
@@ -62,63 +62,53 @@ class BusinessProfileView extends ConsumerWidget {
           const SizedBox(
             height: 4,
           ),
-          Consumer(
-            builder: (context, ref, child) {
-              final userProvider = ref.watch(user);
-
-              return userProvider.when(
-                  data: (data) => Column(
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.all(2.0),
-                            decoration: BoxDecoration(
-                              color: Colors.transparent,
-                              shape: BoxShape.circle,
-                              border: Border.all(
-                                color: themeIsLight
-                                    ? const Color(0xFF242760)
-                                    : const Color(0xFF373972),
-                                width: 1.0,
-                              ),
-                            ),
-                            child: CircleAvatar(
-                              radius: 80.0,
-                              backgroundImage:
-                                  NetworkImage(data.userObj().image),
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 5.0,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                data.userObj().name,
-                                style: TextStyle(
-                                  fontSize: 15.0,
-                                  fontFamily: 'Roboto',
-                                  fontWeight: FontWeight.w300,
-                                  color: themeIsLight
-                                      ? const Color(0xFF000000)
-                                      : ProjectColors.bigTxtWhite,
-                                ),
-                              ),
-                              const SizedBox(
-                                width: 3,
-                              ),
-                              const Icon(
-                                Icons.verified_rounded,
-                                size: 15,
-                                color: Color(0xFF0F28A9),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                  error: (error, stackTrace) => Text(error.toString()),
-                  loading: () => const Text('Loading...'));
-            },
+          Column(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(2.0),
+                decoration: BoxDecoration(
+                  color: Colors.transparent,
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: themeIsLight
+                        ? const Color(0xFF242760)
+                        : const Color(0xFF373972),
+                    width: 1.0,
+                  ),
+                ),
+                child: CircleAvatar(
+                  radius: 80.0,
+                  backgroundImage: NetworkImage(userProvider.image),
+                ),
+              ),
+              const SizedBox(
+                height: 5.0,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    userProvider.name,
+                    style: TextStyle(
+                      fontSize: 15.0,
+                      fontFamily: 'Roboto',
+                      fontWeight: FontWeight.w300,
+                      color: themeIsLight
+                          ? const Color(0xFF000000)
+                          : ProjectColors.bigTxtWhite,
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 3,
+                  ),
+                  const Icon(
+                    Icons.verified_rounded,
+                    size: 15,
+                    color: Color(0xFF0F28A9),
+                  ),
+                ],
+              ),
+            ],
           ),
           const SizedBox12(),
           Text(
