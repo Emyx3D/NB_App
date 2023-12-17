@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:naijabatternew/brain/provider.dart';
 import 'package:naijabatternew/utilities/colors.dart';
+import 'package:naijabatternew/utilities/helper/snackbar.dart';
 import 'package:naijabatternew/utilities/themes/themes.dart';
 import 'package:naijabatternew/views/accesibility_page.dart';
 import 'package:naijabatternew/views/loading_page.dart';
@@ -15,7 +16,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 // void main() {
 //   runApp(const ProviderScope(child: MyApp()));
 // }
-
 
 late SharedPreferences prefs;
 
@@ -40,6 +40,7 @@ class MyApp extends ConsumerWidget {
 
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     return MaterialApp(
+      scaffoldMessengerKey: SnackBarController.scaffoldMessengerKey,
       title: 'Naija Barter',
       builder: (context, child) {
         return ScrollConfiguration(

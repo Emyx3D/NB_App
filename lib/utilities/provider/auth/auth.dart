@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -112,6 +113,9 @@ Future<bool> isAuthorized() async {
       await prefs.setString('user', jsonEncode(response.data));
       return true;
     }
+    return false;
+  } on SocketException {
+    failedSnackbar('Please connect to the internet');
     return false;
   } catch (e) {
     return false;

@@ -29,17 +29,19 @@ class _LoadingPageState extends ConsumerState<LoadingPage> {
 
   @override
   Widget build(BuildContext context) {
-    ref.watch(barterProduct);
-    ref.watch(giftProduct);
-    ref.watch(declutterProduct);
-    ref.watch(bookmark);
+    if (getUser() != null) {
+      ref.watch(barterProduct);
+      ref.watch(giftProduct);
+      ref.watch(declutterProduct);
+      ref.watch(bookmark);
 
-    ref.watch(userProduct);
-    ref.watch(searchHistory);
-    ref.watch(hotDealsProduct);
-    ref.watch(userProductCount);
-    ref.watch(location);
-    ref.watch(category);
+      ref.watch(userProduct);
+      ref.watch(searchHistory);
+      ref.watch(hotDealsProduct);
+      ref.watch(userProductCount);
+      ref.watch(location);
+      ref.watch(category);
+    }
 
     return const Scaffold(
       body: Center(
