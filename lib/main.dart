@@ -7,6 +7,7 @@ import 'package:naijabatternew/utilities/helper/snackbar.dart';
 import 'package:naijabatternew/utilities/themes/themes.dart';
 import 'package:naijabatternew/views/accesibility_page.dart';
 import 'package:naijabatternew/views/loading_page.dart';
+import 'package:naijabatternew/widgets/no_internet_warning_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 // final themeProvider = StateProvider<bool>((ref) => true);
@@ -65,6 +66,7 @@ class MyApp extends ConsumerWidget {
       // home: const HomePage(),
       // home: const LoginView(),
       home: const LoadingPage(),
+      // home: const NoInternetWarningWidget(),
     );
   }
 }
