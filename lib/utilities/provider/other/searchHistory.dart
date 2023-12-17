@@ -38,7 +38,7 @@ class SearchHistory extends StateNotifier<List<String>> {
     String? searchHistory = prefs.getString('searchHistory');
     if (searchHistory == null) {
       await prefs.setString('searchHistory', jsonEncode([item]));
-      getSearchHistory();
+      state = [item];
       return;
     }
 
@@ -49,19 +49,6 @@ class SearchHistory extends StateNotifier<List<String>> {
 
     await prefs.setString('searchHistory', jsonEncode(jsonData));
     state = convertDynamicToList(jsonData);
-  }
-
-  getSearchHistory() {
-    String? searchHistory = prefs.getString('searchHistory');
-    if (searchHistory == null) {
-      state = [];
-      return;
-    }
-
-    final jsonData = jsonDecode(searchHistory);
-    state = convertDynamicToList(jsonData);
-
-    return;
   }
 
   remove(String item) async {

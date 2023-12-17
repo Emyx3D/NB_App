@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:naijabatternew/utilities/colors.dart';
 import 'package:naijabatternew/utilities/helper/helper.dart';
+import 'package:naijabatternew/utilities/provider/other/bookmark.dart';
 import 'package:naijabatternew/utilities/provider/product/product.dart';
 import 'package:naijabatternew/utilities/provider/promotion/promotion.dart';
 import 'package:naijabatternew/widgets/advert_content_slider.dart';
@@ -52,6 +53,8 @@ class _HomePageViewState extends ConsumerState<HomePageView> {
   @override
   Widget build(BuildContext context) {
     final themeIsLight = ref.watch(themeProvider.notifier).state;
+    final bookmarkProvider = ref.watch(bookmark);
+
     // barter
     final barterProductProvider = ref.watch(barterProduct);
     final loadingBarterProvider = ref.watch(loadingBarter);
@@ -138,6 +141,12 @@ class _HomePageViewState extends ConsumerState<HomePageView> {
                                 return const SizedBox();
                               }
                               return BarterScrollCard(
+                                bookmarked: bookmarkProvider[
+                                        snapshot.data![index].id] ==
+                                    snapshot.data![index].id,
+                                onBookmark: () => ref
+                                    .read(bookmark.notifier)
+                                    .toggleItem(snapshot.data![index].id),
                                 onPressed: () {
                                   Navigator.push(
                                     context,
@@ -257,6 +266,12 @@ class _HomePageViewState extends ConsumerState<HomePageView> {
                                 return const SizedBox();
                               }
                               return DeclutterScrollCard(
+                                bookmarked: bookmarkProvider[
+                                        snapshot.data![index].id] ==
+                                    snapshot.data![index].id,
+                                onBookmark: () => ref
+                                    .read(bookmark.notifier)
+                                    .toggleItem(snapshot.data![index].id),
                                 onPressed: () {
                                   Navigator.push(
                                     context,
@@ -374,6 +389,12 @@ class _HomePageViewState extends ConsumerState<HomePageView> {
                                 return const SizedBox();
                               }
                               return GiftScrollCard(
+                                bookmarked: bookmarkProvider[
+                                        snapshot.data![index].id] ==
+                                    snapshot.data![index].id,
+                                onBookmark: () => ref
+                                    .read(bookmark.notifier)
+                                    .toggleItem(snapshot.data![index].id),
                                 onPressed: () {
                                   Navigator.push(
                                     context,

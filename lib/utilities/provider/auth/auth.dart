@@ -32,7 +32,7 @@ User getUserOrNa() {
 checkUserAuth(context) async {
   User? haveUser = getUser();
   if (haveUser == null) {
-    deleteUser();
+    removeUser();
 
     return Navigator.pushAndRemoveUntil(
       context,
@@ -50,7 +50,7 @@ checkAuth(context) async {
   bool isAuth = await isAuthorized();
   if (isAuth == false) {
     failedSnackbar("Please login to continue", "Login to continue!");
-    deleteUser();
+    removeUser();
 
     return Navigator.pushAndRemoveUntil(
       context,
@@ -90,13 +90,18 @@ isLoggedIn(context) async {
   }
 }
 
-Future<bool> deleteUser() async {
+Future<bool> removeUser() async {
   return prefs.remove('user');
 }
 
 Future logoutUser() async {
   await dio.get('/logout', options: Options(headers: headerFunc()));
-  await deleteUser();
+  await removeUser();
+}
+
+Future deleteMyAccount() async {
+  await dio.delete('/user-delete', options: Options(headers: headerFunc()));
+  await removeUser();
 }
 
 Future<bool> isAuthorized() async {

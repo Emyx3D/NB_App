@@ -115,6 +115,8 @@ class BarterScrollCard extends ConsumerStatefulWidget {
     required this.location,
     required this.expectedExchange,
     required this.onPressed,
+    required this.onBookmark,
+    this.bookmarked = false,
   });
 
   final ImageProvider image;
@@ -122,6 +124,8 @@ class BarterScrollCard extends ConsumerStatefulWidget {
   final String location;
   final String expectedExchange;
   final void Function() onPressed;
+  final bool bookmarked;
+  final void Function()? onBookmark;
 
   @override
   ConsumerState<BarterScrollCard> createState() => _BarterScrollCardState();
@@ -129,15 +133,6 @@ class BarterScrollCard extends ConsumerStatefulWidget {
 
 class _BarterScrollCardState extends ConsumerState<BarterScrollCard> {
   // final String type = 'Barter';
-  bool isIconChanged = false;
-
-  void toggleIcon() {
-    setState(() {
-      isIconChanged = !isIconChanged;
-
-      print("heyyyyyy");
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -252,13 +247,9 @@ class _BarterScrollCardState extends ConsumerState<BarterScrollCard> {
                           ),
                           const SizedBox10(),
                           GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                toggleIcon();
-                              });
-                            },
+                            onTap: widget.onBookmark,
                             child: Icon(
-                              isIconChanged
+                              widget.bookmarked
                                   ? Icons.bookmark_rounded
                                   : Icons.bookmark_border_rounded,
                               size: 20.0,
